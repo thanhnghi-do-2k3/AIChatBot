@@ -11,6 +11,7 @@ import ApplicationNavigator from 'navigation/index';
 import React from 'react';
 import {LogBox} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {enableScreens} from 'react-native-screens';
 import Toast from 'react-native-toast-message';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
@@ -18,6 +19,7 @@ import {persistor, store} from 'store/store';
 import './global.css';
 
 LogBox.ignoreAllLogs();
+enableScreens();
 
 function App(): React.JSX.Element {
   return (

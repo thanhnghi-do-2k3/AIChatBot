@@ -148,12 +148,19 @@ const TabBar = ({state, navigation}: any) => {
 
 const styles = StyleSheet.create({
   tabView: {
-    backgroundColor: Colors.white,
+    backgroundColor: 'white',
     shadowColor: Colors.black,
     shadowOffset: {width: 1, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    shadowOpacity: 1,
+    shadowRadius: 4,
     elevation: 2,
+    borderTopRightRadius: 32,
+    borderTopLeftRadius: 32,
+    // position: 'absolute',
+    // bottom: 0,
+    // left: 0,
+    // right: 0,
+    // overflow: 'hidden',
     // borderTopColor: Colors.orange,
     // borderTopWidth: 1,
   },
@@ -164,7 +171,7 @@ const styles = StyleSheet.create({
     height: 64,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.white,
+    // backgroundColor: Colors.white,
   },
   tabItem: {
     flex: 1,

@@ -1,4 +1,3 @@
-import {GradientBorderView} from '@good-react-native/gradient-border';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
 import ScreenName from 'constant/ScreenName';
 import {authActions} from 'features/auth/reducer';
@@ -6,9 +5,10 @@ import {useFormik} from 'formik';
 import useAppDispatch from 'hooks/useAppDispatch';
 import LottieView from 'lottie-react-native';
 import React from 'react';
-import {Text, TouchableHighlight, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {Input} from 'react-native-elements';
 import Toast from 'react-native-toast-message';
+import {GoogleSigninService} from 'services/google-signin.service';
 import Lottie from 'theme/Lottie';
 import * as Yup from 'yup';
 
@@ -43,8 +43,14 @@ const LoginScreen = ({navigation}: any) => {
               text1: 'Login successfully',
               visibilityTime: 1000,
             });
-            navigation.navigate(ScreenName.MainNavigator, {
-              screen: ScreenName.Home,
+            // navigation.navigate(ScreenName.MainNavigator, {
+            //   screen: ScreenName.Home,
+            // });
+            navigation.reset({
+              index: 0,
+              routes: [
+                {name: ScreenName.MainNavigator, screen: ScreenName.Home},
+              ],
             });
           },
           onFailure: (error: any) => {
@@ -178,12 +184,12 @@ const LoginScreen = ({navigation}: any) => {
             }}
           />
 
-          {/* <GradientBorderView
-            gradientProps={{
-              colors: isLoginPressed
-                ? ['transparent']
-                : ['#4c669f', '#3b5998', '#192f6a'],
-            }}
+          <View
+            // gradientProps={{
+            //   colors: isLoginPressed
+            //     ? ['transparent']
+            //     : ['#4c669f', '#3b5998', '#192f6a'],
+            // }}
             style={{
               width: '50%',
               height: _buttonHeight,
@@ -198,8 +204,6 @@ const LoginScreen = ({navigation}: any) => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              onPressIn={() => setIsLoginPressed(true)}
-              onPressOut={() => setIsLoginPressed(false)}
               onPress={() => {
                 formik.submitForm();
               }}>
@@ -211,13 +215,13 @@ const LoginScreen = ({navigation}: any) => {
                 Login
               </Text>
             </TouchableOpacity>
-          </GradientBorderView> */}
-
+          </View>
+          {/* 
           <TouchableOpacity
             onPress={formik.submitForm}
             className="border-b border-blue-700">
             <Text className="text-blue-700 text-lg font-semibold">Google</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <View className="flex-col items-center gap-8 mt-28">
@@ -227,7 +231,8 @@ const LoginScreen = ({navigation}: any) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate(ScreenName.LoginWithGoogle);
+                // navigation.navigate(ScreenName.LoginWithGoogle);
+                GoogleSigninService.signIn();
               }}
               className="border-b border-blue-700">
               <Text className="text-blue-700 text-lg font-semibold">

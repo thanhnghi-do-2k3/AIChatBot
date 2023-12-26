@@ -1,9 +1,16 @@
 import AppHeader from 'components/AppHeader';
 import React, {useEffect, useState} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import {WebView} from 'react-native-webview';
+import WebView from 'react-native-webview';
 import {prod} from 'services/http.service';
 import {reduxStorage} from 'store/store';
+
+export const injectJavascriptInitDimension = `
+const meta = document.createElement("meta");
+meta.setAttribute("content", "width=width, height=height, initial-scale=1, maximum-scale=1, user-scalable=2.0");
+meta.setAttribute("name", "viewport");
+document.getElementsByTagName("head")[0].appendChild(meta);
+`;
 
 const SubscriptionScreen = ({navigation}: any) => {
   const [localStorageScript, setLocalStorageScript] = useState('');
@@ -26,8 +33,10 @@ const SubscriptionScreen = ({navigation}: any) => {
             localStorage.setItem('jarvis_cx_app_token', '${token}');
             localStorage.setItem('jarvis_cx_app_refresh_token', '${refreshToken}');
             return true;
-          })();
+            })();
+          ${injectJavascriptInitDimension}
         `;
+
         setLocalStorageScript(script);
       }
     };
@@ -51,12 +60,14 @@ const SubscriptionScreen = ({navigation}: any) => {
         onPressLeftHeader={() => {
           navigation.goBack();
         }}
+        // paddingTop={0}
       />
       <WebView
+        style={styles.webview}
         ref={webViewRef}
-        webviewDebuggingEnabled
-        sharedCookiesEnabled
-        domStorageEnabled
+        // webviewDebuggingEnabled
+        // sharedCookiesEnabled
+        // domStorageEnabled
         source={{
           uri: prod
             ? 'https://admin.jarvis.cx/pricing/overview'
@@ -82,9 +93,13 @@ const SubscriptionScreen = ({navigation}: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // overflow: 'visible',
   },
   webview: {
+    borderTopRightRadius: 32,
+    borderTopLeftRadius: 32,
     flex: 1,
+    height: '100%',
   },
   loading: {
     flex: 1,

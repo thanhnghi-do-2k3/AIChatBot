@@ -64,11 +64,16 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
 
   return (
     <KeyboardAvoidingView
-      style={{flex: 1, backgroundColor: '#fff'}}
+      style={{
+        flex: 1,
+        backgroundColor: '#fff',
+        borderTopLeftRadius: 32,
+        borderTopRightRadius: 32,
+      }}
       behavior="padding"
       keyboardVerticalOffset={100}
       enabled>
-      <ScrollView style={{flex: 1, paddingTop: 16}}>
+      <ScrollView style={{flex: 1}}>
         <View style={styles.container}>
           <View style={{alignItems: 'center'}}>
             <View style={{gap: 8}}>
@@ -140,25 +145,13 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
                 flexDirection: 'column',
                 rowGap: 16,
               }}>
-              <Text
-                style={{
-                  fontFamily: 'InterDisplay',
-                  fontSize: 16,
-                }}>
-                Privacy & Terms
-              </Text>
+              <Text style={styles.text_account}>Privacy and Terms</Text>
               <View
                 style={{
                   rowGap: 12,
                 }}>
                 <TouchableOpacity onPress={() => {}} style={styles.button}>
-                  <Text
-                    style={{
-                      fontFamily: 'SFProRegular',
-                      fontSize: 14,
-                    }}>
-                    Terms of Services
-                  </Text>
+                  <Text style={styles.text_account}>Term of Service</Text>
                   <Icon
                     name="chevron-right"
                     type="font-awesome"
@@ -172,13 +165,7 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
                       alignItems: 'center',
                       columnGap: 8,
                     }}>
-                    <Text
-                      style={{
-                        fontFamily: 'SFProRegular',
-                        fontSize: 14,
-                      }}>
-                      Privacy Policy
-                    </Text>
+                    <Text style={styles.text_account}>Privacy Policy</Text>
                   </View>
                   <Icon
                     name="chevron-right"
@@ -193,13 +180,7 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
                 flexDirection: 'column',
                 rowGap: 16,
               }}>
-              <Text
-                style={{
-                  fontFamily: 'InterDisplay',
-                  fontSize: 16,
-                }}>
-                Account management
-              </Text>
+              <Text style={styles.text_account}>Account Management</Text>
               <View
                 style={{
                   rowGap: 12,
@@ -212,7 +193,7 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
                     paddingLeft: 18,
                     paddingRight: 18,
                     borderRadius: 16,
-                    backgroundColor: '#F8F8F9',
+                    backgroundColor: '#f5f6f7',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     flexDirection: 'row',
@@ -260,7 +241,7 @@ const styles = StyleSheet.create({
     paddingRight: 24,
     paddingLeft: 24,
     gap: 16,
-    backgroundColor: '#FFFFFF',
+    // backgroundColor: '#FFFFFF',
   },
   card: {
     position: 'absolute',
@@ -315,7 +296,7 @@ const styles = StyleSheet.create({
   // account
   text_account: {
     fontWeight: 500,
-    fontFamily: 'InterDisplay',
+    // fontFamily: 'InterDisplay',
     fontSize: 16,
     lineHeight: 20,
     textAlign: 'left',
@@ -327,7 +308,7 @@ const styles = StyleSheet.create({
     paddingLeft: 18,
     paddingRight: 18,
     borderRadius: 16,
-    backgroundColor: '#F8F8F9',
+    backgroundColor: '#f5f6f7',
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',

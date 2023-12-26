@@ -32,6 +32,9 @@ const ChatbotNavigation = () => {
       <Stack.Screen
         name={ScreenName.ChatbotDetailScreen}
         component={ChatbotDetailScreen}
+        options={{
+          gestureEnabled: false,
+        }}
       />
       <Stack.Screen
         name={ScreenName.ChatbotThreadChatScreen}

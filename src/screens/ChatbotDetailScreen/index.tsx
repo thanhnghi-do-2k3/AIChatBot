@@ -3,6 +3,7 @@ import {GlobalConfirmModalController} from 'components/GlobalConfirmModal';
 import {chatbotActions} from 'features/chatbot/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import useAppSelector from 'hooks/useAppSelector';
+import usePreventBackButton from 'hooks/usePreventBackButton';
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {Input} from 'react-native-elements';
@@ -23,6 +24,8 @@ const ChatbotDetailScreen: React.FC<Props> = ({navigation, route}) => {
     state => state.chatbotReducer.curThreadChat,
   );
   const [displayThreadChat, setDisplayThreadChat] = useState<any>([]);
+
+  usePreventBackButton();
 
   const onSendButtonPress = () => {
     setIsInputVisible(false);

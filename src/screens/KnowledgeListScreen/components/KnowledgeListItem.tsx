@@ -25,9 +25,10 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
           justifyContent: 'center',
           height: '100%',
           gap: 5,
+          marginRight: 20,
         }}>
         <TouchableOpacity
-          onPress={() => onDelete()}
+          // onPress={() => onDelete()}
           style={{
             backgroundColor: 'red',
             padding: 10,
@@ -35,7 +36,7 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
             alignItems: 'center',
             borderRadius: 5,
             width: 70,
-            height: '50%',
+            height: '100%',
           }}>
           <Icon name="trash" size={20} color="#fff" />
         </TouchableOpacity>
@@ -55,7 +56,7 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
             borderRadius: 5,
             alignItems: 'center',
             width: 70,
-            height: '50%',
+            height: '100%',
           }}>
           <Icon name="pen" size={20} color="#fff" />
         </TouchableOpacity>
@@ -73,8 +74,9 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
           alignItems: 'center',
           borderColor: 'transparent',
           width: '100%',
-          // paddingVertical: 15,
-          // paddingHorizontal: 20,
+          marginVertical: 5,
+          paddingHorizontal: 10,
+          overflow: 'hidden',
         },
       ]}>
       <View
@@ -83,15 +85,21 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingVertical: 20,
+            paddingVertical: 15,
             paddingHorizontal: 20,
-            borderWidth: 1,
-            borderColor: '#E0E0E0',
-            borderRadius: 20,
-            marginVertical: 5,
+            height: 100,
             width: '100%',
             alignSelf: 'center',
-            backgroundColor: '#fff',
+            backgroundColor: '#f6f5fb',
+            // shadowColor: '#000',
+            // shadowOffset: {
+            //   width: 0,
+            //   height: 2,
+            // },
+            // shadowOpacity: 0.25,
+            // shadowRadius: 3.84,
+            // elevation: 5,
+            borderRadius: 10,
           },
         ]}>
         <TouchableOpacity

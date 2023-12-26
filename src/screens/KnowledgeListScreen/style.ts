@@ -4,8 +4,8 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: 16,
-    justifyContent: 'space-between',
+    // padding: 16,
+    // justifyContent: 'space-between',
   },
   input: {
     width: '100%',

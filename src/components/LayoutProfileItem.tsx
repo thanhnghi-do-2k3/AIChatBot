@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     paddingHorizontal: 20,
     gap: 16,
-    backgroundColor: '#F8F8F9',
+    backgroundColor: '#f5f6f7',
   },
   title: {
     fontWeight: 500,

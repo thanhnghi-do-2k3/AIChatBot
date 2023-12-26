@@ -1,8 +1,8 @@
 import {kbActions} from 'features/KB/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import React, {useState} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
-import {Input} from 'react-native-elements';
+import {StyleSheet, Text, View} from 'react-native';
+import {Button, Input} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import Toast from 'react-native-toast-message';
 
@@ -54,6 +54,7 @@ const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
 
   return (
     <Modal
+      hideModalContentWhileAnimating
       isVisible={visible}
       onBackdropPress={onClose}
       onBackButtonPress={onClose}

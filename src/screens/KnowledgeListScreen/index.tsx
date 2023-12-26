@@ -5,14 +5,13 @@ import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   KeyboardAvoidingView,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {Input} from 'react-native-elements';
 import Toast from 'react-native-toast-message';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Colors} from 'theme';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Colors from 'theme/Colors';
 import CreateKnowledgeModal from './components/CreateKnowledgeModal';
 import KnowledgeListItem from './components/KnowledgeListItem';
 import {mockdata} from './mockdata';
@@ -46,8 +45,14 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
   return (
     <>
       <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior="padding"
+        style={{
+          flex: 1,
+          backgroundColor: '#fff',
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+          // paddingBottom: 100,
+        }}
+        // behavior="padding"
         keyboardVerticalOffset={100}
         enabled>
         <View style={styles.container}>
@@ -63,7 +68,8 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
             containerStyle={{
               width: '100%',
               padding: 0,
-              marginBottom: 20,
+              marginTop: 10,
+              // marginBottom: 20,
             }}
             leftIcon={{
               type: 'font-awesome',
@@ -77,11 +83,21 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
               borderWidth: 1,
               borderColor: '#c3c3c3',
               paddingHorizontal: 20,
-              paddingVertical: 5,
+              // paddingVertical: 5,
               backgroundColor: '#fff',
-              borderRadius: 20,
+              borderRadius: 999,
             }}
           />
+          <FlatList
+            style={{width: '100%', flex: 1, marginTop: 5}}
+            data={listChatbot}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item.name}
+            renderItem={({item, index}) => (
+              <KnowledgeListItem item={item} index={index} />
+            )}
+          />
+
           <TouchableOpacity
             onPress={() => {
               setIsModalVisible(true);
@@ -91,12 +107,17 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: Colors.primary,
-              paddingVertical: 12,
-              paddingHorizontal: 20,
-              borderRadius: 20,
+              // paddingVertical: 12,
+              // paddingHorizontal: 20,
+              position: 'absolute',
+              bottom: 20,
+              right: 20,
+              height: 60,
+              width: 60,
+              borderRadius: 999,
             }}>
             <Icon name="database" size={30} color="#fff" />
-            <Text
+            {/* <Text
               style={{
                 color: '#fff',
                 fontSize: 16,
@@ -104,19 +125,11 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
                 marginLeft: 10,
               }}>
               Create Knowledge
-            </Text>
+            </Text> */}
           </TouchableOpacity>
-          <FlatList
-            style={{marginTop: 20, width: '100%', flex: 1}}
-            data={listChatbot}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={item => item.name}
-            renderItem={({item, index}) => (
-              <KnowledgeListItem item={item} index={index} />
-            )}
-          />
         </View>
       </KeyboardAvoidingView>
+
       <CreateKnowledgeModal
         visible={isModalVisible}
         onClose={() => {

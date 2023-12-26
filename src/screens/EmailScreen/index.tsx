@@ -4,6 +4,7 @@ import useAppSelector from 'hooks/useAppSelector';
 import React, {useState} from 'react';
 import {
   Button,
+  KeyboardAvoidingView,
   Pressable,
   ScrollView,
   Text,
@@ -11,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {Input} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import Toast from 'react-native-toast-message';
 
@@ -114,16 +116,25 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
   };
 
   return (
-    <>
+    <KeyboardAvoidingView
+      style={{
+        flex: 1,
+        backgroundColor: '#fff',
+        borderTopLeftRadius: 32,
+        borderTopRightRadius: 32,
+      }}
+      behavior="padding"
+      keyboardVerticalOffset={100}
+      enabled>
       <ScrollView>
-        <View className="flex-1 p-4 bg-gray-100">
+        <View className="flex-1 p-4">
           <Text className="text-2xl font-bold mb-4">
             AI-Powered Email Reply
           </Text>
 
           {/* Email Content Input */}
           <Text className="text-lg font-medium mb-2">Enter Email Content:</Text>
-          <TextInput
+          <Input
             style={{height: 200}}
             className="border border-gray-300 rounded-lg p-3 bg-white mb-4"
             multiline
@@ -261,7 +272,7 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
           </View>
         </View>
       </Modal>
-    </>
+    </KeyboardAvoidingView>
   );
 };
 

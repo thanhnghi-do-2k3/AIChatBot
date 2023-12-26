@@ -21,6 +21,8 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
   const thisSwipeable = React.useRef(null);
 
   const onDelete = () => {
+    // @ts-ignore
+    thisSwipeable?.current?.close();
     GlobalConfirmModalController.show({
       header: 'Delete chatbot',
       message: 'Are you sure you want to delete this chatbot?',
@@ -62,6 +64,7 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           justifyContent: 'center',
           height: '100%',
           gap: 5,
+          marginRight: 20,
         }}>
         <TouchableOpacity
           onPress={() => onDelete()}
@@ -109,6 +112,7 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           justifyContent: 'center',
           height: '100%',
           gap: 5,
+          marginLeft: 20,
         }}>
         <TouchableOpacity
           onPress={() => onDelete()}
@@ -150,7 +154,8 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           borderColor: 'transparent',
           width: '100%',
           marginVertical: 5,
-          marginHorizontal: 5,
+          paddingHorizontal: 10,
+          overflow: 'hidden',
         },
       ]}>
       <View
@@ -163,15 +168,16 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           height: 100,
           width: '100%',
           alignSelf: 'center',
-          backgroundColor: '#fff',
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
+          backgroundColor: '#f6f5fb',
+          // shadowColor: '#000',
+          // shadowOffset: {
+          //   width: 0,
+          //   height: 2,
+          // },
+          // shadowOpacity: 0.25,
+          // shadowRadius: 3.84,
+          // elevation: 5,
+          borderRadius: 10,
         }}>
         <TouchableOpacity
           onPress={() => {
@@ -202,9 +208,9 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
             <View>
               <Text
                 style={{
-                  color: 'black',
+                  color: '#082745',
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontWeight: '700',
                   marginLeft: 10,
                   marginBottom: 5,
                 }}>
@@ -214,7 +220,7 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
                 numberOfLines={2}
                 ellipsizeMode="tail"
                 style={{
-                  color: '#BDBDBD',
+                  color: '#2A4569',
                   fontSize: 14,
                   fontWeight: '600',
                   marginLeft: 10,
@@ -238,13 +244,13 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           </TouchableOpacity>
         </TouchableOpacity>
       </View>
-      <View
+      {/* <View
         style={{
           height: 2,
           width: '100%',
           backgroundColor: '#ccc',
           alignSelf: 'flex-end',
-        }}></View>
+        }}></View> */}
     </ReanimatedSwipeable>
   );
 };

@@ -3,15 +3,12 @@ import {chatbotActions} from 'features/chatbot/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import useAppSelector from 'hooks/useAppSelector';
 import React, {useEffect, useState} from 'react';
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {KeyboardAvoidingView, TouchableOpacity, View} from 'react-native';
 import {Input} from 'react-native-elements';
+import Animated from 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Colors from 'theme/Colors';
 import ChatBotListItem from './components/ChatBotListItem';
 import {styles} from './style';
 
@@ -51,7 +48,13 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
   return (
     <>
       <KeyboardAvoidingView
-        style={{flex: 1}}
+        style={{
+          flex: 1,
+          backgroundColor: '#fff',
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+          // paddingBottom: 80,
+        }}
         behavior="padding"
         keyboardVerticalOffset={100}
         enabled>
@@ -62,7 +65,7 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
-              marginTop: 20,
+              // marginTop: 20,
             }}>
             <Input
               errorStyle={{
@@ -70,9 +73,10 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
                 margin: 0,
               }}
               containerStyle={{
-                width: '70%',
+                width: '100%',
                 padding: 0,
                 margin: 0,
+                marginTop: 10,
               }}
               placeholder="Search chatbot"
               placeholderTextColor={'#BDBDBD'}
@@ -90,35 +94,14 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
                 borderWidth: 1,
                 borderColor: '#c3c3c3',
                 paddingHorizontal: 20,
-                paddingVertical: 5,
+                // paddingVertical: 5,
                 backgroundColor: '#fff',
-                borderRadius: 20,
+                borderRadius: 999,
               }}
             />
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate(ScreenName.CreateBotTab);
-              }}
-              style={{
-                flexDirection: 'row',
-                backgroundColor: '#73b9eecc',
-                paddingVertical: 17,
-                paddingHorizontal: 20,
-                borderRadius: 10,
-              }}>
-              <Icon
-                name="plus"
-                size={20}
-                color="#000000aa"
-                style={{
-                  marginRight: 5,
-                }}
-              />
-              <Icon name="robot" size={20} color="#000000aa" />
-            </TouchableOpacity>
           </View>
-          <FlatList
-            style={{width: '100%', flex: 1, marginTop: 20}}
+          <Animated.FlatList
+            style={{width: '100%', flex: 1, marginTop: 5}}
             contentContainerStyle={{
               paddingBottom: 20,
               alignItems: 'center',
@@ -130,6 +113,35 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
               <ChatBotListItem item={item} index={index} />
             )}
           />
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ScreenName.CreateBotTab);
+            }}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: Colors.primary,
+              // paddingVertical: 12,
+              // paddingHorizontal: 20,
+              position: 'absolute',
+              bottom: 20,
+              right: 20,
+              height: 60,
+              width: 60,
+              borderRadius: 999,
+            }}>
+            {/* <Icon
+              name="plus"
+              size={20}
+              color="#000000aa"
+              style={{
+                marginRight: 5,
+              }}
+            /> */}
+            <Icon name="robot" size={20} color="#fff" />
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </>

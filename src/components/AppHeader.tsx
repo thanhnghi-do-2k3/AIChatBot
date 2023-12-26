@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {
-  Image,
   Pressable,
   SafeAreaView,
   StatusBar,
@@ -11,6 +10,7 @@ import {
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import {isIOS} from 'util/device';
+import ImageView from './ImageView';
 
 interface Props {
   headerTitle?: string;
@@ -44,7 +44,7 @@ const AppHeader: React.FC<Props> = (props): React.ReactElement => {
         styles.container,
         {
           marginTop: standalone ? StatusBar.currentHeight : undefined,
-          marginBottom: standalone ? undefined : 8,
+          marginBottom: standalone ? undefined : 10,
         },
       ]}>
       <View
@@ -74,9 +74,11 @@ const AppHeader: React.FC<Props> = (props): React.ReactElement => {
         </Pressable>
 
         {headerImageSrc ? (
-          <Image
-            source={headerImageSrc}
-            style={{width: 40, height: 40, borderRadius: 8}}
+          <ImageView
+            src={headerImageSrc}
+            resizeMode="stretch"
+            style={{borderRadius: 10, width: 50, height: 50}}
+            // style={{width: 40, height: 40, borderRadius: 8}}
           />
         ) : (
           <Text style={styles.headerTitle}>{headerTitle}</Text>
@@ -140,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppHeader;
+export default memo(AppHeader);
