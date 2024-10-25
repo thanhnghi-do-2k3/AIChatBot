@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {View, Animated, FlatList, PanResponder} from 'react-native';
-import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
+import {TextInput, TouchableOpacity} from 'react-native';
 import {Text} from 'react-native';
 import ScreenName from 'constant/ScreenName';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
