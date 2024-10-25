@@ -50,6 +50,7 @@ const DefaultContent = ({
       style={[
         // Gutter.smallHPadding,
         Layout.center,
+        Layout.row,
         style,
         styles.container,
       ]}>
@@ -57,8 +58,7 @@ const DefaultContent = ({
         {renderBackBtn()}
       </View>
       <View style={[styles.headerTitle, Layout.alignItemsCenter]}>
-        <Text style={[styles.defaultTitle, titleStyle]}>Haha</Text>
-        <Text>Haha</Text>
+        <Text style={[styles.defaultTitle, titleStyle]}>{title}</Text>
       </View>
       <View style={[Layout.alignItemsEnd, styles.sideItem]}>
         {leftComponent}
@@ -71,13 +71,11 @@ export default DefaultContent;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 12,
-    borderBottomColor: Colors.warning,
-    borderBottomWidth: 1,
+    paddingVertical: 12,
   },
   defaultTitle: {
     fontWeight: '600',
-    fontSize: FontSizeTemplate.large,
+    fontSize: FontSizeTemplate.biggest,
     color: Colors.black,
   },
   sideItem: {flex: 1},

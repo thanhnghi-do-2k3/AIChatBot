@@ -9,7 +9,6 @@ const AppNavigationRef = React.createRef() as any;
 
 const ApplicationNavigator = () => {
   const routeNameRef = useRef() as any;
-  console.log('ApplicationNavigator loaded');
   return (
     <NavigationContainer
       ref={AppNavigationRef}
