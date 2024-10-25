@@ -11,6 +11,7 @@ const ScreenName = {
   ChatbotListScreen: 'ChatbotListScreen',
   KnowlegdeListScreen: 'KnowlegdeListScreen',
   ProfileScreen: 'ProfileScreen',
+  KnowledgeDetailScreen: 'KnowledgeDetailScreen',
 
   // Navigation
   AuthNavigator: 'AuthNavigator',
