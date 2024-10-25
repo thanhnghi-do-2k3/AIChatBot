@@ -12,9 +12,9 @@ import {Colors, FontSize, Layout, Gutter} from 'theme';
 import {FontSizeTemplate} from 'theme/FontSize';
 import {Text} from 'react-native';
 // @ts-ignore
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-interface DefaultContentProps {
+interface HeaderProps {
   title?: string;
   style?: StyleProp<ViewStyle>;
   leftComponent?: React.ReactNode;
@@ -23,14 +23,14 @@ interface DefaultContentProps {
   onBackPress?: () => void;
 }
 
-const DefaultContent = ({
+const Header = ({
   title,
   style,
   leftComponent,
   leftArrowColor,
   titleStyle,
   onBackPress,
-}: DefaultContentProps) => {
+}: HeaderProps) => {
   const {canGoBack, goBack} = useNavigation();
 
   const handleGoBack = () => {
@@ -47,7 +47,7 @@ const DefaultContent = ({
         {/* <Text style={{color: leftArrowColor ?? '#BDBDBD', fontSize: 30}}>
           x
         </Text> */}
-        <Icon name="times" size={25} color={leftArrowColor ?? '#BDBDBD'} />
+        <Icon name="angle-left" size={30} color={leftArrowColor ?? '#BDBDBD'} />
       </TouchableOpacity>
     ) : null;
 
@@ -61,7 +61,7 @@ const DefaultContent = ({
         styles.container,
       ]}>
       <View style={[Layout.alignItemsStart, styles.sideItem]}>
-        {renderBackBtn()}
+        {/* {renderBackBtn()} */}
       </View>
       <View style={[styles.headerTitle, Layout.alignItemsCenter]}>
         <Text style={[styles.defaultTitle, titleStyle]}>{title}</Text>
@@ -73,7 +73,7 @@ const DefaultContent = ({
   );
 };
 
-export default DefaultContent;
+export default Header;
 
 const styles = StyleSheet.create({
   container: {
