@@ -37,7 +37,10 @@ const LoginScreen = ({navigation}: any) => {
         <TouchableOpacity
           style={styles.loginButton}
           onPress={() => {
-            navigation.navigate(ScreenName.Register);
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'Main'}],
+            });
           }}>
           <Text
             style={{
