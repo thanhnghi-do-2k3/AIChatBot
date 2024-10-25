@@ -11,6 +11,12 @@ const ScreenName = {
   ChatbotListScreen: 'ChatbotListScreen',
   KnowlegdeListScreen: 'KnowlegdeListScreen',
   ProfileScreen: 'ProfileScreen',
+
+  // Navigation
+  AuthNavigator: 'AuthNavigator',
+  MainNavigator: 'MainNavigator',
+  ChatbotNavigator: 'ChatbotNavigator',
+  KnowledgeNavigator: 'KnowledgeNavigator',
 };
 
 export default ScreenName;

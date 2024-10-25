@@ -147,7 +147,11 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
 
   return (
     <NAvoidKeyboardScreen>
-      <Header title="Knowledge" titleStyle={{color: 'black'}} />
+      <Header
+        title="Knowledge"
+        titleStyle={{color: 'black'}}
+        allowGoBack={false}
+      />
       <View style={styles.container}>
         <Input
           placeholder="Search knowledge"

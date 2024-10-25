@@ -10,12 +10,14 @@ import {Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Colors} from 'theme';
 import {mockdata} from './mockdata';
+import CreateChatBotModal from './components/CreateChatBotModal';
 
 interface Props {}
 
 const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
   const [botName, setBotName] = useState('');
   const [data, setData] = useState(mockdata);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleDeleteItem = (id: string) => {
     setData(prevData => prevData.filter(item => item.chatbotName !== id));
@@ -134,60 +136,73 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
   };
 
   return (
-    <NAvoidKeyboardScreen>
-      <Header title="Chatbots list" titleStyle={{color: 'black'}} />
-      <View style={styles.container}>
-        <Input
-          placeholder="Search chatbot"
-          placeholderTextColor={'#BDBDBD'}
-          value={botName}
-          onChangeText={setBotName}
-          leftIcon={{
-            type: 'font-awesome',
-            name: 'search',
-            color: '#BDBDBD',
-          }}
-          inputStyle={{
-            marginLeft: 10,
-          }}
-          inputContainerStyle={{
-            borderBottomWidth: 0,
-            paddingHorizontal: 20,
-            paddingVertical: 5,
-            backgroundColor: '#F5F5F5',
-            borderRadius: 20,
-          }}
+    <>
+      <NAvoidKeyboardScreen>
+        <Header
+          title="Chatbots list"
+          titleStyle={{color: 'black'}}
+          allowGoBack={false}
         />
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: Colors.primary,
-            paddingVertical: 12,
-            paddingHorizontal: 20,
-            borderRadius: 20,
-          }}>
-          <Icon name="robot" size={30} color="#fff" />
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 16,
-              fontWeight: '600',
+        <View style={styles.container}>
+          <Input
+            placeholder="Search chatbot"
+            placeholderTextColor={'#BDBDBD'}
+            value={botName}
+            onChangeText={setBotName}
+            leftIcon={{
+              type: 'font-awesome',
+              name: 'search',
+              color: '#BDBDBD',
+            }}
+            inputStyle={{
               marginLeft: 10,
+            }}
+            inputContainerStyle={{
+              borderBottomWidth: 0,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              backgroundColor: '#F5F5F5',
+              borderRadius: 20,
+            }}
+          />
+          <TouchableOpacity
+            onPress={() => setIsModalVisible(true)}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: Colors.primary,
+              paddingVertical: 12,
+              paddingHorizontal: 20,
+              borderRadius: 20,
             }}>
-            Create Chat Bot
-          </Text>
-        </TouchableOpacity>
-        <FlatList
-          style={{marginTop: 20, width: '100%', flex: 1}}
-          data={data}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.chatbotName}
-          renderItem={renderItem}
-        />
-      </View>
-    </NAvoidKeyboardScreen>
+            <Icon name="robot" size={30} color="#fff" />
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 16,
+                fontWeight: '600',
+                marginLeft: 10,
+              }}>
+              Create Chat Bot
+            </Text>
+          </TouchableOpacity>
+          <FlatList
+            style={{marginTop: 20, width: '100%', flex: 1}}
+            data={data}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item.chatbotName}
+            renderItem={renderItem}
+          />
+        </View>
+      </NAvoidKeyboardScreen>
+      <CreateChatBotModal
+        visible={isModalVisible}
+        onClose={() => {
+          setIsModalVisible(false);
+        }}
+      />
+    </>
   );
 };
 

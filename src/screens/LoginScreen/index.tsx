@@ -39,7 +39,7 @@ const LoginScreen = ({navigation}: any) => {
           onPress={() => {
             navigation.reset({
               index: 0,
-              routes: [{name: 'Main'}],
+              routes: [{name: ScreenName.MainNavigator}],
             });
           }}>
           <Text

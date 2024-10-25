@@ -21,6 +21,7 @@ interface HeaderProps {
   leftArrowColor?: string;
   titleStyle?: StyleProp<TextStyle>;
   onBackPress?: () => void;
+  allowGoBack?: boolean;
 }
 
 const Header = ({
@@ -30,6 +31,7 @@ const Header = ({
   leftArrowColor,
   titleStyle,
   onBackPress,
+  allowGoBack,
 }: HeaderProps) => {
   const {canGoBack, goBack} = useNavigation();
 
@@ -39,7 +41,7 @@ const Header = ({
   };
 
   const renderBackBtn = () =>
-    canGoBack() ? (
+    canGoBack() && allowGoBack ? (
       <TouchableOpacity
         onPress={handleGoBack}
         style={{marginLeft: 20, alignItems: 'center', justifyContent: 'center'}}
@@ -61,7 +63,7 @@ const Header = ({
         styles.container,
       ]}>
       <View style={[Layout.alignItemsStart, styles.sideItem]}>
-        {/* {renderBackBtn()} */}
+        {renderBackBtn()}
       </View>
       <View style={[styles.headerTitle, Layout.alignItemsCenter]}>
         <Text style={[styles.defaultTitle, titleStyle]}>{title}</Text>

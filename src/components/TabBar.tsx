@@ -17,6 +17,8 @@ import {Colors} from 'theme';
 const TabBar = ({state, navigation}: any) => {
   const insets = useSafeAreaInsets();
 
+  console.log('state', state);
+
   const hideTabBar = state.routes[state.index].state?.index > 0;
 
   const selectedTextAnim = useRef(new Animated.Value(0)).current;
@@ -40,7 +42,7 @@ const TabBar = ({state, navigation}: any) => {
 
   const renderIcon = (route: any, isFocused: boolean) => {
     switch (route.name) {
-      case ScreenName.ChatbotListScreen:
+      case ScreenName.ChatbotNavigator:
         return (
           <Icon
             name="robot"
@@ -48,7 +50,7 @@ const TabBar = ({state, navigation}: any) => {
             color={isFocused ? Colors.primary : Colors.black}
           />
         );
-      case ScreenName.KnowlegdeListScreen:
+      case ScreenName.KnowledgeNavigator:
         return isFocused ? (
           <Icon name="book-open" size={24} color={Colors.primary} />
         ) : (
@@ -67,9 +69,9 @@ const TabBar = ({state, navigation}: any) => {
 
   const getLabel = (name: string) => {
     switch (name) {
-      case ScreenName.ChatbotListScreen:
+      case ScreenName.ChatbotNavigator:
         return 'Chatbots';
-      case ScreenName.KnowlegdeListScreen:
+      case ScreenName.KnowledgeNavigator:
         return 'Knowledge';
       case ScreenName.ProfileScreen:
         return 'Profile';

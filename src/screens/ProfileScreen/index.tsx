@@ -19,7 +19,11 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
 
   return (
     <NAvoidKeyboardScreen>
-      <Header title="Profile" titleStyle={{color: 'black'}} />
+      <Header
+        title="Profile"
+        titleStyle={{color: 'black'}}
+        allowGoBack={false}
+      />
       <View style={styles.container}>
         <View
           style={{
@@ -41,7 +45,9 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
             onPress={() => {
               AppNavigationRef.current?.reset({
                 index: 0,
-                routes: [{name: 'Auth', screen: ScreenName.Login}],
+                routes: [
+                  {name: ScreenName.AuthNavigator, screen: ScreenName.Login},
+                ],
               });
             }}>
             <Text

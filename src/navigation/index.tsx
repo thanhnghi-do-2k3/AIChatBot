@@ -4,11 +4,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import AuthNavigator from './auth';
 import MainNavigation from './main';
+import ScreenName from 'constant/ScreenName';
 
 const Stack = createStackNavigator<any>();
 export const AppNavigationRef = React.createRef() as any;
-
-LogBox.ignoreLogs([]);
 
 const ApplicationNavigator = () => {
   const routeNameRef = useRef() as any;
@@ -30,10 +29,16 @@ const ApplicationNavigator = () => {
         routeNameRef.current = currentRouteName;
       }}>
       <Stack.Navigator
-        initialRouteName="Auth"
+        initialRouteName={ScreenName.AuthNavigator}
         screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Auth" component={AuthNavigator} />
-        <Stack.Screen name="Main" component={MainNavigation} />
+        <Stack.Screen
+          name={ScreenName.AuthNavigator}
+          component={AuthNavigator}
+        />
+        <Stack.Screen
+          name={ScreenName.MainNavigator}
+          component={MainNavigation}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
