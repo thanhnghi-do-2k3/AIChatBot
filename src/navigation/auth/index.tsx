@@ -2,6 +2,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {ScreenName} from '../../constants';
 import LoginScreen from 'screens/LoginScreen';
 import RegisterScreen from 'screens/RegisterScreen';
+import LoginWithGoogleScreen from 'screens/LoginWithGoogleScreen';
 
 const Stack = createStackNavigator<any>();
 
@@ -12,6 +13,10 @@ const AuthNavigator = () => {
       screenOptions={{headerShown: false}}>
       <Stack.Screen name={ScreenName.Login} component={LoginScreen} />
       <Stack.Screen name={ScreenName.Register} component={RegisterScreen} />
+      <Stack.Screen
+        name={ScreenName.LoginWithGoogle}
+        component={LoginWithGoogleScreen}
+      />
     </Stack.Navigator>
   );
 };

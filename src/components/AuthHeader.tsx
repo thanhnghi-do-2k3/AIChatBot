@@ -40,8 +40,11 @@ const DefaultContent = ({
     canGoBack() ? (
       <TouchableOpacity
         onPress={handleGoBack}
+        style={{marginLeft: 20, alignItems: 'center', justifyContent: 'center'}}
         hitSlop={{top: 15, left: 15, right: 15, bottom: 15}}>
-        x
+        <Text style={{color: leftArrowColor ?? '#BDBDBD', fontSize: 30}}>
+          x
+        </Text>
       </TouchableOpacity>
     ) : null;
 
