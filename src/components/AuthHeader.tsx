@@ -6,11 +6,11 @@ import {
   TextStyle,
   TouchableOpacity,
   View,
-  Text,
   ViewStyle,
 } from 'react-native';
 import {Colors, FontSize, Layout, Gutter} from 'theme';
 import {FontSizeTemplate} from 'theme/FontSize';
+import {Text} from 'react-native';
 
 interface DefaultContentProps {
   title?: string;
@@ -57,11 +57,8 @@ const DefaultContent = ({
         {renderBackBtn()}
       </View>
       <View style={[styles.headerTitle, Layout.alignItemsCenter]}>
-        <Text
-          numberOfLines={1}
-          style={[styles.defaultTitle, FontSize.textBold, titleStyle]}>
-          {title}
-        </Text>
+        <Text style={[styles.defaultTitle, titleStyle]}>Haha</Text>
+        <Text>Haha</Text>
       </View>
       <View style={[Layout.alignItemsEnd, styles.sideItem]}>
         {leftComponent}
