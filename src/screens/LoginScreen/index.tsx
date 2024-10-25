@@ -78,6 +78,9 @@ const LoginScreen = ({navigation}: any) => {
           </View>
           <View style={[Layout.row]}>
             <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ScreenName.ChangePasswordScreen);
+              }}
               style={{borderBottomColor: '#264FD3', borderBottomWidth: 1}}>
               <Text style={[styles.promptText]}>Forgot your password?</Text>
             </TouchableOpacity>

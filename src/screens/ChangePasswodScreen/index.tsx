@@ -15,45 +15,42 @@ interface Props {
   // Define your component's props here
 }
 
-const RegisterScreen: React.FC<Props> = ({navigation}: any) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const ChangePasswordScreen: React.FC<Props> = ({navigation}: any) => {
+  const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <NAvoidKeyboardScreen>
-      <AuthHeader title="Sign Up" titleStyle={{color: 'black'}} />
+      <AuthHeader title="Change password" titleStyle={{color: 'black'}} />
       <View style={styles.container}>
-        <View style={{width: '100%'}}>
+        <View
+          style={{
+            width: '100%',
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
           <TextInput
             style={styles.input}
-            placeholder="Name"
+            placeholder="Enter your new passwrod"
             placeholderTextColor={'#BDBDBD'}
-            value={name}
-            onChangeText={setName}
+            value={newPassword}
+            onChangeText={setNewPassword}
           />
           <TextInput
             style={styles.input}
-            placeholder="Email"
-            placeholderTextColor={'#BDBDBD'}
-            value={email}
-            onChangeText={setEmail}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor={'#BDBDBD'}
-            value={password}
-            onChangeText={setPassword}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm password"
+            placeholder="Confirm new password"
             placeholderTextColor={'#BDBDBD'}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
           />
+        </View>
+
+        <View
+          style={{
+            marginBottom: 50,
+            width: '100%',
+          }}>
           <TouchableOpacity
             style={styles.loginButton}
             onPress={() => {
@@ -68,29 +65,13 @@ const RegisterScreen: React.FC<Props> = ({navigation}: any) => {
                 fontSize: 16,
                 fontWeight: '600',
               }}>
-              Sign Up
+              Reset password
             </Text>
           </TouchableOpacity>
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 30,
-            marginBottom: 50,
-          }}>
-          <View style={[Layout.row]}>
-            <Text style={styles.promptText}>Or continue with </Text>
-            <TouchableOpacity
-              style={{borderBottomColor: '#264FD3', borderBottomWidth: 1}}>
-              <Text style={[styles.promptText]}>Google</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     </NAvoidKeyboardScreen>
   );
 };
 
-export default RegisterScreen;
+export default ChangePasswordScreen;

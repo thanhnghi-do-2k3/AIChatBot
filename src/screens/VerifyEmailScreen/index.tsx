@@ -15,12 +15,12 @@ interface Props {
   // Define your component's props here
 }
 
-const LoginWithGoogleScreen: React.FC<Props> = ({navigation}: any) => {
+const VerifyEmailScreen: React.FC<Props> = ({navigation}: any) => {
   const [gmail, setGmail] = useState('');
 
   return (
     <NAvoidKeyboardScreen>
-      <AuthHeader title="Login with Google" titleStyle={{color: 'black'}} />
+      <AuthHeader title="Verify Email" titleStyle={{color: 'black'}} />
       <View style={styles.container}>
         <View
           style={{
@@ -31,7 +31,7 @@ const LoginWithGoogleScreen: React.FC<Props> = ({navigation}: any) => {
           }}>
           <TextInput
             style={styles.input}
-            placeholder="Enter your Gmail"
+            placeholder="Enter verify code sent to your Gmail"
             placeholderTextColor={'#BDBDBD'}
             value={gmail}
             onChangeText={setGmail}
@@ -40,14 +40,16 @@ const LoginWithGoogleScreen: React.FC<Props> = ({navigation}: any) => {
 
         <View
           style={{
-            // alignItems: 'center',
             marginBottom: 50,
             width: '100%',
           }}>
           <TouchableOpacity
             style={styles.loginButton}
             onPress={() => {
-              navigation.navigate(ScreenName.VerifyEmailScreen);
+              navigation.reset({
+                index: 0,
+                routes: [{name: ScreenName.Login}],
+              });
             }}>
             <Text
               style={{
@@ -55,13 +57,22 @@ const LoginWithGoogleScreen: React.FC<Props> = ({navigation}: any) => {
                 fontSize: 16,
                 fontWeight: '600',
               }}>
-              Send verify code
+              Verify
             </Text>
           </TouchableOpacity>
+
+          <View style={[Layout.row, {alignSelf: 'center', marginTop: 20}]}>
+            <Text style={styles.promptText}>Have not received code? </Text>
+            <TouchableOpacity
+              onPress={() => {}}
+              style={{borderBottomColor: '#264FD3', borderBottomWidth: 1}}>
+              <Text style={[styles.promptText]}>Send again</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </NAvoidKeyboardScreen>
   );
 };
 
-export default LoginWithGoogleScreen;
+export default VerifyEmailScreen;
