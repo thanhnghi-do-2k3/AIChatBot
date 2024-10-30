@@ -4,6 +4,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import useDimensions from 'hooks/useDimension';
 import {Colors, Layout} from 'theme';
+import {View} from 'react-native';
 
 interface ScreenProps {
   children: React.ReactNode;
@@ -14,7 +15,7 @@ interface ScreenProps {
 
 const NAvoidKeyboardScreen = ({
   children,
-  scrollEnabled = false,
+  scrollEnabled = true,
   containerStyle,
   colorBg,
 }: ScreenProps) => {
@@ -23,8 +24,15 @@ const NAvoidKeyboardScreen = ({
       style={[Layout.fill, colorBg && {backgroundColor: colorBg}]}
       edges={['top']}>
       <KeyboardAwareScrollView
+        bounces={false}
+        showsVerticalScrollIndicator={false}
         scrollEnabled={scrollEnabled}
-        contentContainerStyle={[styles.container, Layout.fill, containerStyle]}>
+        style={[Layout.fill, colorBg && {backgroundColor: colorBg}]}
+        contentContainerStyle={[
+          {flexGrow: 1},
+          styles.container,
+          containerStyle,
+        ]}>
         {children}
       </KeyboardAwareScrollView>
     </SafeAreaView>
