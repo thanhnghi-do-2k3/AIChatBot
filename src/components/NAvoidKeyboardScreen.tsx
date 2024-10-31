@@ -1,5 +1,10 @@
 import * as React from 'react';
-import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import useDimensions from 'hooks/useDimension';
@@ -15,7 +20,7 @@ interface ScreenProps {
 
 const NAvoidKeyboardScreen = ({
   children,
-  scrollEnabled = true,
+  scrollEnabled = false,
   containerStyle,
   colorBg,
 }: ScreenProps) => {
@@ -23,18 +28,30 @@ const NAvoidKeyboardScreen = ({
     <SafeAreaView
       style={[Layout.fill, colorBg && {backgroundColor: colorBg}]}
       edges={['top']}>
-      <KeyboardAwareScrollView
-        bounces={false}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={scrollEnabled}
-        style={[Layout.fill, colorBg && {backgroundColor: colorBg}]}
-        contentContainerStyle={[
-          {flexGrow: 1},
-          styles.container,
-          containerStyle,
-        ]}>
-        {children}
-      </KeyboardAwareScrollView>
+      {scrollEnabled ? (
+        <KeyboardAwareScrollView
+          bounces={false}
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={scrollEnabled}
+          style={[colorBg && {backgroundColor: colorBg}]}
+          contentContainerStyle={[
+            {flexGrow: 1},
+            styles.container,
+            containerStyle,
+          ]}>
+          {children}
+        </KeyboardAwareScrollView>
+      ) : (
+        <KeyboardAvoidingView
+          style={[{flex: 1}, colorBg && {backgroundColor: colorBg}]}
+          contentContainerStyle={[
+            {flexGrow: 1},
+            styles.container,
+            containerStyle,
+          ]}>
+          {children}
+        </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };

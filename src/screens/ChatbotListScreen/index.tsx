@@ -185,7 +185,7 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
                 marginLeft: 10,
               }}>
               Create Chat Bot
-            </Text>
+          </Text>
           </TouchableOpacity>
           <FlatList
             style={{marginTop: 20, width: '100%', flex: 1}}

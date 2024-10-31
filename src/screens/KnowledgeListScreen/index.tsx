@@ -38,7 +38,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
         swiping.current = true;
       },
       onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx > 50) {
+        if (gestureState.dx > 50 && gestureState.dy < 10) {
           Animated.parallel([
             Animated.timing(translateX, {
               toValue: 500,
