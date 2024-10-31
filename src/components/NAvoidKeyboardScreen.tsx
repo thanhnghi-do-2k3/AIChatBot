@@ -7,9 +7,7 @@ import {
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import useDimensions from 'hooks/useDimension';
-import {Colors, Layout} from 'theme';
-import {View} from 'react-native';
+import {Colors} from 'theme';
 
 interface ScreenProps {
   children: React.ReactNode;
@@ -26,7 +24,8 @@ const NAvoidKeyboardScreen = ({
 }: ScreenProps) => {
   return (
     <SafeAreaView
-      style={[Layout.fill, colorBg && {backgroundColor: colorBg}]}
+      className="flex-1"
+      style={[styles.container, colorBg && {backgroundColor: colorBg}]}
       edges={['top']}>
       {scrollEnabled ? (
         <KeyboardAwareScrollView

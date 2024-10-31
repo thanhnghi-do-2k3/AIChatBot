@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Text} from 'react-native';
 import ScreenName from 'constant/ScreenName';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';

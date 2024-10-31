@@ -8,8 +8,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {Colors, FontSize, Layout, Gutter} from 'theme';
-import {FontSizeTemplate} from 'theme/FontSize';
+import {Colors} from 'theme';
 import {Text} from 'react-native';
 // @ts-ignore
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -55,20 +54,26 @@ const Header = ({
 
   return (
     <View
+      className='row items-center justify-center'
       style={[
-        // Gutter.smallHPadding,
-        Layout.center,
-        Layout.row,
         style,
         styles.container,
       ]}>
-      <View style={[Layout.alignItemsStart, styles.sideItem]}>
+      <View
+        className='row items-start'
+       style={styles.sideItem}>
         {renderBackBtn()}
       </View>
-      <View style={[styles.headerTitle, Layout.alignItemsCenter]}>
-        <Text style={[styles.defaultTitle, titleStyle]}>{title}</Text>
+      <View
+        className='row items-center'
+       style={[styles.headerTitle]}>
+        <Text
+        className='font-semibold font-large text-black'
+        style={titleStyle}>{title}</Text>
       </View>
-      <View style={[Layout.alignItemsEnd, styles.sideItem]}>
+      <View
+        className='row items-end'
+      style={styles.sideItem}>
         {leftComponent}
       </View>
     </View>
@@ -80,11 +85,6 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 12,
-  },
-  defaultTitle: {
-    fontWeight: '600',
-    fontSize: FontSizeTemplate.biggest,
-    color: Colors.black,
   },
   sideItem: {flex: 1},
   headerTitle: {flex: 8},
