@@ -13,7 +13,7 @@ const LoginScreen = ({navigation}: any) => {
   const [password, setPassword] = useState('');
 
   return (
-    <NAvoidKeyboardScreen>
+    <NAvoidKeyboardScreen scrollEnabled={true}>
       <AuthHeader title="Login" titleStyle={{color: 'black'}} />
       <View style={styles.container}>
         <FastImage
