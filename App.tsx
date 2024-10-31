@@ -4,8 +4,12 @@
  *
  * @format
  */
+import './global.css';
 import ApplicationNavigator from 'navigation/index';
 import React from 'react';
+import {LogBox} from 'react-native';
+
+LogBox.ignoreAllLogs();
 
 function App(): React.JSX.Element {
   return <ApplicationNavigator />;

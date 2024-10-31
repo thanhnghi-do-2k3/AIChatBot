@@ -12,25 +12,27 @@ import {Colors, FontSize, Layout, Gutter} from 'theme';
 import {FontSizeTemplate} from 'theme/FontSize';
 import {Text} from 'react-native';
 // @ts-ignore
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-interface DefaultContentProps {
+interface HeaderProps {
   title?: string;
   style?: StyleProp<ViewStyle>;
   leftComponent?: React.ReactNode;
   leftArrowColor?: string;
   titleStyle?: StyleProp<TextStyle>;
   onBackPress?: () => void;
+  allowGoBack?: boolean;
 }
 
-const DefaultContent = ({
+const Header = ({
   title,
   style,
   leftComponent,
   leftArrowColor,
   titleStyle,
   onBackPress,
-}: DefaultContentProps) => {
+  allowGoBack,
+}: HeaderProps) => {
   const {canGoBack, goBack} = useNavigation();
 
   const handleGoBack = () => {
@@ -39,7 +41,7 @@ const DefaultContent = ({
   };
 
   const renderBackBtn = () =>
-    canGoBack() ? (
+    canGoBack() && allowGoBack ? (
       <TouchableOpacity
         onPress={handleGoBack}
         style={{marginLeft: 20, alignItems: 'center', justifyContent: 'center'}}
@@ -47,7 +49,7 @@ const DefaultContent = ({
         {/* <Text style={{color: leftArrowColor ?? '#BDBDBD', fontSize: 30}}>
           x
         </Text> */}
-        <Icon name="times" size={25} color={leftArrowColor ?? '#BDBDBD'} />
+        <Icon name="angle-left" size={30} color={leftArrowColor ?? '#BDBDBD'} />
       </TouchableOpacity>
     ) : null;
 
@@ -73,7 +75,7 @@ const DefaultContent = ({
   );
 };
 
-export default DefaultContent;
+export default Header;
 
 const styles = StyleSheet.create({
   container: {

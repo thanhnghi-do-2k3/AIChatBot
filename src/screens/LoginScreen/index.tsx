@@ -1,54 +1,97 @@
 import {AuthHeader} from 'components/index';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
+import ScreenName from 'constant/ScreenName';
 import React, {useState} from 'react';
-import {View, TextInput, Button, StyleSheet} from 'react-native';
+import {View, TextInput, TouchableOpacity, Text} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import Image from 'theme/Image';
+import Layout from 'theme/Layout';
+import {styles} from './style';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Implement your login logic here
-  };
-
   return (
-    <NAvoidKeyboardScreen>
+    <NAvoidKeyboardScreen scrollEnabled={true}>
       <AuthHeader title="Login" titleStyle={{color: 'black'}} />
       <View style={styles.container}>
+        <FastImage
+          source={Image.jarvisIcon}
+          style={{width: 194, height: 194, marginBottom: 50, marginTop: 50}}
+        />
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="Username"
+          placeholderTextColor={'#BDBDBD'}
           value={email}
           onChangeText={setEmail}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
+          placeholderTextColor={'#BDBDBD'}
           value={password}
           onChangeText={setPassword}
-          secureTextEntry
         />
-        <Button title="Login" onPress={handleLogin} />
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [{name: ScreenName.MainNavigator}],
+            });
+          }}>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 16,
+              fontWeight: '600',
+            }}>
+            Login
+          </Text>
+        </TouchableOpacity>
+
+        <View
+          style={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 30,
+            marginTop: 50,
+          }}>
+          <View style={[Layout.row]}>
+            <Text style={styles.promptText}>Or continue with </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ScreenName.LoginWithGoogle);
+              }}
+              style={{borderBottomColor: '#264FD3', borderBottomWidth: 1}}>
+              <Text style={[styles.promptText]}>Google</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[Layout.row]}>
+            <Text style={styles.promptText}>You do not have an account? </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ScreenName.Register);
+              }}
+              style={{borderBottomColor: '#264FD3', borderBottomWidth: 1}}>
+              <Text style={[styles.promptText]}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[Layout.row]}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ScreenName.ChangePasswordScreen);
+              }}
+              style={{borderBottomColor: '#264FD3', borderBottomWidth: 1}}>
+              <Text style={[styles.promptText]}>Forgot your password?</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </NAvoidKeyboardScreen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-  },
-});
 
 export default LoginScreen;
