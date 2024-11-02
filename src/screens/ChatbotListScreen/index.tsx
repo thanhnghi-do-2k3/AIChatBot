@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {FlatList, View, Animated, PanResponder} from 'react-native';
-import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Text} from 'react-native';
-import ScreenName from 'constant/ScreenName';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
 import {styles} from './style';
 import Header from 'components/Header';
@@ -23,6 +22,8 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
     setData(prevData => prevData.filter(item => item.chatbotName !== id));
   };
 
+  const [swiping, setSwiping] = useState(false);
+
   const renderItem = ({item, index}) => {
     const translateX = new Animated.Value(0);
     const opacity = new Animated.Value(1);
@@ -31,10 +32,12 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (_, gestureState) => {
+        if (!swiping) 
+          setSwiping(true);
         translateX.setValue(gestureState.dx);
       },
       onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx > 50) {
+        if (gestureState.dx > 200) {
           Animated.parallel([
             Animated.timing(translateX, {
               toValue: 500,
@@ -46,12 +49,15 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
               duration: 300,
               useNativeDriver: true,
             }),
-          ]).start(() => handleDeleteItem(item.chatbotName));
+          ]).start(() => {
+            handleDeleteItem(item.chatbotName)
+            setSwiping(false);
+          });
         } else {
           Animated.spring(translateX, {
             toValue: 0,
             useNativeDriver: true,
-          }).start();
+          }).start(() => setSwiping(false));
         }
       },
     });
@@ -188,6 +194,7 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
           </Text>
           </TouchableOpacity>
           <FlatList
+            scrollEnabled={!swiping}
             style={{marginTop: 20, width: '100%', flex: 1}}
             data={data}
             showsVerticalScrollIndicator={false}
