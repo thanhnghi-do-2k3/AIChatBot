@@ -51,7 +51,7 @@ const DefaultContent = ({
 
   return (
     <View
-      className='row items-center justify-center'
+      className='flex-row items-center justify-center'
       style={[
         style,
         styles.container,
@@ -65,7 +65,7 @@ const DefaultContent = ({
         className='row items-center justify-center'
         style={[styles.headerTitle]}>
         <Text
-         className='font-semibold font-large text-black' 
+         className='font-semibold text-headerTittle text-black' 
         style={titleStyle}>{title}</Text>
       </View>
       <View

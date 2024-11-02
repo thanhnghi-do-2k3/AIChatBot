@@ -54,7 +54,7 @@ const Header = ({
 
   return (
     <View
-      className='row items-center justify-center'
+      className='flex-row items-center justify-center'
       style={[
         style,
         styles.container,
@@ -65,10 +65,10 @@ const Header = ({
         {renderBackBtn()}
       </View>
       <View
-        className='row items-center'
+      className='row items-center justify-center'
        style={[styles.headerTitle]}>
         <Text
-        className='font-semibold font-large text-black'
+        className='font-semibold text-headerTittle text-black'
         style={titleStyle}>{title}</Text>
       </View>
       <View
@@ -85,6 +85,7 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 12,
+    // backgroundColor: Colors.error,
   },
   sideItem: {flex: 1},
   headerTitle: {flex: 8},

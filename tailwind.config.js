@@ -13,6 +13,8 @@ module.exports = {
         small: '12px',
         medium: '16px',
         large: '20px',
+        heading: '24px',
+        headerTittle: '32px',
       },
       fontWeight: {
         light: 300,
