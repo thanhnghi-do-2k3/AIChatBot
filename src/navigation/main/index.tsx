@@ -7,6 +7,7 @@ import ProfileScreen from 'screens/ProfileScreen';
 import TabBar from 'components/TabBar';
 import KnowledgeNavigation from './KnowledgeNavigation';
 import ChatbotNavigation from './ChatbotNavigation';
+import ChatNavigation from './ChatNavigation';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -16,6 +17,10 @@ const MainNavigation: React.FC = () => {
       initialRouteName={ScreenName.ChatbotListScreen}
       screenOptions={{headerShown: false}}
       tabBar={props => <TabBar {...props} />}>
+      <BottomTab.Screen
+        name={ScreenName.ChatNavigator}
+        component={ChatNavigation}
+      />
       <BottomTab.Screen
         name={ScreenName.ChatbotNavigator}
         component={ChatbotNavigation}

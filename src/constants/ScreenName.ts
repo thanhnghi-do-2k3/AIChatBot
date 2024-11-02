@@ -12,12 +12,13 @@ const ScreenName = {
   KnowlegdeListScreen: 'KnowlegdeListScreen',
   ProfileScreen: 'ProfileScreen',
   KnowledgeDetailScreen: 'KnowledgeDetailScreen',
-
+  ChatScreen: 'ChatScreen',
   // Navigation
   AuthNavigator: 'AuthNavigator',
   MainNavigator: 'MainNavigator',
   ChatbotNavigator: 'ChatbotNavigator',
   KnowledgeNavigator: 'KnowledgeNavigator',
+  ChatNavigator: 'ChatNavigator',
 };
 
 export default ScreenName;
