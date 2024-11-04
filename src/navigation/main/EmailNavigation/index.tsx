@@ -2,23 +2,20 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 
 import ScreenName from 'constant/ScreenName';
+import EmailScreen from 'screens/EmailScreen';
 
-import ChatScreen from 'screens/ChatScreen';
-import ChatHistoryScreen from 'screens/ChatHistoryScreen';
+
 
 const Stack = createStackNavigator();
 
 const ChatNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName={ScreenName.ChatHistoryScreen}
+      initialRouteName={ScreenName.EmailScreen}
       screenOptions={{headerShown: false}}>
-      <Stack.Screen
-        name={ScreenName.ChatHistoryScreen}
-        component={ChatHistoryScreen}
-      />
+      
 
-      <Stack.Screen name={ScreenName.ChatScreen} component={ChatScreen} />
+      <Stack.Screen name={ScreenName.EmailScreen} component={EmailScreen} />
     </Stack.Navigator>
   );
 };

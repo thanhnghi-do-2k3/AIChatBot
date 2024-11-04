@@ -40,6 +40,22 @@ const TabBar = ({state, navigation}: any) => {
 
   const renderIcon = (route: any, isFocused: boolean) => {
     switch (route.name) {
+      case ScreenName.EmailNavigator:
+        return (
+          <Icon
+            name="envelope"
+            size={24}
+            color={isFocused ? Colors.primary : Colors.black}
+          />
+        );
+      case ScreenName.ChatNavigator:
+        return (
+          <Icon
+            name="comment-alt"
+            size={24}
+            color={isFocused ? Colors.primary : Colors.black}
+          />
+        );
       case ScreenName.ChatbotNavigator:
         return (
           <Icon
@@ -67,12 +83,16 @@ const TabBar = ({state, navigation}: any) => {
 
   const getLabel = (name: string) => {
     switch (name) {
+      case ScreenName.ChatNavigator:
+        return 'Chat';
       case ScreenName.ChatbotNavigator:
         return 'Chatbots';
       case ScreenName.KnowledgeNavigator:
         return 'Knowledge';
       case ScreenName.ProfileScreen:
         return 'Profile';
+      case ScreenName.EmailNavigator:
+        return 'Email';
     }
   };
 
