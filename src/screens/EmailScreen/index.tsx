@@ -10,8 +10,7 @@ import {
   View,
 } from 'react-native';
 import {Input} from 'react-native-elements';
-import Modal from 'react-native-modal';
-import Toast from 'react-native-toast-message';
+import Modal from 'components/Modal';
 
 const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
   const [emailContent, setEmailContent] = useState('');
@@ -157,9 +156,6 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
 
       <Modal
         isVisible={isBottomSheetVisible}
-        animationIn="slideInUp"
-        // transparent
-        useNativeDriver
         onBackdropPress={() => setBottomSheetVisible(false)}>
         <View
           className="flex-1 justify-end bg-opacity-50 "
