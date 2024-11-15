@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
+import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as Animatable from 'react-native-animatable';
 import Colors from 'theme/Colors';
@@ -257,9 +258,7 @@ const ChatScreenWithAI: React.FC = () => {
   );
 
   return (
-    <KeyboardAvoidingView
-      style={{flex: 1, backgroundColor: 'white'}}
-      behavior="padding">
+    <NAvoidKeyboardScreen>
       {/* Header */}
       <View
         style={{
@@ -391,7 +390,7 @@ const ChatScreenWithAI: React.FC = () => {
           </View>
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </NAvoidKeyboardScreen>
   );
 };
 
