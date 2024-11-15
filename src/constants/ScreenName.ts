@@ -18,6 +18,7 @@ const ScreenName = {
   MainNavigator: 'MainNavigator',
   ChatbotNavigator: 'ChatbotNavigator',
   KnowledgeNavigator: 'KnowledgeNavigator',
+  ChatNavigator: 'ChatNavigator',
 };
 
 export default ScreenName;
