@@ -1,8 +1,5 @@
 import React from 'react';
 import {View} from 'react-native';
-import FastImage from 'react-native-fast-image';
-import Image from 'theme/Image';
-import Layout from 'theme/Layout';
 import AuthHeader from 'components/AuthHeader';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {Text} from 'react-native';
@@ -23,13 +20,7 @@ const ChangePasswordScreen: React.FC<Props> = ({navigation}: any) => {
     <NAvoidKeyboardScreen>
       <AuthHeader title="Change password" titleStyle={{color: 'black'}} />
       <View style={styles.container}>
-        <View
-          style={{
-            width: '100%',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+        <View className="flex-1 items-center justify-center w-full">
           <TextInput
             style={styles.input}
             placeholder="Enter your new passwrod"
@@ -46,11 +37,7 @@ const ChangePasswordScreen: React.FC<Props> = ({navigation}: any) => {
           />
         </View>
 
-        <View
-          style={{
-            marginBottom: 50,
-            width: '100%',
-          }}>
+        <View className="w-full mb-12">
           <TouchableOpacity
             style={styles.loginButton}
             onPress={() => {
@@ -59,12 +46,7 @@ const ChangePasswordScreen: React.FC<Props> = ({navigation}: any) => {
                 routes: [{name: ScreenName.Login}],
               });
             }}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 16,
-                fontWeight: '600',
-              }}>
+            <Text className="text-white text-medium font-semibold">
               Reset password
             </Text>
           </TouchableOpacity>

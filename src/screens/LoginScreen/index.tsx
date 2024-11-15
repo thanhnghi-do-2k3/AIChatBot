@@ -1,12 +1,12 @@
-import {AuthHeader} from 'components/index';
+import {AuthHeader, ImageView} from 'components';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
 import ScreenName from 'constant/ScreenName';
 import React, {useState} from 'react';
 import {View, TextInput, TouchableOpacity, Text} from 'react-native';
-import FastImage from 'react-native-fast-image';
 import Image from 'theme/Image';
-import Layout from 'theme/Layout';
 import {styles} from './style';
+
+const _buttonHeight = 50;
 
 const LoginScreen = ({navigation}: any) => {
   const [email, setEmail] = useState('');
@@ -15,13 +15,16 @@ const LoginScreen = ({navigation}: any) => {
   return (
     <NAvoidKeyboardScreen scrollEnabled={true}>
       <AuthHeader title="Login" titleStyle={{color: 'black'}} />
-      <View style={styles.container}>
-        <FastImage
-          source={Image.jarvisIcon}
-          style={{width: 194, height: 194, marginBottom: 50, marginTop: 50}}
+      <View className="flex-1 items-center p-4">
+        <ImageView
+          className="w-48 h-48 mb-14 mt-14"
+          src={Image.jarvisIcon}
+          resizeMode="contain"
         />
+
         <TextInput
           style={styles.input}
+          className={`w-full h-12 border rounded-lg px-2 mb-6 text-lg h-[${_buttonHeight}px]`}
           placeholder="Username"
           placeholderTextColor={'#BDBDBD'}
           value={email}
@@ -29,63 +32,62 @@ const LoginScreen = ({navigation}: any) => {
         />
         <TextInput
           style={styles.input}
+          className={`w-full h-12 border border-gray-300 rounded-lg bg-gray-100 px-2 mb-5 text-lg h-[${_buttonHeight}px]`}
           placeholder="Password"
           placeholderTextColor={'#BDBDBD'}
           value={password}
           onChangeText={setPassword}
         />
+
         <TouchableOpacity
-          style={styles.loginButton}
+          className={`mt-6 w-full h-12 bg-primary rounded-full justify-center items-center h-[${_buttonHeight}px]`}
           onPress={() => {
             navigation.reset({
               index: 0,
               routes: [{name: ScreenName.MainNavigator}],
             });
           }}>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 16,
-              fontWeight: '600',
-            }}>
-            Login
-          </Text>
+          <Text className="text-white text-lg font-semibold">Login</Text>
         </TouchableOpacity>
 
-        <View
-          style={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 30,
-            marginTop: 50,
-          }}>
-          <View style={[Layout.row]}>
-            <Text style={styles.promptText}>Or continue with </Text>
+        <View className="flex-col items-center gap-8 mt-28">
+          <View className="flex-row">
+            <Text className="text-blue-700 text-lg font-semibold">
+              Or continue with{' '}
+            </Text>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate(ScreenName.LoginWithGoogle);
               }}
-              style={{borderBottomColor: '#264FD3', borderBottomWidth: 1}}>
-              <Text style={[styles.promptText]}>Google</Text>
+              className="border-b border-blue-700">
+              <Text className="text-blue-700 text-lg font-semibold">
+                Google
+              </Text>
             </TouchableOpacity>
           </View>
-          <View style={[Layout.row]}>
-            <Text style={styles.promptText}>You do not have an account? </Text>
+          <View className="flex-row">
+            <Text className="text-blue-700 text-lg font-semibold">
+              You do not have an account?{' '}
+            </Text>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate(ScreenName.Register);
               }}
-              style={{borderBottomColor: '#264FD3', borderBottomWidth: 1}}>
-              <Text style={[styles.promptText]}>Sign Up</Text>
+              className="border-b border-blue-700">
+              <Text className="text-blue-700 text-lg font-semibold">
+                Sign Up
+              </Text>
             </TouchableOpacity>
           </View>
-          <View style={[Layout.row]}>
+          <View className="flex-row">
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate(ScreenName.ChangePasswordScreen);
               }}
-              style={{borderBottomColor: '#264FD3', borderBottomWidth: 1}}>
-              <Text style={[styles.promptText]}>Forgot your password?</Text>
+              className="border-b border-blue-700">
+              <Text className="text-blue-700 text-lg font-semibold">
+                Forgot your password?
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

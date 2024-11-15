@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {View, Animated, FlatList, PanResponder} from 'react-native';
-import {TextInput, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {Text} from 'react-native';
 import ScreenName from 'constant/ScreenName';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
@@ -23,7 +23,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
     setData(prevData => prevData.filter(item => item.name !== id));
   };
 
-  const swiping = useRef(false);
+  const [swiping, setSwiping] = useState(false);
 
   const renderItem = ({item, index}) => {
     // Initialize animated values
@@ -35,10 +35,10 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (_, gestureState) => {
         translateX.setValue(gestureState.dx);
-        swiping.current = true;
+        setSwiping(prev => true);
       },
       onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx > 50 && gestureState.dy < 10) {
+        if (gestureState.dx > 200 && gestureState.dy < 10) {
           Animated.parallel([
             Animated.timing(translateX, {
               toValue: 500,
@@ -50,13 +50,17 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
               duration: 300,
               useNativeDriver: true,
             }),
-          ]).start(() => handleDeleteItem(item.name));
+          ]).start(() => {
+            handleDeleteItem(item.name);
+            setSwiping(prev => false);
+          });
         } else {
           Animated.spring(translateX, {
             toValue: 0,
             useNativeDriver: true,
-          }).start(() => {});
-          swiping.current = false;
+          }).start(() => {
+            setSwiping(prev => false);
+          });
         }
       },
     });
@@ -86,8 +90,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
         ]}>
         <TouchableOpacity
           onPress={() => {
-            if (!swiping.current)
-              navigation.navigate(ScreenName.KnowledgeDetailScreen);
+            if (!swiping) navigation.navigate(ScreenName.KnowledgeDetailScreen);
           }}
           style={{
             width: '100%',
@@ -216,6 +219,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
             </Text>
           </TouchableOpacity>
           <FlatList
+            scrollEnabled={!swiping}
             style={{marginTop: 20, width: '100%', flex: 1}}
             data={data}
             showsVerticalScrollIndicator={false}

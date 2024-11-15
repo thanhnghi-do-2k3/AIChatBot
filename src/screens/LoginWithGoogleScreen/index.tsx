@@ -1,15 +1,9 @@
-import React from 'react';
-import {View} from 'react-native';
-import FastImage from 'react-native-fast-image';
-import Image from 'theme/Image';
-import Layout from 'theme/Layout';
+import React, {useState} from 'react';
+import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import AuthHeader from 'components/AuthHeader';
-import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
-import {Text} from 'react-native';
 import ScreenName from 'constant/ScreenName';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
 import {styles} from './style';
-import {useState} from 'react';
 
 interface Props {
   // Define your component's props here
@@ -21,40 +15,25 @@ const LoginWithGoogleScreen: React.FC<Props> = ({navigation}: any) => {
   return (
     <NAvoidKeyboardScreen>
       <AuthHeader title="Login with Google" titleStyle={{color: 'black'}} />
-      <View style={styles.container}>
-        <View
-          style={{
-            width: '100%',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+      <View className="flex-1 items-center px-4 justify-between">
+        <View className="w-full flex-1 items-center justify-center">
           <TextInput
             style={styles.input}
+            className="w-full h-12 border border-gray-300 rounded-lg mb-7 px-2 bg-gray-100 text-base text-gray-700"
             placeholder="Enter your Gmail"
-            placeholderTextColor={'#BDBDBD'}
+            placeholderTextColor="#BDBDBD"
             value={gmail}
             onChangeText={setGmail}
           />
         </View>
 
-        <View
-          style={{
-            // alignItems: 'center',
-            marginBottom: 50,
-            width: '100%',
-          }}>
+        <View className="w-full mb-12">
           <TouchableOpacity
-            style={styles.loginButton}
+            className={`mt-6 w-full h-12 bg-primary rounded-full justify-center items-center h-[50px]`}
             onPress={() => {
               navigation.navigate(ScreenName.VerifyEmailScreen);
             }}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 16,
-                fontWeight: '600',
-              }}>
+            <Text className="text-white text-lg font-semibold">
               Send verify code
             </Text>
           </TouchableOpacity>

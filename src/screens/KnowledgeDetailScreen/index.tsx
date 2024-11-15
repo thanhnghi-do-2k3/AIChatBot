@@ -34,7 +34,7 @@ const KnowledgeDetailScreen: React.FC<Props> = ({navigation}: any) => {
         translateX.setValue(gestureState.dx);
       },
       onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx > 50) {
+        if (gestureState.dx > 200) {
           Animated.parallel([
             Animated.timing(translateX, {
               toValue: 500,
