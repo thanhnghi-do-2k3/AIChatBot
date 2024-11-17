@@ -4,13 +4,21 @@ type initialState = {
   error: string;
 };
 
-type RegisterPayload = PayloadAction & {
+type RegisterPayloadData = {
+  email: string;
+  password: string;
   username: string;
+};
+
+type RegisterPayload = PayloadAction & {
+  data: RegisterPayloadData;
+};
+
+type LoginPayloadData = {
   email: string;
   password: string;
 };
 
 type LoginPayload = PayloadAction & {
-  email: string;
-  password: string;
+  data: LoginPayloadData;
 };

@@ -57,13 +57,15 @@ const RegisterScreen: React.FC<Props> = ({navigation}: any) => {
           <TouchableOpacity
             className={`mt-6 w-full h-12 bg-primary rounded-full justify-center items-center h-[${_buttonHeight}px]`}
             onPress={() => {
-              dispatch(
-                authActions.registerRequest({
+              const registerPayload = {
+                data: {
                   username: name,
                   email: email,
                   password: password,
-                }),
-              );
+                },
+              };
+
+              dispatch(authActions.registerRequest(registerPayload));
 
               navigation.reset({
                 index: 0,

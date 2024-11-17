@@ -3,7 +3,7 @@ import APIEndpoint from 'constant/APIEndpoint';
 
 const authServices = {
   // Register a new user
-  register: async (data: RegisterPayload) => {
+  register: async (data: RegisterPayloadData) => {
     try {
       const response = await apiServices.post(APIEndpoint.SignUp, data);
       return response;
@@ -13,7 +13,7 @@ const authServices = {
   },
 
   // Login user
-  login: async (data: LoginPayload) => {
+  login: async (data: LoginPayloadData) => {
     try {
       const response = await apiServices.post(APIEndpoint.SignIn, data);
       return response;
