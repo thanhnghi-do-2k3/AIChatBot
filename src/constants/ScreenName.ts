@@ -1,6 +1,3 @@
-import ChangePasswordScreen from 'screens/ChangePasswodScreen';
-import VerifyEmailScreen from 'screens/LoginWithGoogleScreen';
-
 const ScreenName = {
   Home: 'Home',
   Login: 'Login',
