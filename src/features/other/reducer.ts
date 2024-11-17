@@ -3,7 +3,8 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   isGlobalLoadingShow: false,
   isGlobalErrorShow: false,
-  globalErrorMessage: '',
+  globalErrorMessage: 'Đã xảy ra lỗi',
+  globalErrorHeader: 'Thông báo',
 };
 
 const otherSlice = createSlice({
@@ -18,11 +19,13 @@ const otherSlice = createSlice({
     },
     showGlobalError: (state, action) => {
       state.isGlobalErrorShow = true;
-      state.globalErrorMessage = action.payload;
+      state.globalErrorMessage = action.payload.message || 'Đã xảy ra lỗi';
+      state.globalErrorHeader = action.payload.header || 'Thông báo';
     },
     hideGlobalError: state => {
       state.isGlobalErrorShow = false;
-      state.globalErrorMessage = '';
+      state.globalErrorMessage = 'Đã xảy ra lỗi';
+      state.globalErrorHeader = 'Thông báo';
     },
   },
 });

@@ -1,4 +1,4 @@
-const APIEndPoint = {
+const APIEndpoint = {
   // Authentication
   SignIn: '/auth/sign-in',
   GoogleSignIn: '/auth/google-sign-in',
@@ -8,4 +8,4 @@ const APIEndPoint = {
   GetRefreshToken: '/auth/refresh',
 };
 
-export default APIEndPoint;
+export default APIEndpoint;

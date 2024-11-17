@@ -11,7 +11,10 @@ const sageMiddleware = createSagaMiddleware();
 
 // Set up the middleware
 const middleware = (getDefaultMiddleware: any) =>
-  getDefaultMiddleware().concat(sageMiddleware);
+  getDefaultMiddleware({
+    serializableCheck: false,
+    immutableCheck: false,
+  }).concat(sageMiddleware);
 
 // Configure the MKKV persist store
 // Visit for more information: https://github.com/mrousavy/react-native-mmkv/blob/main/docs/WRAPPER_REDUX.md
@@ -64,5 +67,14 @@ export const getStateReduxStore = (selector: any) => {
     return selector(store.getState());
   } catch (error) {
     return null;
+  }
+};
+
+// This function is used to dispatch actions outside of the react components
+export const dispatchReduxStore = (action: any) => {
+  try {
+    store.dispatch(action);
+  } catch (error) {
+    console.log('Error dispatching action', error);
   }
 };

@@ -1,2 +1,2 @@
 export {default as ScreenName} from './ScreenName';
-export {default as APIEndPoint} from './APIEndPoint';
+export {default as APIEndpoint} from './APIEndpoint';

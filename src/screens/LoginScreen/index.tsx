@@ -2,9 +2,12 @@ import {AuthHeader, ImageView} from 'components';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
 import ScreenName from 'constant/ScreenName';
 import React, {useState} from 'react';
-import {View, TextInput, TouchableOpacity, Text} from 'react-native';
+import {View, TextInput, TouchableOpacity, Text, Alert} from 'react-native';
 import Image from 'theme/Image';
 import {styles} from './style';
+import {GlobalLoadingController} from 'components/GlobalLoading';
+import {delay} from 'redux-saga/effects';
+import GlobalModal, {GlobalModalController} from 'components/GlobalModal';
 
 const _buttonHeight = 50;
 
@@ -41,7 +44,11 @@ const LoginScreen = ({navigation}: any) => {
 
         <TouchableOpacity
           className={`mt-6 w-full h-12 bg-primary rounded-full justify-center items-center h-[${_buttonHeight}px]`}
-          onPress={() => {
+          onPress={async () => {
+            GlobalModalController.show({
+              header: 'Login',
+              message: 'Login successfully',
+            });
             navigation.reset({
               index: 0,
               routes: [{name: ScreenName.MainNavigator}],
