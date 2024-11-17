@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, type PayloadAction} from '@reduxjs/toolkit';
 
 const initialState: initialState = {
   user: null,
@@ -11,7 +11,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     // Login actions
-    loginRequest: state => {
+    loginRequest: (state, action: PayloadAction<LoginPayload>) => {
       state.loading = true;
     },
     loginSuccess: (state, action) => {
@@ -24,7 +24,7 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
     // Register actions
-    registerRequest: state => {
+    registerRequest: (state, action: PayloadAction<RegisterPayload>) => {
       state.loading = true;
     },
     registerSuccess: (state, action) => {
@@ -39,5 +39,5 @@ const authSlice = createSlice({
   },
 });
 
-export const {loginRequest, loginSuccess, loginFailure} = authSlice.actions;
+export const authActions = authSlice.actions;
 export default authSlice.reducer;

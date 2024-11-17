@@ -4,6 +4,8 @@ import AuthHeader from 'components/AuthHeader';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
 import ScreenName from 'constant/ScreenName';
 import {styles} from './style';
+import useAppDispatch from 'hooks/useAppDispatch';
+import {authActions} from 'features/auth/reducer';
 
 interface Props {
   // Define your component's props here
@@ -16,6 +18,8 @@ const RegisterScreen: React.FC<Props> = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const dispatch = useAppDispatch();
 
   return (
     <NAvoidKeyboardScreen>
@@ -53,6 +57,14 @@ const RegisterScreen: React.FC<Props> = ({navigation}: any) => {
           <TouchableOpacity
             className={`mt-6 w-full h-12 bg-primary rounded-full justify-center items-center h-[${_buttonHeight}px]`}
             onPress={() => {
+              dispatch(
+                authActions.registerRequest({
+                  username: name,
+                  email: email,
+                  password: password,
+                }),
+              );
+
               navigation.reset({
                 index: 0,
                 routes: [{name: ScreenName.Login}],

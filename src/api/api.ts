@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://api.dev.jarvis.cx/';
+const BASE_URL = 'https://api.dev.jarvis.cx/api/';
 const API_VERSION = 'v1';
 
 const apiClient = axios.create({

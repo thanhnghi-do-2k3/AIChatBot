@@ -6,6 +6,7 @@ import {MMKV} from 'react-native-mmkv';
 import {persistReducer} from 'redux-persist';
 import persistStore from 'redux-persist/es/persistStore';
 import {Storage} from 'redux-persist/es/types';
+import reactotron from '../../ReactotronConfig';
 
 const sageMiddleware = createSagaMiddleware();
 
@@ -50,6 +51,11 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore({
   reducer: persistedReducer,
   middleware: middleware,
+  enhancers: (getDefaultEnhancers: any) => {
+    return getDefaultEnhancers().concat(
+      __DEV__ ? reactotron.createEnhancer() : [],
+    );
+  },
 });
 
 const persistor = persistStore(store);
