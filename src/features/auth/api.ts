@@ -1,7 +1,7 @@
 import {apiServices} from 'api';
 import APIEndpoint from 'constant/APIEndpoint';
 
-const authServices = {
+const authService = {
   // Register a new user
   register: async (data: RegisterPayloadData) => {
     try {
@@ -21,6 +21,16 @@ const authServices = {
       throw error;
     }
   },
+
+  // Logout user
+  logout: async () => {
+    try {
+      const response = await apiServices.get(APIEndpoint.SignOut);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
-export default authServices;
+export default authService;

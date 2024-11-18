@@ -25,7 +25,7 @@ function App(): React.JSX.Element {
         <ApplicationNavigator />
         <GlobalLoading />
         <GlobalModal />
-        <Toast position="top" topOffset={20} autoHide />
+        <Toast topOffset={60} autoHide bottomOffset={60} />
       </PersistGate>
     </Provider>
   );

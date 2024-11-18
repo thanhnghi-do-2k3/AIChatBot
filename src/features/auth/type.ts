@@ -1,7 +1,5 @@
 type initialState = {
-  user: any;
   loading: boolean;
-  error: string;
 };
 
 type RegisterPayloadData = {
@@ -10,8 +8,12 @@ type RegisterPayloadData = {
   username: string;
 };
 
-type RegisterPayload = PayloadAction & {
+type RegisterPayload = PayloadActions & {
   data: RegisterPayloadData;
+};
+
+type ResgiterResponse = {
+  user: User;
 };
 
 type LoginPayloadData = {
@@ -19,6 +21,22 @@ type LoginPayloadData = {
   password: string;
 };
 
-type LoginPayload = PayloadAction & {
+type LoginPayload = PayloadActions & {
   data: LoginPayloadData;
 };
+
+interface User {
+  email: string;
+  password: string;
+  username: string;
+  isActive: boolean;
+  usedAuthOptions: string[];
+  roles: string[];
+  createdBy?: any;
+  updatedBy?: any;
+  hashedRefreshToken?: any;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: any;
+  id: string;
+}

@@ -1,21 +1,21 @@
-import React from 'react';
-import {View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Text} from 'react-native';
-import ScreenName from 'constant/ScreenName';
-import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
-import {styles} from './style';
-import {useState} from 'react';
+import {GlobalModalController} from 'components/GlobalModal';
 import Header from 'components/Header';
+import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
+import ScreenName from 'constant/ScreenName';
+import {authActions} from 'features/auth/reducer';
+import useAppDispatch from 'hooks/useAppDispatch';
 import {AppNavigationRef} from 'navigation/index';
+import React from 'react';
+import {Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {styles} from './style';
 
 interface Props {
   // Define your component's props here
 }
 
 const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const dispatch = useAppDispatch();
 
   return (
     <NAvoidKeyboardScreen>
@@ -43,12 +43,29 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
           <TouchableOpacity
             style={styles.loginButton}
             onPress={() => {
-              AppNavigationRef.current?.reset({
-                index: 0,
-                routes: [
-                  {name: ScreenName.AuthNavigator, screen: ScreenName.Login},
-                ],
-              });
+              dispatch(
+                authActions.logoutRequest({
+                  action: {
+                    onSuccess: () => {
+                      AppNavigationRef.current?.reset({
+                        index: 0,
+                        routes: [
+                          {
+                            name: ScreenName.AuthNavigator,
+                            screen: ScreenName.Login,
+                          },
+                        ],
+                      });
+                    },
+                    onFailure: (error: any) => {
+                      GlobalModalController.show({
+                        header: 'Lỗi',
+                        message: 'Lỗi không xác định',
+                      });
+                    },
+                  },
+                }),
+              );
             }}>
             <Text
               style={{

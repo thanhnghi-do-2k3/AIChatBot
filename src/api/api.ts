@@ -1,4 +1,6 @@
 import axios from 'axios';
+import APIEndpoint from 'constant/APIEndpoint';
+import {reduxStorage} from 'store/store';
 
 const BASE_URL = 'https://api.dev.jarvis.cx/api/';
 const API_VERSION = 'v1';
@@ -9,9 +11,15 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use(
-  config => {
+  async config => {
     // Add custom headers or token
-    // config.headers['Authorization'] = 'Bearer YOUR_TOKEN';
+    const accessToken = await reduxStorage.getItem('accessToken');
+
+    console.log(accessToken);
+
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
+    }
 
     return config;
   },
@@ -27,8 +35,33 @@ apiClient.interceptors.response.use(
     console.log('Response:', response);
     return response.data;
   },
-  error => {
+  async error => {
     console.error('Response Error:', error.response || error.message);
+
+    const originalRequest = error.config;
+
+    // Handle unauthorized error
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      const refreshToken = reduxStorage.getItem('refreshToken');
+
+      if (refreshToken) {
+        try {
+          const response = await apiClient.post(APIEndpoint.GetRefreshToken, {
+            refreshToken,
+          });
+
+          reduxStorage.setItem('accessToken', response.data.token?.accessToken);
+
+          return apiClient(originalRequest);
+        } catch (error: any) {
+          console.error('Refresh token error:', error);
+          return Promise.reject(error.response || error.message);
+        }
+      }
+    }
+
     return Promise.reject(error.response || error.message);
   },
 );
