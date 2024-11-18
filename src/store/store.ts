@@ -1,12 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit';
-import createSagaMiddleware from 'redux-saga';
-import rootSaga from './rootSaga';
-import {rootReducer} from './rootReducer';
 import {MMKV} from 'react-native-mmkv';
 import {persistReducer} from 'redux-persist';
 import persistStore from 'redux-persist/es/persistStore';
 import {Storage} from 'redux-persist/es/types';
+import createSagaMiddleware from 'redux-saga';
 import reactotron from '../../ReactotronConfig';
+import {rootReducer} from './rootReducer';
+import rootSaga from './rootSaga';
 
 const sageMiddleware = createSagaMiddleware();
 
@@ -62,7 +62,7 @@ const persistor = persistStore(store);
 
 sageMiddleware.run(rootSaga);
 
-export {store, persistor};
+export {persistor, store};
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

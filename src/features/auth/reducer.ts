@@ -1,9 +1,7 @@
 import {createSlice, type PayloadAction} from '@reduxjs/toolkit';
 
 const initialState: initialState = {
-  user: null,
   loading: false,
-  error: '',
 };
 
 const authSlice = createSlice({
@@ -15,26 +13,32 @@ const authSlice = createSlice({
       state.loading = true;
     },
     loginSuccess: (state, action) => {
-      state.user = action.payload;
       state.loading = false;
-      state.error = '';
     },
     loginFailure: (state, action) => {
       state.loading = false;
-      state.error = action.payload;
     },
+
     // Register actions
     registerRequest: (state, action: PayloadAction<RegisterPayload>) => {
       state.loading = true;
     },
     registerSuccess: (state, action) => {
-      state.user = action.payload;
       state.loading = false;
-      state.error = '';
     },
     registerFailure: (state, action) => {
       state.loading = false;
-      state.error = action.payload;
+    },
+
+    // Logout actions
+    logoutRequest: (state, action) => {
+      state.loading = true;
+    },
+    logoutSuccess: (state, action) => {
+      state.loading = false;
+    },
+    logoutFailure: (state, action) => {
+      state.loading = false;
     },
   },
 });

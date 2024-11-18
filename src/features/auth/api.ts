@@ -1,9 +1,9 @@
 import {apiServices} from 'api';
 import APIEndpoint from 'constant/APIEndpoint';
 
-const authServices = {
+const authService = {
   // Register a new user
-  register: async (data: RegisterPayload) => {
+  register: async (data: RegisterPayloadData) => {
     try {
       const response = await apiServices.post(APIEndpoint.SignUp, data);
       return response;
@@ -13,7 +13,7 @@ const authServices = {
   },
 
   // Login user
-  login: async (data: LoginPayload) => {
+  login: async (data: LoginPayloadData) => {
     try {
       const response = await apiServices.post(APIEndpoint.SignIn, data);
       return response;
@@ -21,6 +21,16 @@ const authServices = {
       throw error;
     }
   },
+
+  // Logout user
+  logout: async () => {
+    try {
+      const response = await apiServices.get(APIEndpoint.SignOut);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
-export default authServices;
+export default authService;
