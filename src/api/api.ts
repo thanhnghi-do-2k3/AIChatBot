@@ -1,5 +1,5 @@
 import axios from 'axios';
-import APIEndpoint from 'constant/APIEndpoint';
+import APIEndpoint from 'constant/APIEndPoint';
 import {reduxStorage} from 'store/store';
 
 const BASE_URL = 'https://api.dev.jarvis.cx/api/';

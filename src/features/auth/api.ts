@@ -1,5 +1,5 @@
 import {apiServices} from 'api';
-import APIEndpoint from 'constant/APIEndpoint';
+import APIEndpoint from 'constant/APIEndPoint';
 
 const authService = {
   // Register a new user
