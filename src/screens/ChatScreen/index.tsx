@@ -23,7 +23,7 @@ const ChatScreenWithAI: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
 
-  // Load lịch sử trò chuyện khi màn hình được render
+
   useEffect(() => {
     dispatch(
       aiChatActions.getOldChatHistoryRequest(
@@ -32,7 +32,7 @@ const ChatScreenWithAI: React.FC = () => {
     );
   }, [dispatch]);
 
-  // Cập nhật tin nhắn khi lịch sử được tải về
+  
   useEffect(() => {
     if (aiChatState.history && aiChatState.history.length > 0) {
       const historyMessages = aiChatState.history.map((message, index) => ({
@@ -48,7 +48,7 @@ const ChatScreenWithAI: React.FC = () => {
     }
   }, [aiChatState.history]);
 
-  // Cập nhật tin nhắn khi AI phản hồi
+  
   useEffect(() => {
     if (aiChatState.message) {
       const newMessage: Message = {
@@ -78,7 +78,7 @@ const ChatScreenWithAI: React.FC = () => {
       setMessages(prevMessages => [...prevMessages, userMessage]);
       setInputMessage('');
 
-      // Dispatch action để gửi tin nhắn
+      
       dispatch(
         aiChatActions.sendMessageRequest({
           data: {
