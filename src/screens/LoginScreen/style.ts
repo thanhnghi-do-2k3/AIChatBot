@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import Colors from 'theme/Colors';
 
 const _textInputBackground = '#F6F6F6';
 const _textInputBorderColor = '#E8E8E8';
@@ -10,5 +9,12 @@ export const styles = StyleSheet.create({
     borderColor: _textInputBorderColor,
     backgroundColor: _textInputBackground,
     // fontSize: 16,
+  },
+  error: {
+    color: 'red',
+    marginBottom: 16,
+    alignSelf: 'flex-start',
+    marginTop: 5,
+    marginLeft: 5,
   },
 });
