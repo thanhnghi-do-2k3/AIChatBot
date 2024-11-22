@@ -6,6 +6,9 @@ const APIEndpoint = {
   SignUp: '/auth/sign-up',
   SignOut: '/auth/sign-out',
   GetRefreshToken: '/auth/refresh',
+  DoAIChat: '/ai-chat',
+  GetConversations: '/ai-chat/conversations',
+  
 };
 
 export default APIEndpoint;

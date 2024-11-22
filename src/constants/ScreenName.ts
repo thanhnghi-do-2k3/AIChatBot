@@ -14,6 +14,7 @@ const ScreenName = {
   ProfileScreen: 'ProfileScreen',
   KnowledgeDetailScreen: 'KnowledgeDetailScreen',
   ChatHisToryScreen: 'ChatHisToryScreen',
+  ChatScreen: 'ChatScreen',
 
   // Navigation
   AuthNavigator: 'AuthNavigator',
