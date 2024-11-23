@@ -1,47 +1,61 @@
+import ScreenName from 'constant/ScreenName';
+import dayjs from 'dayjs';
+import {conversationActions} from 'features/conversation/reducer';
+import useAppDispatch from 'hooks/useAppDispatch';
+import useAppSelector from 'hooks/useAppSelector';
 import React, {useEffect} from 'react';
 import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Image,
   ActivityIndicator,
+  FlatList,
+  Image,
+  KeyboardAvoidingView,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LinearGradient from 'react-native-linear-gradient';
-import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/store';
-import {conversationActions} from 'features/conversation/reducer';
-
-import dayjs from 'dayjs';
-import ScreenName from 'constant/ScreenName';
-
 const ChatHistoryScreen: React.FC = ({navigation}: any) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const navigateToChatDetail = () => {
-    navigation.navigate(ScreenName.MainNavigator, {
-      screen: ScreenName.ChatScreen,
-    });
+  const navigateToChatDetail = (id: string) => {
+    navigation.navigate(ScreenName.ChatScreen, {id});
   };
 
-  const {conversations, loading, error} = useSelector(
+  const [localLoading, setLocalLoading] = React.useState(false);
+
+  const {conversations, loading, error} = useAppSelector(
     (state: RootState) => state.conversationReducer,
   );
 
   useEffect(() => {
     dispatch(conversationActions.fetchConversationsRequest());
-  }, [dispatch]);
+  }, []);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     dispatch(conversationActions.fetchConversationsRequest());
+  //   }, []),
+  // );
+
+  // useFocusEffect(() => {
+  //   dispatch(conversationActions.fetchConversationsRequest());
+  // });
 
   const renderChatItem = ({item}: {item: any}) => (
     <TouchableOpacity
       className="flex-row items-center bg-white rounded-2xl mb-4 p-4 shadow-lg hover:shadow-2xl transition duration-300"
       onPress={() => {
-        navigateToChatDetail();
+        navigateToChatDetail(item.id);
       }}>
       <View className="w-16 h-16 rounded-full bg-primary justify-center items-center shadow-md">
         <Image
-          source={{uri: item.avatar || 'https://via.placeholder.com/50'}}
+          source={{
+            uri:
+              item.avatar ||
+              'https://www.shutterstock.com/shutterstock/photos/2464455965/display_1500/stock-vector-happy-robot-d-ai-character-chat-bot-mascot-isolated-on-white-background-gpt-chatbot-icon-2464455965.jpg',
+          }}
           className="w-14 h-14 rounded-full border-4 border-white"
         />
       </View>
@@ -62,54 +76,58 @@ const ChatHistoryScreen: React.FC = ({navigation}: any) => {
   );
 
   return (
-    <View className="flex-1 bg-gray-50">
-      {/* Header */}
-      <LinearGradient
-        colors={['#020024', '#264fd3', '#00d4ff']}
-        locations={[0.05, 0.69, 1]}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        className="py-6 px-6 rounded-b-3xl shadow-xl flex-row justify-between items-center">
-        <Text className="text-2xl font-bold text-white text-shadow-lg">
-          Chatting Room
-        </Text>
-        <View className="flex-row space-x-5">
-          <TouchableOpacity>
-            <Icon name="search" size={28} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Icon name="notifications" size={28} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Icon name="settings" size={28} color="white" />
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
+    <KeyboardAvoidingView
+      style={{
+        flex: 1,
+        backgroundColor: '#fff',
+        borderTopLeftRadius: 32,
+        borderTopRightRadius: 32,
+        // paddingBottom: 80,
+      }}
+      behavior="padding"
+      keyboardVerticalOffset={100}
+      enabled>
+      <View className="flex-1" style={{paddingTop: 16}}>
+        {loading ? (
+          <ActivityIndicator
+            size="large"
+            color="#264fd3"
+            style={{marginTop: 20}}
+          />
+        ) : error ? (
+          <Text className="text-red-500 text-center mt-10">
+            Failed to load conversations
+          </Text>
+        ) : (
+          <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={() => {
+                  dispatch(conversationActions.fetchConversationsRequest());
+                }}
+              />
+            }
+            data={conversations}
+            keyExtractor={item => item.id}
+            renderItem={renderChatItem}
+            contentContainerStyle={{paddingHorizontal: 16, paddingTop: 12}}
+          />
+        )}
 
-      {loading ? (
-        <ActivityIndicator
-          size="large"
-          color="#264fd3"
-          style={{marginTop: 20}}
-        />
-      ) : error ? (
-        <Text className="text-red-500 text-center mt-10">
-          Failed to load conversations
-        </Text>
-      ) : (
-        <FlatList
-          data={conversations}
-          keyExtractor={item => item.id}
-          renderItem={renderChatItem}
-          contentContainerStyle={{paddingHorizontal: 16, paddingTop: 12}}
-        />
-      )}
-
-      {/* Nút Tạo Cuộc Trò Chuyện */}
-      <TouchableOpacity className="absolute bottom-8 right-8 w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-xl">
-        <Icon name="chatbubble" size={28} color="white" />
-      </TouchableOpacity>
-    </View>
+        {/* Nút Tạo Cuộc Trò Chuyện */}
+        <TouchableOpacity
+          style={{
+            zIndex: 999,
+          }}
+          className="absolute bottom-8 right-8 w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-xl"
+          onPress={() => {
+            navigation.navigate(ScreenName.ChatScreen);
+          }}>
+          <Icon name="chatbubble" size={28} color="white" />
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
