@@ -1,13 +1,12 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ScreenName from 'constant/ScreenName';
-import ChatbotListScreen from 'screens/ChatbotListScreen';
-import KnowledgeListScreen from 'screens/KnowledgeListScreen';
 import ProfileScreen from 'screens/ProfileScreen';
 import TabBar from 'components/TabBar';
 import KnowledgeNavigation from './KnowledgeNavigation';
 import ChatbotNavigation from './ChatbotNavigation';
 import ChatScreen from 'screens/ChatScreen';
+import ChatNavigation from './ChatNavigation';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -19,7 +18,7 @@ const MainNavigation: React.FC = () => {
       tabBar={props => <TabBar {...props} />}>
       <BottomTab.Screen
         name={ScreenName.ChatNavigator}
-        component={ChatScreen}
+        component={ChatNavigation}
       />
       <BottomTab.Screen
         name={ScreenName.ChatbotNavigator}

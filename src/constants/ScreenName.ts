@@ -1,4 +1,5 @@
 import ChangePasswordScreen from 'screens/ChangePasswodScreen';
+import ChatHisTory from 'screens/ChatHistoryScreen';
 import VerifyEmailScreen from 'screens/LoginWithGoogleScreen';
 
 const ScreenName = {
@@ -12,6 +13,8 @@ const ScreenName = {
   KnowlegdeListScreen: 'KnowlegdeListScreen',
   ProfileScreen: 'ProfileScreen',
   KnowledgeDetailScreen: 'KnowledgeDetailScreen',
+  ChatHisToryScreen: 'ChatHisToryScreen',
+  ChatScreen: 'ChatScreen',
 
   // Navigation
   AuthNavigator: 'AuthNavigator',
