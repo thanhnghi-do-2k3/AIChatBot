@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {View, Animated, FlatList, PanResponder} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import {Text} from 'react-native';
@@ -11,6 +11,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Colors} from 'theme';
 import {mockdata} from './mockdata';
 import CreateKnowledgeModal from './components/CreateKnowledgeModal';
+import Toast from 'react-native-toast-message';
+import {kbActions} from 'features/KB/reducer';
+import useAppDispatch from 'hooks/useAppDispatch';
+import useAppSelector from 'hooks/useAppSelector';
 
 interface Props {}
 
@@ -18,6 +22,24 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
   const [botName, setBotName] = useState('');
   const [data, setData] = useState(mockdata);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const dispatch = useAppDispatch();
+  const listChatbot = useAppSelector(state => state.kbReducer.listKb);
+  useEffect(() => {
+    const payload = {
+      data: {},
+      action: {
+        onSuccess: (data: any) => {},
+        onFailure: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: 'Get chatbot failed',
+          });
+        },
+      },
+    };
+
+    dispatch(kbActions.getKb(payload));
+  }, []);
 
   const handleDeleteItem = (id: string) => {
     setData(prevData => prevData.filter(item => item.name !== id));
@@ -29,7 +51,10 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
     // Initialize animated values
     const translateX = new Animated.Value(0);
     const opacity = new Animated.Value(1);
-
+    const getRandomColor = () => {
+      // Generates a random color in hexadecimal format
+      return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    };
     // Create panResponder with animated translation
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -105,7 +130,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
               justifyContent: 'flex-start',
               flex: 0.85,
             }}>
-            <Icon name="table" size={30} color={item.PrimaryColor} />
+            <Icon name="table" size={30} color={getRandomColor()} />
             <View>
               <Text
                 style={{
@@ -114,7 +139,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
                   fontWeight: '600',
                   marginLeft: 10,
                 }}>
-                {item.name}
+                {item.knowledgeName}
               </Text>
               <Text
                 numberOfLines={2}
@@ -125,7 +150,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
                   fontWeight: '600',
                   marginLeft: 10,
                 }}>
-                {item.Description}
+                {item.description}
               </Text>
               <View
                 style={{
@@ -141,7 +166,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
                     marginLeft: 10,
                     marginTop: 5,
                   }}>
-                  {item.CreateDate}
+                  {item.createdAt}
                 </Text>
                 <Text
                   style={{
@@ -221,7 +246,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
           <FlatList
             scrollEnabled={!swiping}
             style={{marginTop: 20, width: '100%', flex: 1}}
-            data={data}
+            data={listChatbot}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.name}
             renderItem={renderItem}
@@ -233,6 +258,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
         onClose={() => {
           setIsModalVisible(false);
         }}
+        navigation={undefined}
       />
     </>
   );

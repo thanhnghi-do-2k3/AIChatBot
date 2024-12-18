@@ -6,7 +6,7 @@ export const APIEndpoint = {
   SignUp: '/auth/sign-up',
   SignOut: '/auth/sign-out',
   GetRefreshToken: '/auth/refresh',
-  DoAIChat: '/ai-chat',
+  DoAIChat: '/ai-chat/messages',
   GetConversations: '/ai-chat/conversations',
 };
 
@@ -14,7 +14,10 @@ export const KB_APIEndpoint = {
   // Authentication
   SignIn: '/auth/external-sign-in',
   GetRefreshToken: '/auth/refresh',
-
+  // Chatbot
   CreateAssistant: 'ai-assistant',
   GetAssistant: 'ai-assistant',
+  //Knowledge Base
+  CreateKnowledgeBase: 'knowledge',
+  GetKnowledgeBase: 'knowledge',
 };

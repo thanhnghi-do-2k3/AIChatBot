@@ -1,23 +1,52 @@
+import {kbActions} from 'features/KB/reducer';
+import useAppDispatch from 'hooks/useAppDispatch';
 import React, {useState} from 'react';
 import {Modal, View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import {Input} from 'react-native-elements';
+import Toast from 'react-native-toast-message';
 
 interface CreateKnowledgeModalProps {
   visible: boolean;
   onClose: () => void;
+  navigation: any;
 }
 
 const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
   visible,
   onClose,
+  navigation,
 }) => {
   const [description, setDescription] = useState('');
-
+  const dispatch = useAppDispatch();
   const handleSubmit = () => {
-    // Add your logic to handle form submission here
-    // For example, you can make an API call to create a new chatbot
-    // and then close the modal
-    onClose();
+    console.log('handleSubmit');
+    const createKbPayload = {
+      data: {
+        knowledgeName: botName,
+        description: description,
+      },
+
+      action: {
+        onSuccess: () => {
+          Toast.show({
+            type: 'success',
+            text1: 'Create KB successfully',
+          });
+          dispatch(kbActions.getKb({}));
+          onClose();
+        },
+        onFailure: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: 'Create KB failed',
+            text2: error?.data?.details?.[0].issue,
+          });
+        },
+      },
+    };
+    //console.log('createKbPayload', createKbPayload);
+    dispatch(kbActions.createKb(createKbPayload));
+    //onClose();
   };
 
   const [botName, setBotName] = useState('');

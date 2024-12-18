@@ -6,7 +6,7 @@ const aiChatService = {
     try {
       console.log('Post payload:', data);
       const response = await apiServices.post(APIEndpoint.DoAIChat, data);
-      //console.log(response);
+      console.log(response);
       return response;
     } catch (error) {
       throw error;
@@ -22,6 +22,7 @@ const aiChatService = {
       });
       return response;
     } catch (error) {
+      
       throw error;
     }
   },
