@@ -1,7 +1,13 @@
 import {createSlice, type PayloadAction} from '@reduxjs/toolkit';
 
-const initialState: initialState = {
+interface InitialState {
+  loading: boolean;
+  isLogged: boolean;
+}
+
+const initialState: InitialState = {
   loading: false,
+  isLogged: false,
 };
 
 const authSlice = createSlice({
@@ -14,6 +20,7 @@ const authSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.loading = false;
+      state.isLogged = true;
     },
     loginFailure: (state, action) => {
       state.loading = false;
@@ -36,6 +43,7 @@ const authSlice = createSlice({
     },
     logoutSuccess: (state, action) => {
       state.loading = false;
+      state.isLogged = false;
     },
     logoutFailure: (state, action) => {
       state.loading = false;

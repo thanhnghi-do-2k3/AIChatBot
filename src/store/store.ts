@@ -27,14 +27,17 @@ const persist_store = new MMKV({
 export const reduxStorage: Storage = {
   setItem: (key, value) => {
     persist_store.set(key, value);
+    reactotron.log('reduxStorage' + '\nsetItem \n' + key + ' : ' + value);
     return Promise.resolve(true);
   },
   getItem: key => {
     const value = persist_store.getString(key);
+    reactotron.log('reduxStorage' + '\ngetItem \n' + key + ' : ' + value);
     return Promise.resolve(value);
   },
   removeItem: key => {
     persist_store.delete(key);
+    reactotron.log('reduxStorage' + '\nremoveItem \n' + key);
     return Promise.resolve();
   },
 };

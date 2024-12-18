@@ -1,6 +1,5 @@
 import type {PayloadAction} from '@reduxjs/toolkit';
-import {GlobalLoadingController} from 'components/GlobalLoading';
-import {all, call, put, takeEvery, takeLatest} from 'redux-saga/effects';
+import {all, call, put, takeLatest} from 'redux-saga/effects';
 import aiChatService from './api';
 import {aiChatActions} from './reducer';
 

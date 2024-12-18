@@ -1,5 +1,6 @@
 import type {PayloadAction} from '@reduxjs/toolkit';
 import {GlobalLoadingController} from 'components/GlobalLoading';
+import reactotron from 'reactotron-react-native';
 import {all, call, put, takeEvery, takeLatest} from 'redux-saga/effects';
 import {reduxStorage} from 'store/store';
 import authService from './api';
@@ -42,9 +43,20 @@ function* handleUserLoginSaga(action: PayloadAction<LoginPayload>): any {
     reduxStorage.setItem('accessToken', response?.token?.accessToken);
     reduxStorage.setItem('refreshToken', response?.token?.refreshToken);
 
+    const response_kb = yield call(authService.loginForKB, {
+      token: response?.token?.accessToken,
+    });
+
+    console.log('response_kb', response_kb);
+
+    // Setup token
+    reduxStorage.setItem('accessToken_KB', response_kb?.token?.accessToken);
+    reduxStorage.setItem('refreshToken_KB', response_kb?.token?.refreshToken);
+
     yield put(authActions.loginSuccess(response));
     payload.action?.onSuccess?.(response);
   } catch (error) {
+    reactotron && reactotron.log('error', error);
     yield put(authActions.loginFailure(error));
     payload.action?.onFailure?.(error);
   }
@@ -57,8 +69,9 @@ function* handleUserLogoutSaga(action: PayloadAction<PayloadActions>): any {
   try {
     payload.action?.onBegin?.();
     yield call(authService.logout);
-    reduxStorage.removeItem('token');
+    reduxStorage.removeItem('accessToken');
     reduxStorage.removeItem('refreshToken');
+    reduxStorage.removeItem('isLogged');
     yield put(authActions.logoutSuccess({}));
     payload.action?.onSuccess?.();
   } catch (error) {

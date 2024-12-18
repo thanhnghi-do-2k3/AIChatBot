@@ -1,10 +1,3 @@
-type InitialState = {
-  loading: boolean;
-  message?: Message;
-  conversationId?: string;
-  remainingUsage?: number;
-  history?: Message[];
-};
 interface Message {
   id: string;
   sender: 'User' | 'AI';

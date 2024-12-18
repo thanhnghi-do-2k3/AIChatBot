@@ -1,5 +1,5 @@
 import {apiServices} from 'api';
-import APIEndpoint from 'constant/APIEndPoint';
+import {APIEndpoint} from 'constant/APIEndPoint';
 
 const aiChatService = {
   sendMessage: async (data: AiChatPayloadData) => {

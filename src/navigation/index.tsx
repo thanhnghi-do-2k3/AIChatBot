@@ -1,16 +1,18 @@
-import React, {useEffect, useRef} from 'react';
-import {LogBox, Platform, StatusBar} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import ScreenName from 'constant/ScreenName';
+import useAppSelector from 'hooks/useAppSelector';
+import React, {useRef} from 'react';
 import AuthNavigator from './auth';
 import MainNavigation from './main';
-import ScreenName from 'constant/ScreenName';
 
 const Stack = createStackNavigator<any>();
 export const AppNavigationRef = React.createRef() as any;
 
 const ApplicationNavigator = () => {
   const routeNameRef = useRef() as any;
+  const isLogged = useAppSelector(state => state.authReducer.isLogged);
+
   return (
     <NavigationContainer
       ref={AppNavigationRef}
@@ -29,7 +31,9 @@ const ApplicationNavigator = () => {
         routeNameRef.current = currentRouteName;
       }}>
       <Stack.Navigator
-        initialRouteName={ScreenName.AuthNavigator}
+        initialRouteName={
+          !isLogged ? ScreenName.AuthNavigator : ScreenName.MainNavigator
+        }
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name={ScreenName.AuthNavigator}

@@ -1,5 +1,13 @@
 import {createSlice, type PayloadAction} from '@reduxjs/toolkit';
 
+interface InitialState {
+  loading: boolean;
+  message?: Message;
+  conversationId?: string;
+  remainingUsage?: number;
+  history?: Message[];
+}
+
 const initialState: InitialState = {
   loading: false,
   message: undefined,

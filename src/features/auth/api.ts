@@ -1,5 +1,5 @@
-import {apiServices} from 'api';
-import APIEndpoint from 'constant/APIEndPoint';
+import {apiServices, kbApiServices} from 'api';
+import {APIEndpoint, KB_APIEndpoint} from 'constant/APIEndPoint';
 
 const authService = {
   // Register a new user
@@ -16,6 +16,15 @@ const authService = {
   login: async (data: LoginPayloadData) => {
     try {
       const response = await apiServices.post(APIEndpoint.SignIn, data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  loginForKB: async (data: {token: string}) => {
+    try {
+      const response = await kbApiServices.post(KB_APIEndpoint.SignIn, data);
       return response;
     } catch (error) {
       throw error;
