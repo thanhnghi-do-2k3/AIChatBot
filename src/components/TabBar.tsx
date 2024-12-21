@@ -62,6 +62,14 @@ const TabBar = ({state, navigation}: any) => {
         ) : (
           <Icon name="book" size={24} color={Colors.black} />
         );
+      case ScreenName.EmailNavigator:
+        return (
+          <Icon
+            name="envelope"
+            size={24}
+            color={isFocused ? Colors.primary : Colors.black}
+          />
+        );
       case ScreenName.ProfileScreen:
         return (
           <Icon
@@ -83,6 +91,8 @@ const TabBar = ({state, navigation}: any) => {
         return 'Knowledge';
       case ScreenName.ProfileScreen:
         return 'Profile';
+      case ScreenName.EmailNavigator:
+        return 'Email';
     }
   };
 
