@@ -7,6 +7,8 @@ function* kbSaga() {
   yield all([
     takeLatest(kbActions.createKb.type, handleCreateKbSaga),
     takeLatest(kbActions.getKb.type, handleGetKbSaga),
+    takeLatest(kbActions.getUnitsKb.type, handleGetUnitsKbSaga),
+    takeLatest(kbActions.addUrlToKb.type, handleAddUrlToKbSaga),
   ]);
 }
 
@@ -37,6 +39,36 @@ function* handleGetKbSaga(
   } catch (error: any) {
     console.log('error', error);
     yield put(kbActions.getKbFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  }
+}
+
+function* handleGetUnitsKbSaga(
+  action: PayloadAction<GetUnitsKbPayload>,
+): Generator<any, void, any> {
+  console.log('handleGetUnitsKbSaga', action.payload);
+  try {
+    const response: any = yield call(kbService.getUnitsKb, action.payload.data);
+    yield put(kbActions.getUnitsKbSuccess(response));
+    action.payload.action?.onSuccess?.(response.data || []);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(kbActions.getUnitsKbFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  }
+}
+
+function* handleAddUrlToKbSaga(
+  action: PayloadAction<AddUrlToKbPayload>,
+): Generator<any, void, any> {
+  console.log('handleAddUrlToKbSaga', action.payload);
+  try {
+    const response: any = yield call(kbService.addUrlToKb, action.payload.data);
+    yield put(kbActions.addUrlToKbSuccess(response));
+    action.payload.action?.onSuccess?.(response);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(kbActions.addUrlToKbFailure(error.message));
     action.payload.action?.onFailure?.(error);
   }
 }

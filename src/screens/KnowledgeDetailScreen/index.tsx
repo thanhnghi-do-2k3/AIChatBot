@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Animated, FlatList, PanResponder} from 'react-native';
 import {
   GestureHandlerRootView,
@@ -16,11 +16,31 @@ import {styles} from './style';
 import {mockData} from './mockdata';
 import {useCallback, useRef} from 'react';
 import AddKnowledgeModal from './components/AddKnowledgeModal';
+import {kbActions} from 'features/KB/reducer';
+import useAppDispatch from 'hooks/useAppDispatch';
+import useAppSelector from 'hooks/useAppSelector';
 
 interface Props {}
 
-const KnowledgeDetailScreen: React.FC<Props> = ({navigation}: any) => {
+const KnowledgeDetailScreen: React.FC<Props> = ({navigation, route}: any) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const item = route.params;
+  const dispatch = useAppDispatch();
+  const listUnits = useAppSelector(state => state.kbReducer.currentKbUnits);
+  useEffect(() => {
+    console.log('item', item);
+    const payload = {
+      data: {
+        id: item.item.id,
+      },
+      action: {
+        onSuccess: (data: any) => {},
+        onFailure: (error: any) => {},
+      },
+    };
+
+    dispatch(kbActions.getUnitsKb(payload));
+  }, []);
 
   const renderItem = ({item, index}) => {
     // Initialize animated values
@@ -105,44 +125,6 @@ const KnowledgeDetailScreen: React.FC<Props> = ({navigation}: any) => {
                 }}>
                 {item.name}
               </Text>
-              <Text
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={{
-                  color: 'gray',
-                  fontSize: 14,
-                  fontWeight: '600',
-                  marginLeft: 10,
-                }}>
-                {item.description}
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <Text
-                  style={{
-                    color: '#BDBDBD',
-                    fontSize: 12,
-                    fontWeight: '600',
-                    marginLeft: 10,
-                    marginTop: 5,
-                  }}>
-                  {item.source}
-                </Text>
-                <Text
-                  style={{
-                    color: '#BDBDBD',
-                    fontSize: 12,
-                    fontWeight: '600',
-                    marginLeft: 10,
-                    marginTop: 5,
-                  }}>
-                  {item.size}
-                </Text>
-              </View>
             </View>
           </View>
           <TouchableOpacity>
@@ -164,7 +146,7 @@ const KnowledgeDetailScreen: React.FC<Props> = ({navigation}: any) => {
         <View style={styles.container}>
           <FlatList
             style={{marginTop: 20, width: '100%', flex: 1}}
-            data={mockData}
+            data={listUnits}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.name}
             renderItem={renderItem}
@@ -193,6 +175,7 @@ const KnowledgeDetailScreen: React.FC<Props> = ({navigation}: any) => {
         </View>
       </NAvoidKeyboardScreen>
       <AddKnowledgeModal
+        id={item.item.id}
         visible={isModalVisible}
         onClose={() => {
           setIsModalVisible(false);
