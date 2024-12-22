@@ -18,6 +18,8 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
   const [emailContent, setEmailContent] = useState('');
   const [language, setLanguage] = useState('English');
   const [tone, setTone] = useState('Formal');
+  const [length, setLength] = useState('Medium');
+  const [formality, setFormality] = useState('Formal');
   const toneOptions = [
     {label: 'Friendly', emoji: '😊'},
     {label: 'Witty', emoji: '😄'},
@@ -30,6 +32,13 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
     {label: 'Optimistic', emoji: '☀️'},
     {label: 'Concerned', emoji: '😟'},
     {label: 'Empathetic', emoji: '😔'},
+  ];
+  const lengthOptions = ['Short', 'Medium', 'Long'];
+
+  const formalityOptions = [
+    {label: 'Formal', emoji: '👔'},
+    {label: 'Informal', emoji: '👕'},
+    {label: 'Casual', emoji: '👟'},
   ];
 
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
@@ -85,8 +94,8 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
           language: language,
           style: {
             tone: tone,
-            length: 'Short',
-            formality: 'Formal',
+            length: length,
+            formality: formality,
           },
         },
       },
@@ -144,7 +153,7 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
       <Button title="Generate Suggestions" onPress={generateSuggestions} />
 
       {/* Suggestions List */}
-      <ScrollView className="mt-4">
+      <View className="mt-4">
         {listIdeas.map((suggestion, index) => (
           <TouchableOpacity
             key={index}
@@ -153,7 +162,7 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
             <Text className="text-blue-900">{suggestion}</Text>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </View>
 
       {/* Detailed Reply */}
       {emailResponse ? (
@@ -172,6 +181,42 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
           <View className="bg-white p-6 rounded-t-2xl">
             <Text className="text-lg font-bold mb-4">Change Style</Text>
 
+            {/* Length Selection */}
+            <Text className="text-base font-medium mb-4">Select Length:</Text>
+            <View className="flex-wrap flex-row gap-4">
+              {lengthOptions.map((option, index) => (
+                <TouchableOpacity
+                  key={index}
+                  className={`flex-row items-center justify-center p-4 border rounded-lg mb-3 ${
+                    length === option
+                      ? 'border-blue-500 bg-blue-100'
+                      : 'border-gray-300 bg-gray-100'
+                  }`}
+                  onPress={() => setLength(option)}>
+                  <Text className="text-base">{option}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Formality Selection */}
+            <Text className="text-base font-medium mb-4">
+              Select a Formality:
+            </Text>
+            <View className="flex-wrap flex-row gap-4">
+              {formalityOptions.map((option, index) => (
+                <TouchableOpacity
+                  key={index}
+                  className={`flex-row items-center justify-center p-4 border rounded-lg mb-3 ${
+                    formality === option.label
+                      ? 'border-blue-500 bg-blue-100'
+                      : 'border-gray-300 bg-gray-100'
+                  }`}
+                  onPress={() => setFormality(option.label)}>
+                  <Text className="text-lg mr-2">{option.emoji}</Text>
+                  <Text className="text-base">{option.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
             {/* Tone Selection */}
             <Text className="text-base font-medium mb-4">Select a Tone:</Text>
             <View className="flex-wrap flex-row gap-4">
