@@ -30,6 +30,22 @@ const EmailService = {
       throw error;
     }
   },
+
+  getEmailResponse: async (data: EmailResponsePayloadData) => {
+    try {
+      const response = await apiServices.post(
+        APIEndpoint.EmailResponse,
+        data,
+      );
+      reactotron.log('Get Email Response response from API:', response);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  
 };
 
 export default EmailService;

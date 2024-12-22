@@ -31,10 +31,13 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
     {label: 'Concerned', emoji: '😟'},
     {label: 'Empathetic', emoji: '😔'},
   ];
-  const [detailedReply, setDetailedReply] = useState('');
+
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   const dispatch = useAppDispatch();
   const listIdeas = useAppSelector(state => state.emailReducer.listIdeas);
+  const emailResponse = useAppSelector(
+    state => state.emailReducer.emailResponse,
+  );
 
   const generateSuggestions = () => {
     if (!emailContent) {
@@ -69,7 +72,36 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
   };
 
   const generateDetailedReply = (suggestion: string) => {
-    setDetailedReply(`Detailed reply based on: "${suggestion}"`);
+    const emailResponsePayload = {
+      data: {
+        action: 'Reply to this email',
+        mainIdea: suggestion,
+        email: emailContent,
+        metadata: {
+          context: [],
+          subject: 'subject',
+          sender: 'sender',
+          receiver: 'receiver',
+          language: language,
+          style: {
+            tone: tone,
+            length: 'Short',
+            formality: 'Formal',
+          },
+        },
+      },
+      action: {
+        onSuccess: (data: any) => {
+          console.log('Success:', data);
+          //setDetailedReply(data.reply);
+        },
+        onFailure: (error: any) => {
+          console.log('Error:', error);
+        },
+      },
+    };
+
+    dispatch(emailActions.getEmailResponse(emailResponsePayload));
   };
 
   return (
@@ -124,9 +156,9 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
       </ScrollView>
 
       {/* Detailed Reply */}
-      {detailedReply ? (
+      {emailResponse ? (
         <View className="mt-6 p-4 bg-green-100 rounded-lg">
-          <Text className="text-green-900 font-medium">{detailedReply}</Text>
+          <Text className="text-green-900 font-medium">{emailResponse}</Text>
         </View>
       ) : null}
 
