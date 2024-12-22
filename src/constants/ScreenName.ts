@@ -1,5 +1,3 @@
-import EmailScreen from "screens/EmailScreen";
-
 const ScreenName = {
   Home: 'Home',
   Login: 'Login',
@@ -17,6 +15,7 @@ const ScreenName = {
 
   // Tab
   CreateBotTab: 'CreateBotTab',
+  UpdateBotTab: 'UpdateBotTab',
 
   // Navigation
   AuthNavigator: 'AuthNavigator',

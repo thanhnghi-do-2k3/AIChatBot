@@ -48,6 +48,10 @@ const authSlice = createSlice({
     logoutFailure: (state, action) => {
       state.loading = false;
     },
+
+    changeLoggedStatus: (state, action: PayloadAction<boolean>) => {
+      state.isLogged = action.payload;
+    },
   },
 });
 

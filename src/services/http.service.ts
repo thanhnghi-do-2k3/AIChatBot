@@ -51,40 +51,50 @@ const handleError = async (error: any) => {
     const refreshToken = await reduxStorage.getItem('refreshToken');
     if (refreshToken) {
       try {
-        const response = await apiServices.get(APIEndpoint.GetRefreshToken, {
-          refreshToken,
-        });
+        const response = await httpRequestService.get(
+          APIEndpoint.GetRefreshToken,
+          {
+            refreshToken,
+          },
+        );
 
         // @ts-ignore
         reduxStorage.setItem('accessToken', response.token?.accessToken);
 
         return apiClient(originalRequest);
       } catch (err: any) {
-        console.log('Refresh token failed', err);
-        dispatchReduxStore(
-          authActions.logoutRequest({
-            action: {
-              onSuccess: () => {
-                AppNavigationRef.current?.reset({
-                  index: 0,
-                  routes: [
-                    {
-                      name: ScreenName.AuthNavigator,
-                      screen: ScreenName.Login,
-                    },
-                  ],
-                });
-              },
-              onFailure: (error: any) => {
-                console.log('Logout failed', error);
-                throw new Error('Logout failed');
-              },
+        console.error('Refresh token failed:', err.response || err.message);
+
+        dispatchReduxStore(authActions.changeLoggedStatus(false));
+        reduxStorage.removeItem('accessToken');
+        reduxStorage.removeItem('refreshToken');
+        reduxStorage.removeItem('refreshToken_KB');
+        reduxStorage.removeItem('accessToken_KB');
+
+        AppNavigationRef.current?.reset({
+          index: 0,
+          routes: [
+            {
+              name: ScreenName.AuthNavigator,
+              screen: ScreenName.Login,
             },
-          }),
-        );
+          ],
+        });
 
         return Promise.reject(err.response || err.message);
       }
+    } else {
+      AppNavigationRef.current?.reset({
+        index: 0,
+        routes: [
+          {
+            name: ScreenName.AuthNavigator,
+            screen: ScreenName.Login,
+          },
+        ],
+      });
+
+      dispatchReduxStore(authActions.changeLoggedStatus(false));
     }
   }
 
@@ -100,12 +110,13 @@ const handleError_KB = async (error: any) => {
     const refreshToken = await reduxStorage.getItem('refreshToken_KB');
     if (refreshToken) {
       try {
-        const response = await kbApiServices.post(
+        const response = await kbHttpRequestService.post(
           KB_APIEndpoint.GetRefreshToken,
           {
             refreshToken,
           },
         );
+
         // @ts-ignore
         reduxStorage.setItem('accessToken_KB', response.token?.accessToken);
         return apiClient(originalRequest);
@@ -114,6 +125,7 @@ const handleError_KB = async (error: any) => {
           authActions.logoutRequest({
             action: {
               onSuccess: () => {
+                console.log('Logout successfully');
                 AppNavigationRef.current?.reset({
                   index: 0,
                   routes: [
@@ -125,7 +137,23 @@ const handleError_KB = async (error: any) => {
                 });
               },
               onFailure: (error: any) => {
-                throw new Error('Logout failed');
+                dispatchReduxStore(authActions.changeLoggedStatus(false));
+                reduxStorage.removeItem('accessToken');
+                reduxStorage.removeItem('refreshToken');
+                reduxStorage.removeItem('refreshToken_KB');
+                reduxStorage.removeItem('accessToken_KB');
+
+                AppNavigationRef.current?.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: ScreenName.AuthNavigator,
+                      screen: ScreenName.Login,
+                    },
+                  ],
+                });
+
+                return Promise.reject(err.response || err.message);
               },
             },
           }),
@@ -133,6 +161,18 @@ const handleError_KB = async (error: any) => {
 
         return Promise.reject(err.response || err.message);
       }
+    } else {
+      AppNavigationRef.current?.reset({
+        index: 0,
+        routes: [
+          {
+            name: ScreenName.AuthNavigator,
+            screen: ScreenName.Login,
+          },
+        ],
+      });
+
+      dispatchReduxStore(authActions.changeLoggedStatus(false));
     }
   }
 
@@ -145,7 +185,7 @@ apiClient.interceptors.response.use(handleResponse, handleError);
 kbApiClient.interceptors.request.use(attachAuthorization_KB);
 kbApiClient.interceptors.response.use(handleResponse, handleError_KB);
 
-export const apiServices = {
+export const httpRequestServices = {
   get: (url: string, params = {}, customHeaders = {}) =>
     apiClient.get(url, {params, headers: {...customHeaders}}),
 
@@ -162,7 +202,7 @@ export const apiServices = {
     apiClient.delete(url, {headers: {...customHeaders}}),
 };
 
-export const kbApiServices = {
+export const kb_httpRequestServices = {
   get: (url: string, params = {}, customHeaders = {}) =>
     kbApiClient.get(url, {params, headers: {...customHeaders}}),
 

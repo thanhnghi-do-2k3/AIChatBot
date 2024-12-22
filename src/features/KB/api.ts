@@ -1,11 +1,11 @@
-import {kbApiServices} from 'api';
 import {KB_APIEndpoint} from 'constant/APIEndPoint';
+import {kb_httpRequestServices} from 'services/http.service';
 import reactotron from '../../../ReactotronConfig';
 
 const KbService = {
   createKb: async (data: CreateKbPayloadData) => {
     try {
-      const response = await kbApiServices.post(
+      const response = await kb_httpRequestServices.post(
         KB_APIEndpoint.CreateKnowledgeBase,
         data,
       );
@@ -19,7 +19,7 @@ const KbService = {
 
   getKb: async () => {
     try {
-      const response = await kbApiServices.get(
+      const response = await kb_httpRequestServices.get(
         KB_APIEndpoint.GetKnowledgeBase,
         {},
       );
@@ -35,7 +35,7 @@ const KbService = {
     try {
       const endpoint =
         KB_APIEndpoint.GetKnowledgeBase + '/' + data.id + '/units';
-      const response = await kbApiServices.get(endpoint);
+      const response = await kb_httpRequestServices.get(endpoint);
       console.log('Get KB Units response from API:', response);
 
       return response;
@@ -47,7 +47,7 @@ const KbService = {
     try {
       console.log('data from add url to kb', data);
       const endpoint = KB_APIEndpoint.GetKnowledgeBase + '/' + data.id + '/web';
-      const response = await kbApiServices.post(endpoint, data);
+      const response = await kb_httpRequestServices.post(endpoint, data);
       console.log('Add URL to KB response from API:', response);
 
       return response;

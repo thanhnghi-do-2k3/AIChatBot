@@ -71,13 +71,13 @@ function* handleUserLogoutSaga(action: PayloadAction<PayloadActions>): any {
     yield call(authService.logout);
     reduxStorage.removeItem('accessToken');
     reduxStorage.removeItem('refreshToken');
-    reduxStorage.removeItem('isLogged');
     yield put(authActions.logoutSuccess({}));
     payload.action?.onSuccess?.();
   } catch (error) {
     yield put(authActions.logoutFailure(error));
     payload.action?.onFailure?.(error);
+  } finally {
+    GlobalLoadingController.hide();
   }
-  GlobalLoadingController.hide();
 }
 export default authSaga;

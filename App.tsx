@@ -4,6 +4,7 @@
  *
  * @format
  */
+import GlobalConfirmModal from 'components/GlobalConfirmModal';
 import GlobalLoading from 'components/GlobalLoading';
 import GlobalModal from 'components/GlobalModal';
 import ApplicationNavigator from 'navigation/index';
@@ -26,7 +27,13 @@ function App(): React.JSX.Element {
           <ApplicationNavigator />
           <GlobalLoading />
           <GlobalModal />
-          <Toast topOffset={60} autoHide bottomOffset={60} />
+          <GlobalConfirmModal />
+          <Toast
+            topOffset={60}
+            autoHide
+            bottomOffset={60}
+            visibilityTime={1000}
+          />
         </GestureHandlerRootView>
       </PersistGate>
     </Provider>

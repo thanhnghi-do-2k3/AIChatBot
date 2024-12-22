@@ -1,24 +1,35 @@
-import Header from 'components/Header';
-import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
 import ScreenName from 'constant/ScreenName';
 import {chatbotActions} from 'features/chatbot/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import useAppSelector from 'hooks/useAppSelector';
 import React, {useEffect, useState} from 'react';
-import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Input} from 'react-native-elements';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Colors} from 'theme';
 import ChatBotListItem from './components/ChatBotListItem';
 import {styles} from './style';
 
 interface Props {}
 
 const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
-  const [botName, setBotName] = useState('');
+  const [botName, setBotName] = useState<string>('');
   const dispatch = useAppDispatch();
   const listChatbot = useAppSelector(state => state.chatbotReducer.listChatbot);
+  const displayChatbot = React.useMemo(
+    () =>
+      listChatbot.filter(
+        item =>
+          item.assistantName.toLowerCase().indexOf(botName.toLowerCase()) !==
+          -1,
+      ),
+    [listChatbot, botName],
+  );
 
   useEffect(() => {
     const payload = {
@@ -39,61 +50,76 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
 
   return (
     <>
-      <NAvoidKeyboardScreen>
-        <Header
-          title="Chatbots list"
-          titleStyle={{color: 'black'}}
-          allowGoBack={false}
-        />
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="padding"
+        keyboardVerticalOffset={100}
+        enabled>
         <View style={styles.container}>
-          <Input
-            placeholder="Search chatbot"
-            placeholderTextColor={'#BDBDBD'}
-            value={botName}
-            onChangeText={setBotName}
-            leftIcon={{
-              type: 'font-awesome',
-              name: 'search',
-              color: '#BDBDBD',
-            }}
-            inputStyle={{
-              marginLeft: 10,
-            }}
-            inputContainerStyle={{
-              borderBottomWidth: 0,
-              paddingHorizontal: 20,
-              paddingVertical: 5,
-              backgroundColor: '#F5F5F5',
-              borderRadius: 20,
-            }}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate(ScreenName.CreateBotTab);
-            }}
+          <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: Colors.primary,
-              paddingVertical: 12,
-              paddingHorizontal: 20,
-              borderRadius: 999,
+              width: '100%',
+              marginTop: 20,
             }}>
-            <Icon name="robot" size={20} color="#fff" />
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 16,
-                fontWeight: '600',
+            <Input
+              errorStyle={{
+                height: 0,
+                margin: 0,
+              }}
+              containerStyle={{
+                width: '70%',
+                padding: 0,
+                margin: 0,
+              }}
+              placeholder="Search chatbot"
+              placeholderTextColor={'#BDBDBD'}
+              value={botName}
+              onChangeText={setBotName}
+              leftIcon={{
+                type: 'font-awesome',
+                name: 'search',
+                color: '#BDBDBD',
+              }}
+              inputStyle={{
                 marginLeft: 10,
+              }}
+              inputContainerStyle={{
+                borderWidth: 1,
+                borderColor: '#c3c3c3',
+                paddingHorizontal: 20,
+                paddingVertical: 5,
+                backgroundColor: '#F5F5F5',
+                borderRadius: 20,
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ScreenName.CreateBotTab);
+              }}
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#73b9eecc',
+                paddingVertical: 17,
+                paddingHorizontal: 20,
+                borderRadius: 10,
               }}>
-              Create Chat Bot
-            </Text>
-          </TouchableOpacity>
+              <Icon
+                name="plus"
+                size={20}
+                color="#000000aa"
+                style={{
+                  marginRight: 5,
+                }}
+              />
+              <Icon name="robot" size={20} color="#000000aa" />
+            </TouchableOpacity>
+          </View>
           <FlatList
-            style={{marginTop: 20, width: '100%', flex: 1}}
-            data={listChatbot}
+            style={{width: '100%', flex: 1, marginTop: 20}}
+            data={displayChatbot}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.chatbotName}
             renderItem={({item, index}) => (
@@ -101,7 +127,7 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
             )}
           />
         </View>
-      </NAvoidKeyboardScreen>
+      </KeyboardAvoidingView>
     </>
   );
 };

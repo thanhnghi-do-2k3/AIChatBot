@@ -1,5 +1,5 @@
-import {apiServices} from 'api';
 import {APIEndpoint} from 'constant/APIEndPoint';
+import {httpRequestServices} from 'services/http.service';
 import reactotron from '../../../ReactotronConfig';
 
 const EmailService = {
@@ -19,7 +19,7 @@ const EmailService = {
 
   getEmailSuggestion: async (data: EmailSuggestionPayloadData) => {
     try {
-      const response = await apiServices.post(
+      const response = await httpRequestServices.post(
         APIEndpoint.EmailSuggestions,
         data,
       );
@@ -33,7 +33,7 @@ const EmailService = {
 
   getEmailResponse: async (data: EmailResponsePayloadData) => {
     try {
-      const response = await apiServices.post(
+      const response = await httpRequestServices.post(
         APIEndpoint.EmailResponse,
         data,
       );
@@ -44,8 +44,6 @@ const EmailService = {
       throw error;
     }
   },
-
-  
 };
 
 export default EmailService;

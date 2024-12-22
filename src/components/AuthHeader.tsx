@@ -1,14 +1,14 @@
-import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import React from 'react';
 import {
   StyleProp,
   StyleSheet,
+  Text,
   TextStyle,
   TouchableOpacity,
   View,
   ViewStyle,
 } from 'react-native';
-import {Text} from 'react-native';
 // @ts-ignore
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -51,26 +51,21 @@ const DefaultContent = ({
 
   return (
     <View
-      className='flex-row items-center justify-center'
-      style={[
-        style,
-        styles.container,
-      ]}>
-      <View
-       className='row items-start'
-       style={styles.sideItem}>
+      className="flex-row items-center justify-center"
+      style={[style, styles.container]}>
+      <View className="row items-start" style={styles.sideItem}>
         {renderBackBtn()}
       </View>
       <View
-        className='row items-center justify-center'
+        className="row items-center justify-center"
         style={[styles.headerTitle]}>
         <Text
-         className='font-semibold text-headerTittle text-black' 
-        style={titleStyle}>{title}</Text>
+          className="font-semibold text-headerTittle text-black"
+          style={titleStyle}>
+          {title}
+        </Text>
       </View>
-      <View
-        className='row items-end'
-      style={styles.sideItem}>
+      <View className="row items-end" style={styles.sideItem}>
         {leftComponent}
       </View>
     </View>

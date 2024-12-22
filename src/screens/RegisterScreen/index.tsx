@@ -5,10 +5,10 @@ import {authActions} from 'features/auth/reducer';
 import {useFormik} from 'formik';
 import useAppDispatch from 'hooks/useAppDispatch';
 import React from 'react';
-import {Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {Input} from 'react-native-elements';
 import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
-import {styles} from './style';
 
 interface Props {
   // Define your component's props here
@@ -75,61 +75,169 @@ const RegisterScreen: React.FC<Props> = ({navigation}: any) => {
     },
   });
 
+  const [isPasswordVisible, setPasswordVisible] = React.useState(false);
+  const [isConfirmPasswordVisible, setConfirmPasswordVisible] =
+    React.useState(false);
+
   return (
     <NAvoidKeyboardScreen>
       <AuthHeader title="Sign Up" titleStyle={{color: 'black'}} />
       <View className="flex-1 items-center p-4 mt-12 justify-between">
         <View className="w-full items-center flex-1">
-          <Text style={styles.label}>Name</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Name"
-            placeholderTextColor="#BDBDBD"
+          <Input
+            errorMessage={
+              formik.touched.name && formik.errors.name
+                ? formik.errors.name
+                : ''
+            }
+            label="Name"
+            labelStyle={{
+              color: '#BDBDBD',
+              fontSize: 16,
+              marginLeft: 5,
+              marginBottom: 5,
+            }}
+            placeholder="Enter your name"
+            placeholderTextColor={'#BDBDBD'}
             value={formik.values.name}
             onChangeText={formik.handleChange('name')}
             onBlur={formik.handleBlur('name')}
+            leftIcon={{
+              type: 'font-awesome',
+              name: 'user',
+              color: '#BDBDBD',
+            }}
+            inputStyle={{
+              marginLeft: 10,
+            }}
+            inputContainerStyle={{
+              borderBottomWidth: 0,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              backgroundColor: '#F5F5F5',
+              borderRadius: 20,
+            }}
           />
-          {formik.touched.name && formik.errors.name ? (
-            <Text style={styles.error}>{formik.errors.name}</Text>
-          ) : null}
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor="#BDBDBD"
+          <Input
+            errorMessage={
+              formik.touched.email && formik.errors.email
+                ? formik.errors.email
+                : ''
+            }
+            label="Email"
+            labelStyle={{
+              color: '#BDBDBD',
+              fontSize: 16,
+              marginLeft: 5,
+              marginBottom: 5,
+            }}
+            placeholder="Enter your email"
+            placeholderTextColor={'#BDBDBD'}
             value={formik.values.email}
             onChangeText={formik.handleChange('email')}
             onBlur={formik.handleBlur('email')}
+            leftIcon={{
+              type: 'font-awesome',
+              name: 'user',
+              color: '#BDBDBD',
+            }}
+            inputStyle={{
+              marginLeft: 10,
+            }}
+            inputContainerStyle={{
+              borderBottomWidth: 0,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              backgroundColor: '#F5F5F5',
+              borderRadius: 20,
+            }}
           />
-          {formik.touched.email && formik.errors.email ? (
-            <Text style={styles.error}>{formik.errors.email}</Text>
-          ) : null}
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#BDBDBD"
+          <Input
+            errorMessage={
+              formik.touched.password && formik.errors.password
+                ? formik.errors.password
+                : ''
+            }
+            label="Password"
+            labelStyle={{
+              color: '#BDBDBD',
+              fontSize: 16,
+              marginLeft: 5,
+              marginBottom: 5,
+            }}
+            placeholder="Enter your password"
+            placeholderTextColor={'#BDBDBD'}
             value={formik.values.password}
             onChangeText={formik.handleChange('password')}
             onBlur={formik.handleBlur('password')}
+            leftIcon={{
+              type: 'font-awesome',
+              name: 'lock',
+              color: '#BDBDBD',
+            }}
+            rightIcon={{
+              type: 'font-awesome',
+              name: isPasswordVisible ? 'eye-slash' : 'eye',
+              color: '#BDBDBD',
+              onPress: () => setPasswordVisible(!isPasswordVisible),
+            }}
+            secureTextEntry={!isPasswordVisible}
+            inputStyle={{
+              marginLeft: 10,
+            }}
+            inputContainerStyle={{
+              borderBottomWidth: 0,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              backgroundColor: '#F5F5F5',
+              borderRadius: 20,
+            }}
           />
-          {formik.touched.password && formik.errors.password ? (
-            <Text style={styles.error}>{formik.errors.password}</Text>
-          ) : null}
-          <Text style={styles.label}>Confirm Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm Password"
-            placeholderTextColor="#BDBDBD"
+          <Input
+            errorMessage={
+              formik.touched.confirmPassword && formik.errors.confirmPassword
+                ? formik.errors.confirmPassword
+                : ''
+            }
+            label="Confirm Password"
+            labelStyle={{
+              color: '#BDBDBD',
+              fontSize: 16,
+              marginLeft: 5,
+              marginBottom: 5,
+            }}
+            placeholder="Re-enter your password"
+            placeholderTextColor={'#BDBDBD'}
             value={formik.values.confirmPassword}
             onChangeText={formik.handleChange('confirmPassword')}
             onBlur={formik.handleBlur('confirmPassword')}
+            leftIcon={{
+              type: 'font-awesome',
+              name: 'lock',
+              color: '#BDBDBD',
+            }}
+            inputStyle={{
+              marginLeft: 10,
+            }}
+            rightIcon={{
+              type: 'font-awesome',
+              name: isConfirmPasswordVisible ? 'eye-slash' : 'eye',
+              color: '#BDBDBD',
+              onPress: () =>
+                setConfirmPasswordVisible(!isConfirmPasswordVisible),
+            }}
+            secureTextEntry={!isConfirmPasswordVisible}
+            inputContainerStyle={{
+              borderBottomWidth: 0,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              backgroundColor: '#F5F5F5',
+              borderRadius: 20,
+            }}
           />
-          {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-            <Text style={styles.error}>{formik.errors.confirmPassword}</Text>
-          ) : null}
           <TouchableOpacity
-            className={`mt-6 w-full h-12 bg-primary rounded-full justify-center items-center h-[${_buttonHeight}px]`}
+            className={`mt-6 h-12 bg-primary rounded-full justify-center items-center h-[${_buttonHeight}px]`}
+            style={{width: '50%'}}
             onPress={formik.submitForm}>
             <Text className="text-white text-lg font-semibold">Sign Up</Text>
           </TouchableOpacity>
@@ -140,7 +248,11 @@ const RegisterScreen: React.FC<Props> = ({navigation}: any) => {
             <Text className="text-blue-700 text-medium font-semibold">
               Or continue with{' '}
             </Text>
-            <TouchableOpacity className="border-b border-blue-700">
+            <TouchableOpacity
+              className="border-b border-blue-700"
+              onPress={() => {
+                navigation.navigate(ScreenName.LoginWithGoogle);
+              }}>
               <Text className="text-blue-700 text-medium font-semibold">
                 Google
               </Text>

@@ -1,17 +1,16 @@
-import React, {useState} from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {kbActions} from 'features/KB/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
-import useAppSelector from 'hooks/useAppSelector';
+import React, {useState} from 'react';
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Modal from 'react-native-modal';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface CreateKnowledgeModalProps {
   visible: boolean;
@@ -67,70 +66,73 @@ const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
     onClose();
   };
   return (
-    <Modal visible={visible} transparent={true} animationType="slide">
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.title}>Add Knowledge</Text>
-          {selectedOption !== 'url' ? (
-            <View style={styles.optionsContainer}>
-              <TouchableOpacity
-                onPress={() => setSelectedOption('file')}
-                style={[
-                  styles.optionButton,
-                  selectedOption === 'file' && styles.selectedOption,
-                ]}>
-                <Icon name="file" size={20} color="#000" />
-                <Text>From File</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setSelectedOption('url')}
-                style={[
-                  styles.optionButton,
-                  selectedOption === 'url' && styles.selectedOption,
-                ]}>
-                <Icon name="link" size={20} color="#000" />
-                <Text>From URL</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setSelectedOption('github')}
-                style={[
-                  styles.optionButton,
-                  selectedOption === 'github' && styles.selectedOption,
-                ]}>
-                <Icon name="github" size={20} color="#000" />
-                <Text>From GitHub</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setSelectedOption('drive')}
-                style={[
-                  styles.optionButton,
-                  selectedOption === 'drive' && styles.selectedOption,
-                ]}>
-                <Icon name="google-drive" size={20} color="#000" />
-                <Text>From Drive</Text>
-              </TouchableOpacity>
+    <Modal
+      isVisible={visible}
+      onBackdropPress={handleClose}
+      style={{margin: 0}}
+      backdropOpacity={0.5}
+      animationIn="fadeIn">
+      <View style={styles.modalContent}>
+        <Text style={styles.title}>Add Knowledge</Text>
+        {selectedOption !== 'url' ? (
+          <View style={styles.optionsContainer}>
+            <TouchableOpacity
+              onPress={() => setSelectedOption('file')}
+              style={[
+                styles.optionButton,
+                selectedOption === 'file' && styles.selectedOption,
+              ]}>
+              <Icon name="file" size={20} color="#000" />
+              <Text>From File</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setSelectedOption('url')}
+              style={[
+                styles.optionButton,
+                selectedOption === 'url' && styles.selectedOption,
+              ]}>
+              <Icon name="link" size={20} color="#000" />
+              <Text>From URL</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setSelectedOption('github')}
+              style={[
+                styles.optionButton,
+                selectedOption === 'github' && styles.selectedOption,
+              ]}>
+              <Icon name="github" size={20} color="#000" />
+              <Text>From GitHub</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setSelectedOption('drive')}
+              style={[
+                styles.optionButton,
+                selectedOption === 'drive' && styles.selectedOption,
+              ]}>
+              <Icon name="google-drive" size={20} color="#000" />
+              <Text>From Drive</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter Name"
+              value={name}
+              onChangeText={setName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter URL"
+              value={url}
+              onChangeText={setUrl}
+            />
+            <View style={styles.buttonContainer}>
+              <Button title="Submit" onPress={handleSubmit} />
+              <Button title="Cancel" onPress={handleClose} />
             </View>
-          ) : (
-            <View>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter Name"
-                value={name}
-                onChangeText={setName}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Enter URL"
-                value={url}
-                onChangeText={setUrl}
-              />
-              <View style={styles.buttonContainer}>
-                <Button title="Submit" onPress={handleSubmit} />
-                <Button title="Cancel" onPress={handleClose} />
-              </View>
-            </View>
-          )}
-        </View>
+          </View>
+        )}
       </View>
     </Modal>
   );
@@ -144,7 +146,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    width: '95%',
+    alignSelf: 'center',
+    width: '90%',
     padding: 20,
     backgroundColor: 'white',
     borderRadius: 10,

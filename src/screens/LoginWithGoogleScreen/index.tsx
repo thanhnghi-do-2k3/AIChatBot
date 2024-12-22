@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import AuthHeader from 'components/AuthHeader';
-import ScreenName from 'constant/ScreenName';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
-import {styles} from './style';
+import ScreenName from 'constant/ScreenName';
+import React, {useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {Input} from 'react-native-elements';
 
 interface Props {
   // Define your component's props here
@@ -17,13 +17,33 @@ const LoginWithGoogleScreen: React.FC<Props> = ({navigation}: any) => {
       <AuthHeader title="Login with Google" titleStyle={{color: 'black'}} />
       <View className="flex-1 items-center px-4 justify-between">
         <View className="w-full flex-1 items-center justify-center">
-          <TextInput
-            style={styles.input}
-            className="w-full h-12 border border-gray-300 rounded-lg mb-7 px-2 bg-gray-100 text-base text-gray-700"
-            placeholder="Enter your Gmail"
-            placeholderTextColor="#BDBDBD"
+          <Input
+            label="Email"
+            labelStyle={{
+              color: '#BDBDBD',
+              fontSize: 16,
+              marginLeft: 5,
+              marginBottom: 5,
+            }}
+            placeholder="Enter your email"
+            placeholderTextColor={'#BDBDBD'}
             value={gmail}
             onChangeText={setGmail}
+            leftIcon={{
+              type: 'font-awesome',
+              name: 'inbox',
+              color: '#BDBDBD',
+            }}
+            inputStyle={{
+              marginLeft: 10,
+            }}
+            inputContainerStyle={{
+              borderBottomWidth: 0,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              backgroundColor: '#F5F5F5',
+              borderRadius: 20,
+            }}
           />
         </View>
 

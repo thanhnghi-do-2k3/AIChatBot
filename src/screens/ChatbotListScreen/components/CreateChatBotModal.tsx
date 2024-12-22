@@ -62,6 +62,7 @@ const CreateChatBotModal: React.FC<CreateChatBotModalProps> = ({
             text2: error?.data?.details?.[0].issue,
           });
         },
+        onBegin: () => {},
       },
     };
     dispatch(chatbotActions.createChatbot(createChatbotPayload));

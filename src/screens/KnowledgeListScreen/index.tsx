@@ -1,20 +1,24 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {View, Animated, FlatList, PanResponder} from 'react-native';
-import {TouchableOpacity} from 'react-native';
-import {Text} from 'react-native';
 import ScreenName from 'constant/ScreenName';
-import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
-import {styles} from './style';
-import Header from 'components/Header';
-import {Input} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Colors} from 'theme';
-import {mockdata} from './mockdata';
-import CreateKnowledgeModal from './components/CreateKnowledgeModal';
-import Toast from 'react-native-toast-message';
 import {kbActions} from 'features/KB/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import useAppSelector from 'hooks/useAppSelector';
+import React, {useEffect, useState} from 'react';
+import {
+  Animated,
+  FlatList,
+  KeyboardAvoidingView,
+  PanResponder,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Input} from 'react-native-elements';
+import Toast from 'react-native-toast-message';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Colors} from 'theme';
+import CreateKnowledgeModal from './components/CreateKnowledgeModal';
+import {mockdata} from './mockdata';
+import {styles} from './style';
 
 interface Props {}
 
@@ -110,7 +114,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
             marginVertical: 10,
             width: '90%',
             alignSelf: 'center',
-            backgroundColor: index % 2 === 0 ? '#F5F5F5' : '#fff',
+            backgroundColor: '#fff',
           },
         ]}>
         <TouchableOpacity
@@ -194,18 +198,26 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
 
   return (
     <>
-      <NAvoidKeyboardScreen>
-        <Header
-          title="Knowledge"
-          titleStyle={{color: 'black'}}
-          allowGoBack={false}
-        />
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="padding"
+        keyboardVerticalOffset={100}
+        enabled>
         <View style={styles.container}>
           <Input
             placeholder="Search knowledge"
             placeholderTextColor={'#BDBDBD'}
             value={botName}
             onChangeText={setBotName}
+            errorStyle={{
+              height: 0,
+              margin: 0,
+            }}
+            containerStyle={{
+              width: '100%',
+              padding: 0,
+              marginBottom: 20,
+            }}
             leftIcon={{
               type: 'font-awesome',
               name: 'search',
@@ -215,7 +227,8 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
               marginLeft: 10,
             }}
             inputContainerStyle={{
-              borderBottomWidth: 0,
+              borderWidth: 1,
+              borderColor: '#c3c3c3',
               paddingHorizontal: 20,
               paddingVertical: 5,
               backgroundColor: '#F5F5F5',
@@ -255,7 +268,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
             renderItem={renderItem}
           />
         </View>
-      </NAvoidKeyboardScreen>
+      </KeyboardAvoidingView>
       <CreateKnowledgeModal
         visible={isModalVisible}
         onClose={() => {

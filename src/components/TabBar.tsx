@@ -1,14 +1,6 @@
 import ScreenName from 'constant/ScreenName';
-import React, {useLayoutEffect, useMemo, useRef} from 'react';
-import {Animated} from 'react-native';
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Vibration,
-  View,
-  Text,
-} from 'react-native';
+import React, {useLayoutEffect, useRef} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 // @ts-ignore
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -166,6 +158,8 @@ const styles = StyleSheet.create({
     // borderTopWidth: 1,
   },
   container: {
+    borderTopRightRadius: 32,
+    borderTopLeftRadius: 32,
     flexDirection: 'row',
     height: 64,
     alignItems: 'center',

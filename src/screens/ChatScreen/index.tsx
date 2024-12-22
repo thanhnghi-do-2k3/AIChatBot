@@ -1,20 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import {aiChatActions} from 'features/chat/reducer';
+import React, {useEffect, useState} from 'react';
 import {
-  View,
   FlatList,
+  Image,
+  KeyboardAvoidingView,
+  Text,
   TextInput,
   TouchableOpacity,
-  Text,
-  Image,
+  View,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as Animatable from 'react-native-animatable';
-import Colors from 'theme/Colors';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {aiChatActions} from 'features/chat/reducer';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/store';
+import Colors from 'theme/Colors';
 
 const ChatScreenWithAI: React.FC = () => {
   const dispatch = useDispatch();
@@ -85,7 +85,7 @@ const ChatScreenWithAI: React.FC = () => {
             assistant: {
               id: 'gpt-4o-mini',
               model: 'dify',
-              name:'GPT-4o mini'
+              name: 'GPT-4o mini',
             },
           },
         }),
@@ -111,139 +111,134 @@ const ChatScreenWithAI: React.FC = () => {
     });
   };
 
- const renderItem = ({item}: {item: Message}) => (
-  <Animatable.View
-    animation="fadeInUp"
-    duration={500}
-    style={{
-      flexDirection: item.sender === 'User' ? 'row-reverse' : 'row',
-      alignItems: 'flex-end',
-      marginVertical: 5,
-    }}>
-    <Image
-      source={{
-        uri:
-          item.sender === 'User'
-            ? 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'
-            : 'https://www.shutterstock.com/shutterstock/photos/2464455965/display_1500/stock-vector-happy-robot-d-ai-character-chat-bot-mascot-isolated-on-white-background-gpt-chatbot-icon-2464455965.jpg',
-      }}
+  const renderItem = ({item}: {item: Message}) => (
+    <Animatable.View
+      animation="fadeInUp"
+      duration={500}
       style={{
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        borderWidth: 2,
-        borderColor: Colors.primary,
-      }}
-    />
-    <View
-      style={{
-        backgroundColor: item.sender === 'User' ? Colors.primary : '#F3F4F6',
-        padding: 12,
-        borderRadius: 18,
-        marginHorizontal: 10,
-        maxWidth: '75%',
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
+        flexDirection: item.sender === 'User' ? 'row-reverse' : 'row',
+        alignItems: 'flex-end',
+        marginVertical: 5,
       }}>
-      {item.isTyping ? (
-        <Animatable.Text
-          animation="pulse"
-          iterationCount="infinite"
-          style={{color: '#6B7280', fontSize: 14}}>
-          ...
-        </Animatable.Text>
-      ) : item.content ? (
+      <Image
+        source={{
+          uri:
+            item.sender === 'User'
+              ? 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'
+              : 'https://www.shutterstock.com/shutterstock/photos/2464455965/display_1500/stock-vector-happy-robot-d-ai-character-chat-bot-mascot-isolated-on-white-background-gpt-chatbot-icon-2464455965.jpg',
+        }}
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          borderWidth: 2,
+          borderColor: Colors.primary,
+        }}
+      />
+      <View
+        style={{
+          backgroundColor: item.sender === 'User' ? Colors.primary : '#F3F4F6',
+          padding: 12,
+          borderRadius: 18,
+          marginHorizontal: 10,
+          maxWidth: '75%',
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: 2},
+          shadowOpacity: 0.2,
+          shadowRadius: 3,
+        }}>
+        {item.isTyping ? (
+          <Animatable.Text
+            animation="pulse"
+            iterationCount="infinite"
+            style={{color: '#6B7280', fontSize: 14}}>
+            ...
+          </Animatable.Text>
+        ) : item.content ? (
+          <Text
+            style={{
+              color: item.sender === 'User' ? 'white' : '#1F2937',
+              fontSize: 16,
+            }}>
+            {item.content}
+          </Text>
+        ) : null}
+        {item.image && (
+          <Image
+            source={{uri: item.image}}
+            style={{width: 200, height: 200, marginTop: 10, borderRadius: 10}}
+            resizeMode="cover"
+          />
+        )}
         <Text
           style={{
-            color: item.sender === 'User' ? 'white' : '#1F2937',
-            fontSize: 16,
+            fontSize: 12,
+            color: '#9CA3AF',
+            marginTop: 5,
+            textAlign: item.sender === 'User' ? 'right' : 'left',
           }}>
-          {item.content}
+          {item.time}
         </Text>
-      ) : null}
-      {item.image && (
-        <Image
-          source={{uri: item.image}}
-          style={{width: 200, height: 200, marginTop: 10, borderRadius: 10}}
-          resizeMode="cover"
-        />
-      )}
-      <Text
-        style={{
-          fontSize: 12,
-          color: '#9CA3AF',
-          marginTop: 5,
-          textAlign: item.sender === 'User' ? 'right' : 'left',
-        }}>
-        {item.time}
-      </Text>
-    </View>
-  </Animatable.View>
-);
-
+      </View>
+    </Animatable.View>
+  );
 
   return (
-    <NAvoidKeyboardScreen>
-      <View style={{flex: 1, backgroundColor: '#F9FAFB'}}>
-  <FlatList
-    data={messages}
-    keyExtractor={item => item.id}
-    renderItem={renderItem}
-    contentContainerStyle={{
-      padding: 10,
-      paddingBottom: 80, 
-    }}
-  />
-  <View
-    style={{
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      flexDirection: 'row',
-      alignItems: 'center',
-      padding: 10,
-      backgroundColor: '#FFF',
-      shadowColor: '#000',
-      shadowOffset: {width: 0, height: 2},
-      shadowOpacity: 0.2,
-      shadowRadius: 3,
-      borderTopWidth: 1,
-      borderTopColor: '#E5E7EB',
-    }}>
-    <TouchableOpacity onPress={handleChoosePhoto} style={{marginRight: 10}}>
-      <Icon name="image" size={24} color={Colors.primary} />
-    </TouchableOpacity>
-    <TextInput
-      style={{
-        flex: 1,
-        backgroundColor: '#F3F4F6',
-        borderRadius: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        fontSize: 16,
-        marginHorizontal: 5,
-        color: '#1F2937',
-      }}
-      placeholder="Type a message..."
-      placeholderTextColor="#9CA3AF"
-      value={inputMessage}
-      onChangeText={setInputMessage}
-    />
-    <TouchableOpacity onPress={handleSend}>
-      <Icon
-        name="paper-plane"
-        size={24}
-        color={Colors.primary}
-        
+    <KeyboardAvoidingView
+      style={{flex: 1, backgroundColor: '#fff'}}
+      behavior="padding"
+      keyboardVerticalOffset={100}
+      enabled>
+      <FlatList
+        data={messages}
+        keyExtractor={item => item.id}
+        renderItem={renderItem}
+        contentContainerStyle={{
+          padding: 10,
+          paddingBottom: 80,
+        }}
       />
-    </TouchableOpacity>
-  </View>
-</View>
-
-    </NAvoidKeyboardScreen>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: 10,
+          backgroundColor: '#FFF',
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: 2},
+          shadowOpacity: 0.2,
+          shadowRadius: 3,
+          borderTopWidth: 1,
+          borderTopColor: '#E5E7EB',
+        }}>
+        <TouchableOpacity onPress={handleChoosePhoto} style={{marginRight: 10}}>
+          <Icon name="image" size={24} color={Colors.primary} />
+        </TouchableOpacity>
+        <TextInput
+          style={{
+            flex: 1,
+            backgroundColor: '#F3F4F6',
+            borderRadius: 20,
+            paddingVertical: 10,
+            paddingHorizontal: 15,
+            fontSize: 16,
+            marginHorizontal: 5,
+            color: '#1F2937',
+          }}
+          placeholder="Type a message..."
+          placeholderTextColor="#9CA3AF"
+          value={inputMessage}
+          onChangeText={setInputMessage}
+        />
+        <TouchableOpacity onPress={handleSend}>
+          <Icon name="paper-plane" size={24} color={Colors.primary} />
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 

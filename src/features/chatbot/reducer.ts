@@ -34,6 +34,26 @@ const chatbotSlice = createSlice({
     getChatbotFailure: (state, action) => {
       state.loading = false;
     },
+
+    deleteChatbot: (state, action) => {
+      state.loading = true;
+    },
+    deleteChatbotSuccess: (state, action) => {
+      state.loading = false;
+    },
+    deleteChatbotFailure: (state, action) => {
+      state.loading = false;
+    },
+
+    updateChatbot: (state, action) => {
+      state.loading = true;
+    },
+    updateChatbotSuccess: (state, action) => {
+      state.loading = false;
+    },
+    updateChatbotFailure: (state, action) => {
+      state.loading = false;
+    },
   },
 });
 

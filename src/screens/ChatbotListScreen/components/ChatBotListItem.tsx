@@ -1,7 +1,13 @@
+import {useNavigation} from '@react-navigation/native';
+import {GlobalConfirmModalController} from 'components/GlobalConfirmModal';
+import ScreenName from 'constant/ScreenName';
 import dayjs from 'dayjs';
+import {chatbotActions} from 'features/chatbot/reducer';
+import useAppDispatch from 'hooks/useAppDispatch';
 import React, {useCallback} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface ChatBotListItemProps {
@@ -10,7 +16,46 @@ interface ChatBotListItemProps {
 }
 
 const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
-  const rightAction = useCallback((progress: any, dragX: any, item: any) => {
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation();
+  const thisSwipeable = React.useRef(null);
+
+  const onDelete = () => {
+    GlobalConfirmModalController.show({
+      header: 'Delete chatbot',
+      message: 'Are you sure you want to delete this chatbot?',
+      onConfirm: () => {
+        dispatch(
+          chatbotActions.deleteChatbot({
+            data: {
+              id: item.id,
+            },
+            action: {
+              onSuccess: () => {
+                Toast.show({
+                  type: 'success',
+                  text1: 'Delete chatbot successfully',
+                });
+                dispatch(chatbotActions.getChatbot({}));
+                // @ts-ignore
+                thisSwipeable?.current?.close();
+              },
+              onFailure: () => {
+                Toast.show({
+                  type: 'error',
+                  text1: 'Delete chatbot failed',
+                });
+                // @ts-ignore
+                thisSwipeable?.current?.close();
+              },
+            },
+          }),
+        );
+      },
+    });
+  };
+
+  const rightAction = useCallback((progress: any, dragX: any) => {
     return (
       <View
         style={{
@@ -21,7 +66,7 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           gap: 5,
         }}>
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={() => onDelete()}
           style={{
             backgroundColor: 'red',
             padding: 10,
@@ -34,7 +79,14 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           <Icon name="trash" size={20} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={() => {
+            // @ts-ignore
+            navigation.navigate(ScreenName.UpdateBotTab, {
+              chatbot: item,
+            });
+            // @ts-ignore
+            thisSwipeable?.current?.close();
+          }}
           style={{
             backgroundColor: 'green',
             padding: 10,
@@ -50,17 +102,46 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
     );
   }, []);
 
+  const leftAction = useCallback((progress: any, dragX: any) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          gap: 5,
+        }}>
+        <TouchableOpacity
+          onPress={() => onDelete()}
+          style={{
+            backgroundColor: '#3337c4',
+            padding: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 5,
+            width: 70,
+            height: '100%',
+          }}>
+          <Icon name="share" size={20} color="white" />
+        </TouchableOpacity>
+      </View>
+    );
+  }, []);
+
   return (
     <ReanimatedSwipeable
+      ref={thisSwipeable}
       renderRightActions={rightAction}
+      renderLeftActions={leftAction}
+      friction={2}
       containerStyle={[
         {
           flexDirection: 'row',
           alignItems: 'center',
-          borderWidth: 1,
           borderColor: 'transparent',
           width: '100%',
-          marginVertical: 5,
+          marginVertical: 2,
         },
       ]}>
       <View
@@ -73,7 +154,7 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           height: 100,
           width: '100%',
           alignSelf: 'center',
-          backgroundColor: index % 2 === 0 ? '#F5F5F5' : '#fff',
+          backgroundColor: '#fff',
         }}>
         <TouchableOpacity
           style={{
@@ -89,7 +170,12 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
               justifyContent: 'flex-start',
               flex: 0.85,
             }}>
-            <Icon name="robot" size={30} color={item.BotColor} />
+            <Icon
+              name="robot"
+              size={30}
+              color={item.BotColor}
+              style={{marginRight: 3}}
+            />
             <View>
               <Text
                 style={{
@@ -129,6 +215,13 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           </TouchableOpacity>
         </TouchableOpacity>
       </View>
+      <View
+        style={{
+          height: 2,
+          width: '100%',
+          backgroundColor: '#ccc',
+          alignSelf: 'flex-end',
+        }}></View>
     </ReanimatedSwipeable>
   );
 };

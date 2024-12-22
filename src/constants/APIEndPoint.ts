@@ -17,8 +17,8 @@ export const KB_APIEndpoint = {
   SignIn: '/auth/external-sign-in',
   GetRefreshToken: '/auth/refresh',
   // Chatbot
-  CreateAssistant: 'ai-assistant',
-  GetAssistant: 'ai-assistant',
+  Assistant: '/ai-assistant',
+  Assistant_KB: '/knowledges',
   //Knowledge Base
   CreateKnowledgeBase: 'knowledge',
   GetKnowledgeBase: 'knowledge',
