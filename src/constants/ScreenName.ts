@@ -1,3 +1,5 @@
+import EmailScreen from "screens/EmailScreen";
+
 const ScreenName = {
   Home: 'Home',
   Login: 'Login',
@@ -11,6 +13,7 @@ const ScreenName = {
   KnowledgeDetailScreen: 'KnowledgeDetailScreen',
   ChatHisToryScreen: 'ChatHisToryScreen',
   ChatScreen: 'ChatScreen',
+  EmailScreen: 'EmailScreen',
 
   // Tab
   CreateBotTab: 'CreateBotTab',
@@ -21,6 +24,7 @@ const ScreenName = {
   ChatbotNavigator: 'ChatbotNavigator',
   KnowledgeNavigator: 'KnowledgeNavigator',
   ChatNavigator: 'ChatNavigator',
+  EmailNavigator: 'EmailNavigator',
 };
 
 export default ScreenName;

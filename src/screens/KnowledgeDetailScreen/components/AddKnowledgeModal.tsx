@@ -6,107 +6,130 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  Touchable,
+  TouchableOpacity,
 } from 'react-native';
-import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {kbActions} from 'features/KB/reducer';
+import useAppDispatch from 'hooks/useAppDispatch';
+import useAppSelector from 'hooks/useAppSelector';
 
 interface CreateKnowledgeModalProps {
   visible: boolean;
   onClose: () => void;
+  id: string;
 }
 
 const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
   visible,
   onClose,
+  id,
 }) => {
-  const [description, setDescription] = useState('');
-
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [name, setName] = useState('');
+  const [url, setUrl] = useState('');
+  const dispatch = useAppDispatch();
   const handleSubmit = () => {
-    // Add your logic to handle form submission here
-    // For example, you can make an API call to create a new chatbot
-    // and then close the modal
-    onClose();
+    if (selectedOption === 'url' && name && url) {
+      const payload = {
+        data: {
+          id: id,
+          unitName: name,
+          webUrl: url,
+        },
+        action: {
+          onSuccess: (data: any) => {
+            const unitsPayload = {
+              data: {
+                id: id,
+              },
+              action: {
+                onSuccess: (data: any) => {},
+                onFailure: (error: any) => {},
+              },
+            };
+            dispatch(kbActions.getUnitsKb(unitsPayload));
+          },
+          onFailure: (error: any) => {},
+        },
+      };
+      dispatch(kbActions.addUrlToKb(payload));
+    }
+    handleClose();
+  };
+  const handleReset = () => {
+    setSelectedOption(null);
+    setName('');
+    setUrl('');
   };
 
-  const [botName, setBotName] = useState('');
-
+  const handleClose = () => {
+    handleReset(); // Reset state khi đóng modal
+    onClose();
+  };
   return (
     <Modal visible={visible} transparent={true} animationType="slide">
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.title}>Add Knowledge</Text>
-          <View
-            style={{
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginBottom: 20,
-              gap: 20,
-            }}>
-            <TouchableOpacity
-              onPress={onClose}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#F5F5F5',
-                paddingVertical: 12,
-                paddingHorizontal: 20,
-                borderRadius: 20,
-                gap: 20,
-              }}>
-              <Icon name="file" size={20} color="#000" />
-              <Text>From File</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={onClose}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#F5F5F5',
-                paddingVertical: 12,
-                paddingHorizontal: 20,
-                borderRadius: 20,
-                gap: 20,
-              }}>
-              <Icon name="link" size={20} color="#000" />
-              <Text>From URL</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={onClose}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#F5F5F5',
-                paddingVertical: 12,
-                paddingHorizontal: 20,
-                borderRadius: 20,
-                gap: 20,
-              }}>
-              <Icon name="github" size={20} color="#000" />
-              <Text>From Github</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={onClose}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#F5F5F5',
-                paddingVertical: 12,
-                paddingHorizontal: 20,
-                borderRadius: 20,
-                gap: 20,
-              }}>
-              <Icon name="google-drive" size={20} color="#000" />
-              <Text>From Drive</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Cancel" onPress={onClose} />
-          </View>
+          {selectedOption !== 'url' ? (
+            <View style={styles.optionsContainer}>
+              <TouchableOpacity
+                onPress={() => setSelectedOption('file')}
+                style={[
+                  styles.optionButton,
+                  selectedOption === 'file' && styles.selectedOption,
+                ]}>
+                <Icon name="file" size={20} color="#000" />
+                <Text>From File</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setSelectedOption('url')}
+                style={[
+                  styles.optionButton,
+                  selectedOption === 'url' && styles.selectedOption,
+                ]}>
+                <Icon name="link" size={20} color="#000" />
+                <Text>From URL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setSelectedOption('github')}
+                style={[
+                  styles.optionButton,
+                  selectedOption === 'github' && styles.selectedOption,
+                ]}>
+                <Icon name="github" size={20} color="#000" />
+                <Text>From GitHub</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setSelectedOption('drive')}
+                style={[
+                  styles.optionButton,
+                  selectedOption === 'drive' && styles.selectedOption,
+                ]}>
+                <Icon name="google-drive" size={20} color="#000" />
+                <Text>From Drive</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Name"
+                value={name}
+                onChangeText={setName}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter URL"
+                value={url}
+                onChangeText={setUrl}
+              />
+              <View style={styles.buttonContainer}>
+                <Button title="Submit" onPress={handleSubmit} />
+                <Button title="Cancel" onPress={handleClose} />
+              </View>
+            </View>
+          )}
         </View>
       </View>
     </Modal>
@@ -131,6 +154,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: 'center',
   },
+  optionsContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 20,
+    gap: 20,
+  },
+  optionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F5F5F5',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    gap: 20,
+  },
+  selectedOption: {
+    backgroundColor: '#D3D3D3',
+  },
   input: {
     height: 40,
     borderColor: 'gray',
@@ -140,7 +182,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    gap: 10,
   },
 });
 

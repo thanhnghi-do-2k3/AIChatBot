@@ -41,7 +41,11 @@ const ChatHistoryScreen: React.FC = ({navigation}: any) => {
       }}>
       <View className="w-16 h-16 rounded-full bg-primary justify-center items-center shadow-md">
         <Image
-          source={{uri: item.avatar || 'https://via.placeholder.com/50'}}
+          source={{
+            uri:
+              item.avatar ||
+              'https://www.shutterstock.com/shutterstock/photos/2464455965/display_1500/stock-vector-happy-robot-d-ai-character-chat-bot-mascot-isolated-on-white-background-gpt-chatbot-icon-2464455965.jpg',
+          }}
           className="w-14 h-14 rounded-full border-4 border-white"
         />
       </View>

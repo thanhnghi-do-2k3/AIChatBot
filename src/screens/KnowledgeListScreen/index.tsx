@@ -115,7 +115,10 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
         ]}>
         <TouchableOpacity
           onPress={() => {
-            if (!swiping) navigation.navigate(ScreenName.KnowledgeDetailScreen);
+            if (!swiping)
+              navigation.navigate(ScreenName.KnowledgeDetailScreen, {
+                item: item,
+              });
           }}
           style={{
             width: '100%',

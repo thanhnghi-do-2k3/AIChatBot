@@ -8,6 +8,8 @@ export const APIEndpoint = {
   GetRefreshToken: '/auth/refresh',
   DoAIChat: '/ai-chat/messages',
   GetConversations: '/ai-chat/conversations',
+  EmailSuggestions: '/ai-email/reply-ideas',
+  EmailResponse: '/ai-email',
 };
 
 export const KB_APIEndpoint = {
