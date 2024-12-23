@@ -91,7 +91,7 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
                 borderColor: '#c3c3c3',
                 paddingHorizontal: 20,
                 paddingVertical: 5,
-                backgroundColor: '#F5F5F5',
+                backgroundColor: '#E5E5E5',
                 borderRadius: 20,
               }}
             />
@@ -119,6 +119,10 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
           </View>
           <FlatList
             style={{width: '100%', flex: 1, marginTop: 20}}
+            contentContainerStyle={{
+              paddingBottom: 20,
+              alignItems: 'center',
+            }}
             data={displayChatbot}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.chatbotName}

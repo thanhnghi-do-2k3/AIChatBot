@@ -17,6 +17,7 @@ import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Colors} from 'theme';
 import CreateKnowledgeModal from './components/CreateKnowledgeModal';
+import KnowledgeListItem from './components/KnowledgeListItem';
 import {mockdata} from './mockdata';
 import {styles} from './style';
 
@@ -231,7 +232,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
               borderColor: '#c3c3c3',
               paddingHorizontal: 20,
               paddingVertical: 5,
-              backgroundColor: '#F5F5F5',
+              backgroundColor: '#E5E5E5',
               borderRadius: 20,
             }}
           />
@@ -265,7 +266,9 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
             data={listChatbot}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.name}
-            renderItem={renderItem}
+            renderItem={({item, index}) => (
+              <KnowledgeListItem item={item} index={index} />
+            )}
           />
         </View>
       </KeyboardAvoidingView>

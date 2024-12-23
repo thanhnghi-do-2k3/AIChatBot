@@ -38,7 +38,6 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
                 });
                 dispatch(chatbotActions.getChatbot({}));
                 // @ts-ignore
-                thisSwipeable?.current?.close();
               },
               onFailure: () => {
                 Toast.show({
@@ -46,7 +45,6 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
                   text1: 'Delete chatbot failed',
                 });
                 // @ts-ignore
-                thisSwipeable?.current?.close();
               },
             },
           }),
@@ -129,19 +127,30 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
     );
   }, []);
 
+  const onSwipeableOpen = (direction: any) => {
+    console.log('onSwipeableOpen', direction);
+    if (direction === 'right') {
+      console.log('right');
+      // @ts-ignore
+      thisSwipeable?.current?.close();
+    }
+  };
+
   return (
     <ReanimatedSwipeable
       ref={thisSwipeable}
       renderRightActions={rightAction}
       renderLeftActions={leftAction}
       friction={2}
+      onSwipeableOpen={onSwipeableOpen}
       containerStyle={[
         {
           flexDirection: 'row',
           alignItems: 'center',
           borderColor: 'transparent',
           width: '100%',
-          marginVertical: 2,
+          marginVertical: 5,
+          marginHorizontal: 5,
         },
       ]}>
       <View
@@ -155,6 +164,14 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           width: '100%',
           alignSelf: 'center',
           backgroundColor: '#fff',
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
         }}>
         <TouchableOpacity
           style={{
