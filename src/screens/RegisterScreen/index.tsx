@@ -21,7 +21,15 @@ const validationSchema = Yup.object({
   email: Yup.string()
     .email('Email không hợp lệ')
     .required('Vui lòng nhập email'),
-  password: Yup.string().required('Vui lòng nhập mật khẩu'),
+  password: Yup.string()
+    .required('Vui lòng nhập mật khẩu')
+    .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
+    .matches(/[A-Z]/, 'Mật khẩu phải có ít nhất 1 ký tự hoa')
+    .matches(/[0-9]/, 'Mật khẩu phải có ít nhất 1 số')
+    .matches(
+      /[!@#$%^&*(),.?":{}|<>]/,
+      'Mật khẩu phải có ít nhất 1 ký tự đặc biệt',
+    ),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Mật khẩu không khớp')
     .required('Vui lòng nhập lại mật khẩu'),

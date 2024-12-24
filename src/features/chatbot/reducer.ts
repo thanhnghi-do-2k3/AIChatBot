@@ -3,11 +3,15 @@ import {createSlice} from '@reduxjs/toolkit';
 interface InitialState {
   loading: boolean;
   listChatbot: any[];
+  curThreadChat: any[];
+  curThreadMessage: any[];
 }
 
 const initialState: InitialState = {
   loading: false,
   listChatbot: [],
+  curThreadChat: [],
+  curThreadMessage: [],
 };
 
 const chatbotSlice = createSlice({
@@ -52,6 +56,40 @@ const chatbotSlice = createSlice({
       state.loading = false;
     },
     updateChatbotFailure: (state, action) => {
+      state.loading = false;
+    },
+
+    getThreadChat: (state, action) => {
+      state.loading = true;
+    },
+    getThreadChatSuccess: (state, action) => {
+      state.loading = false;
+      state.curThreadChat = action.payload.data;
+    },
+    getThreadChatFailure: (state, action) => {
+      state.loading = false;
+      state.curThreadChat = [];
+    },
+
+    getThreadMessage: (state, action) => {
+      state.loading = true;
+    },
+    getThreadMessageSuccess: (state, action) => {
+      state.loading = false;
+      state.curThreadMessage = action.payload;
+    },
+    getThreadMessageFailure: (state, action) => {
+      state.loading = false;
+      state.curThreadMessage = [];
+    },
+
+    createNewThread: (state, action) => {
+      state.loading = true;
+    },
+    createNewThreadSuccess: (state, action) => {
+      state.loading = false;
+    },
+    createNewThreadFailure: (state, action) => {
       state.loading = false;
     },
   },

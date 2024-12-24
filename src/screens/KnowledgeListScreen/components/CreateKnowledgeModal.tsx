@@ -59,7 +59,7 @@ const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
       onBackButtonPress={onClose}
       animationIn="slideInUp">
       <View style={styles.modalContent}>
-        <Text style={styles.title}>Create Chatbot</Text>
+        <Text style={styles.title}>Create Knowledge</Text>
         <Input
           placeholder="Knowledge Name"
           placeholderTextColor={'#BDBDBD'}

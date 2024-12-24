@@ -6,6 +6,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
@@ -21,6 +22,7 @@ interface Props {
   headerRightHeaderIcon?: boolean;
   hideRightHeader?: boolean;
   standalone?: boolean;
+  paddingTop?: number;
 }
 
 const AppHeader: React.FC<Props> = (props): React.ReactElement => {
@@ -50,6 +52,7 @@ const AppHeader: React.FC<Props> = (props): React.ReactElement => {
           styles.header,
           {
             marginTop: standalone ? 0 : isIOS() ? undefined : 32,
+            paddingTop: props.paddingTop,
           },
         ]}>
         <Pressable
@@ -94,11 +97,11 @@ const AppHeader: React.FC<Props> = (props): React.ReactElement => {
             style={[styles.headerIconContainer, {backgroundColor: '#fff'}]}
           />
         ) : (
-          <Pressable
+          <TouchableOpacity
             onPress={onPressRightHeader}
             style={styles.headerIconContainer}>
-            <Icon name="search" type="font-awesome" color="#000" />
-          </Pressable>
+            <Icon name="comment" type="font-awesome" color="#000" />
+          </TouchableOpacity>
         )}
       </View>
     </SafeAreaView>
@@ -107,6 +110,7 @@ const AppHeader: React.FC<Props> = (props): React.ReactElement => {
 
 const styles = StyleSheet.create({
   container: {
+    // paddingTop: 8,
     backgroundColor: '#fff',
     borderBottomRightRadius: 32,
     borderBottomLeftRadius: 32,

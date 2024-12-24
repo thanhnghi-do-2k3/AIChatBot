@@ -19,11 +19,24 @@ const MainNavigation: React.FC = () => {
       screenOptions={({navigation, route}) => {
         // Get the current state of the child navigator
         const state = navigation.getState();
-        const currentScreen = state?.routes?.find(r => r.name === route.name)
-          ?.state?.routes?.[state.index]?.name;
 
-        // Determine if header should be shown
-        const shouldHideHeader = currentScreen && currentScreen !== route.name;
+        // Find the child navigator's routes
+        const childRoutes = state?.routes?.find(
+          (r: any) => r.name === route.name,
+        )?.state?.routes;
+
+        // Get the initial route name of the child navigator
+        const initialRouteName = childRoutes?.[0]?.name;
+
+        // Get the currently active screen in the child navigator
+        const currentScreen =
+          childRoutes?.[
+            state?.routes?.find((r: any) => r.name === route.name)?.state?.index
+          ]?.name;
+
+        // Determine if the header should be hidden
+        const shouldHideHeader =
+          currentScreen && currentScreen !== initialRouteName;
 
         return {
           header: shouldHideHeader

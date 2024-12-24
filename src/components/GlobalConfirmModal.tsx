@@ -58,6 +58,7 @@ const GlobalConfirmModal: React.FC<GlobalModalProps> = props => {
               fontWeight: 'bold',
               marginVertical: 10,
               fontSize: 20,
+              textAlign: 'center',
             }}>
             {globalConfirmHeader}
           </Text>
