@@ -10,6 +10,12 @@ function* chatbotSaga() {
     takeLatest(chatbotActions.getChatbot.type, handleGetChatbotSaga),
     takeLatest(chatbotActions.deleteChatbot.type, handleDeleteChatbotSaga),
     takeLatest(chatbotActions.updateChatbot.type, handleUpdateChatbotSaga),
+    takeLatest(chatbotActions.getThreadChat.type, handleGetThreadChatSaga),
+    takeLatest(
+      chatbotActions.getThreadMessage.type,
+      handleGetThreadMessageSaga,
+    ),
+    takeLatest(chatbotActions.createNewThread.type, handleCreateNewThreadSaga),
   ]);
 }
 
@@ -87,6 +93,63 @@ function* handleUpdateChatbotSaga(
   } catch (error: any) {
     console.log('error', error);
     yield put(chatbotActions.updateChatbotFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  } finally {
+    GlobalLoadingController.hide();
+  }
+}
+
+function* handleGetThreadChatSaga(
+  action: PayloadAction<any>,
+): Generator<any, void, any> {
+  console.log('handleGetThreadChatSaga', action.payload);
+  try {
+    const response: any = yield call(
+      ChatbotService.getThread,
+      action.payload.data.id,
+    );
+    yield put(chatbotActions.getThreadChatSuccess(response));
+    action.payload.action?.onSuccess?.(response);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(chatbotActions.getThreadChatFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  }
+}
+
+function* handleGetThreadMessageSaga(
+  action: PayloadAction<any>,
+): Generator<any, void, any> {
+  console.log('handleGetThreadMessageSaga', action.payload);
+  try {
+    const response: any = yield call(
+      ChatbotService.getMessageThreadChat,
+      action.payload.id,
+    );
+    yield put(chatbotActions.getThreadMessageSuccess(response));
+    action.payload.action?.onSuccess?.(response);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(chatbotActions.getThreadMessageFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  }
+}
+
+function* handleCreateNewThreadSaga(
+  action: PayloadAction<any>,
+): Generator<any, void, any> {
+  console.log('handleCreateNewThreadSaga', action.payload);
+  try {
+    GlobalLoadingController.show();
+    const response: any = yield call(
+      ChatbotService.createNewThreadChat,
+      action.payload.data,
+    );
+    yield put(chatbotActions.createNewThreadSuccess(response));
+    action.payload.action?.onSuccess?.(response);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(chatbotActions.createNewThreadFailure(error.message));
     action.payload.action?.onFailure?.(error);
   } finally {
     GlobalLoadingController.hide();

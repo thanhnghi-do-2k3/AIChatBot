@@ -1,24 +1,14 @@
-import React, {useState, useEffect} from 'react';
-import {View, Animated, FlatList, PanResponder} from 'react-native';
-import {
-  GestureHandlerRootView,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
-import {Text} from 'react-native';
-import ScreenName from 'constant/ScreenName';
+import AppHeader from 'components/AppHeader';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
-import Header from 'components/Header';
-import {Input} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Colors} from 'theme';
-import {styles} from './style';
-import {mockData} from './mockdata';
-import {useCallback, useRef} from 'react';
-import AddKnowledgeModal from './components/AddKnowledgeModal';
 import {kbActions} from 'features/KB/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import useAppSelector from 'hooks/useAppSelector';
+import React, {useEffect, useState} from 'react';
+import {Animated, FlatList, PanResponder, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import AddKnowledgeModal from './components/AddKnowledgeModal';
+import {styles} from './style';
 
 interface Props {}
 
@@ -138,10 +128,11 @@ const KnowledgeDetailScreen: React.FC<Props> = ({navigation, route}: any) => {
   return (
     <>
       <NAvoidKeyboardScreen>
-        <Header
-          title="Knowledge Detail"
-          titleStyle={{color: 'black'}}
-          allowGoBack={true}
+        <AppHeader
+          headerTitle="Knowledge Detail"
+          onPressLeftHeader={() => {
+            navigation.goBack();
+          }}
         />
         <View style={styles.container}>
           <FlatList

@@ -91,7 +91,7 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
                 borderColor: '#c3c3c3',
                 paddingHorizontal: 20,
                 paddingVertical: 5,
-                backgroundColor: '#E5E5E5',
+                backgroundColor: '#fff',
                 borderRadius: 20,
               }}
             />

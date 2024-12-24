@@ -6,6 +6,7 @@ const ScreenName = {
   VerifyEmailScreen: 'VerifyEmailScreen',
   ChangePasswordScreen: 'ChangePasswordScreen',
   ChatbotListScreen: 'ChatbotListScreen',
+  ChatbotDetailScreen: 'ChatbotDetailScreen',
   KnowlegdeListScreen: 'KnowlegdeListScreen',
   ProfileScreen: 'ProfileScreen',
   KnowledgeDetailScreen: 'KnowledgeDetailScreen',

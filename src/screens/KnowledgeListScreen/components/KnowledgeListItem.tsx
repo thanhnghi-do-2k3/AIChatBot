@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import ScreenName from 'constant/ScreenName';
 import useAppDispatch from 'hooks/useAppDispatch';
 import React, {useCallback} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
@@ -94,7 +95,12 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
           },
         ]}>
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={() => {
+            // @ts-ignore
+            navigation.navigate(ScreenName.KnowledgeDetailScreen, {
+              item: item,
+            });
+          }}
           style={{
             width: '100%',
             flexDirection: 'row',

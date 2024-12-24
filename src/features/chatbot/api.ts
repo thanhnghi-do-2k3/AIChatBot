@@ -108,6 +108,67 @@ const ChatbotService = {
       throw error;
     }
   },
+
+  createNewThreadChat: async (data: any) => {
+    try {
+      const response = await kb_httpRequestServices.post(
+        KB_APIEndpoint.Assistant + KB_APIEndpoint.Thread,
+        data,
+      );
+      reactotron.log('Create New Thread Chat:', response);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  askAssistant: async (id: string, data: any) => {
+    try {
+      const response = await kb_httpRequestServices.post(
+        KB_APIEndpoint.Assistant + '/' + id + KB_APIEndpoint.Ask,
+        data,
+      );
+      reactotron.log('Ask Assistant:', response);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getMessageThreadChat: async (id_thread: string) => {
+    try {
+      const response = await kb_httpRequestServices.get(
+        KB_APIEndpoint.Assistant +
+          KB_APIEndpoint.Thread +
+          '/' +
+          id_thread +
+          KB_APIEndpoint.Message +
+          's',
+        {},
+      );
+      reactotron.log('Get Message Thread Chat:', response);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getThread: async (id: string) => {
+    try {
+      const response = await kb_httpRequestServices.get(
+        KB_APIEndpoint.Assistant + '/' + id + KB_APIEndpoint.Thread + 's',
+        {},
+      );
+      reactotron.log('Get Thread:', response);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default ChatbotService;

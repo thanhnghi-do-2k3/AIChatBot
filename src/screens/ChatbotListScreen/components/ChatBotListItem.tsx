@@ -174,6 +174,12 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
           elevation: 5,
         }}>
         <TouchableOpacity
+          onPress={() => {
+            // @ts-ignore
+            navigation.navigate(ScreenName.ChatbotDetailScreen, {
+              chatbot: item,
+            });
+          }}
           style={{
             width: '100%',
             flexDirection: 'row',

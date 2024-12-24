@@ -51,7 +51,7 @@ const handleError = async (error: any) => {
     const refreshToken = await reduxStorage.getItem('refreshToken');
     if (refreshToken) {
       try {
-        const response = await httpRequestService.get(
+        const response = await httpRequestServices.get(
           APIEndpoint.GetRefreshToken,
           {
             refreshToken,
@@ -110,7 +110,7 @@ const handleError_KB = async (error: any) => {
     const refreshToken = await reduxStorage.getItem('refreshToken_KB');
     if (refreshToken) {
       try {
-        const response = await kbHttpRequestService.post(
+        const response = await kb_httpRequestServices.post(
           KB_APIEndpoint.GetRefreshToken,
           {
             refreshToken,

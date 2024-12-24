@@ -1,4 +1,4 @@
-import Header from 'components/Header';
+import AppHeader from 'components/AppHeader';
 import ChatbotService from 'features/chatbot/api';
 import {chatbotActions} from 'features/chatbot/reducer';
 import KbService from 'features/KB/api';
@@ -180,7 +180,14 @@ const UpdateChatBotModal: React.FC<UpdateChatBotModalProps> = ({
 
   return (
     <SafeAreaView style={styles.modalContainer}>
-      <Header title="Update Chatbot" allowGoBack />
+      <AppHeader
+        headerTitle="Update Chatbot"
+        onPressLeftHeader={() => {
+          navigation.goBack();
+        }}
+        standalone
+        paddingTop={20}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{width: '100%'}}
@@ -245,7 +252,7 @@ const UpdateChatBotModal: React.FC<UpdateChatBotModalProps> = ({
               borderWidth: 0.5,
               paddingHorizontal: 20,
               paddingVertical: 5,
-              backgroundColor: '#F5F5F5',
+              backgroundColor: '#fff',
               borderRadius: 20,
             }}
           />
@@ -287,11 +294,11 @@ const UpdateChatBotModal: React.FC<UpdateChatBotModalProps> = ({
             }}
             inputContainerStyle={{
               alignItems: 'flex-start',
-              // height: 100,
+              height: 100,
               borderWidth: 0.5,
               paddingHorizontal: 20,
               paddingVertical: 5,
-              backgroundColor: '#F5F5F5',
+              backgroundColor: '#fff',
               borderRadius: 20,
             }}
           />
@@ -332,11 +339,11 @@ const UpdateChatBotModal: React.FC<UpdateChatBotModalProps> = ({
             }}
             inputContainerStyle={{
               alignItems: 'flex-start',
-              // height: 170,
+              height: 170,
               borderWidth: 0.5,
               paddingHorizontal: 20,
               paddingVertical: 5,
-              backgroundColor: '#F5F5F5',
+              backgroundColor: '#fff',
               borderRadius: 20,
             }}
           />
@@ -420,7 +427,7 @@ const UpdateChatBotModal: React.FC<UpdateChatBotModalProps> = ({
               borderWidth: 1,
               paddingHorizontal: 20,
               paddingVertical: 5,
-              backgroundColor: '#F5F5F5',
+              backgroundColor: '#fff',
               borderRadius: 20,
             }}
           />

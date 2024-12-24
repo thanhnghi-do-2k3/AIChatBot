@@ -19,6 +19,9 @@ export const KB_APIEndpoint = {
   // Chatbot
   Assistant: '/ai-assistant',
   Assistant_KB: '/knowledges',
+  Thread: '/thread',
+  Ask: '/ask',
+  Message: '/message',
   //Knowledge Base
   CreateKnowledgeBase: 'knowledge',
   GetKnowledgeBase: 'knowledge',
