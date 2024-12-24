@@ -30,9 +30,9 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
     setIsModalVisible(!isModalVisible);
   };
   useEffect(() => {
+    dispatch(aiChatActions.resetState());
     if (conversationId)
       dispatch(aiChatActions.getOldChatHistoryRequest(conversationId));
-    else dispatch(aiChatActions.resetState());
   }, []);
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
     }
   };
 
-  const handleSendPrompt = (content:string) => {
+  const handleSendPrompt = (content: string) => {
     console.log('ón click send prompt');
     const userMessage: Message = {
       id: (messages.length + 1).toString(),

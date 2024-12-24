@@ -69,10 +69,6 @@ const MainNavigation: React.FC = () => {
       />
 
       <BottomTab.Screen
-        name={ScreenName.PromptNavigator}
-        component={PromptNavigation}
-      />
-      <BottomTab.Screen
         name={ScreenName.ProfileScreen}
         component={ProfileScreen}
       />
