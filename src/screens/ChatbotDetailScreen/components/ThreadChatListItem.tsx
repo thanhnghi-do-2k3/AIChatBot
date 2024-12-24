@@ -1,9 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
+import ScreenName from 'constant/ScreenName';
 import dayjs from 'dayjs';
+import {chatbotActions} from 'features/chatbot/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface ThreadChatListItemProps {
@@ -18,6 +21,29 @@ const ThreadChatListItem: React.FC<ThreadChatListItemProps> = ({
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const thisSwipeable = React.useRef(null);
+
+  const onChatThreadPress = () => {
+    const payload = {
+      data: {
+        id: item.openAiThreadId,
+      },
+      action: {
+        onSuccess: (data: any) => {
+          // @ts-ignore
+          navigation.navigate(ScreenName.ChatbotThreadChatScreen, {
+            thread: item,
+          });
+        },
+        onFailure: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: 'Get chat thread failed',
+          });
+        },
+      },
+    };
+    dispatch(chatbotActions.getThreadMessage(payload));
+  };
 
   return (
     <ReanimatedSwipeable
@@ -57,12 +83,7 @@ const ThreadChatListItem: React.FC<ThreadChatListItemProps> = ({
           elevation: 5,
         }}>
         <TouchableOpacity
-          onPress={() => {
-            // @ts-ignore
-            // navigation.navigate(ScreenName.ChatbotDetailScreen, {
-            //   chatbot: item,
-            // });
-          }}
+          onPress={onChatThreadPress}
           style={{
             width: '100%',
             flexDirection: 'row',

@@ -6,11 +6,12 @@ import {authActions} from 'features/auth/reducer';
 import {AppNavigationRef} from 'navigation/index';
 import {dispatchReduxStore, reduxStorage} from 'store/store';
 
-const prod = true;
+const prod = false;
 
 const BASE_URL = 'https://api.dev.jarvis.cx/api/';
 const BASE_URL_PROD = 'https://api.jarvis.cx/api/';
-const KB_BASE_URL = 'https://knowledge-api.jarvis.cx/kb-core/';
+const KB_BASE_URL = 'https://knowledge-api.dev.jarvis.cx/kb-core/';
+const KB_BASE_URL_PROD = 'https://knowledge-api.jarvis.cx/kb-core/';
 const API_VERSION = 'v1';
 const TIMEOUT = 100000;
 
@@ -20,7 +21,7 @@ const apiClient = axios.create({
 });
 
 const kbApiClient = axios.create({
-  baseURL: KB_BASE_URL + API_VERSION,
+  baseURL: (prod ? KB_BASE_URL_PROD : KB_BASE_URL) + API_VERSION,
   timeout: TIMEOUT,
 });
 
@@ -46,7 +47,11 @@ const handleError = async (error: any) => {
   console.error('Response Error:', error.response || error.message);
   const originalRequest = error.config;
 
-  if (error.response?.status === 401 && !originalRequest._retry) {
+  if (
+    error.response?.status === 401 &&
+    !originalRequest._retry &&
+    originalRequest.url !== APIEndpoint.GetRefreshToken
+  ) {
     originalRequest._retry = true;
     const refreshToken = await reduxStorage.getItem('refreshToken');
     if (refreshToken) {
@@ -105,7 +110,11 @@ const handleError_KB = async (error: any) => {
   console.error('Response Error:', error.response || error.message);
   const originalRequest = error.config;
 
-  if (error.response?.status === 401 && !originalRequest._retry) {
+  if (
+    error.response?.status === 401 &&
+    !originalRequest._retry &&
+    originalRequest.url !== KB_APIEndpoint.GetRefreshToken
+  ) {
     originalRequest._retry = true;
     const refreshToken = await reduxStorage.getItem('refreshToken_KB');
     if (refreshToken) {

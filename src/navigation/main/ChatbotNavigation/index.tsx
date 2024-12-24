@@ -5,6 +5,7 @@ import ChatbotDetailScreen from 'screens/ChatbotDetailScreen';
 import ChatbotListScreen from 'screens/ChatbotListScreen';
 import CreateChatBotModal from 'screens/ChatbotListScreen/components/CreateChatBotModal';
 import UpdateChatBotModal from 'screens/ChatbotListScreen/components/UpdateChatBotModal';
+import ChatbotThreadChatScreen from 'screens/ChatbotThreadChatScreen';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +32,10 @@ const ChatbotNavigation = () => {
       <Stack.Screen
         name={ScreenName.ChatbotDetailScreen}
         component={ChatbotDetailScreen}
+      />
+      <Stack.Screen
+        name={ScreenName.ChatbotThreadChatScreen}
+        component={ChatbotThreadChatScreen}
       />
       <Stack.Screen
         name={ScreenName.CreateBotTab}

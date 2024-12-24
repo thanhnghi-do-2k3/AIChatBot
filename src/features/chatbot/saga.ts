@@ -124,8 +124,16 @@ function* handleGetThreadMessageSaga(
   try {
     const response: any = yield call(
       ChatbotService.getMessageThreadChat,
-      action.payload.id,
+      action.payload.data.id,
     );
+    console.log('response', response);
+
+    response.forEach((item: any) => {
+      item.content = item.content?.[0].text?.value || '';
+    });
+
+    // response.reverse();
+
     yield put(chatbotActions.getThreadMessageSuccess(response));
     action.payload.action?.onSuccess?.(response);
   } catch (error: any) {

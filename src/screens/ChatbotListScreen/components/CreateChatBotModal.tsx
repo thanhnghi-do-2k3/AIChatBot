@@ -2,7 +2,7 @@ import AppHeader from 'components/AppHeader';
 import {chatbotActions} from 'features/chatbot/reducer';
 import {useFormik} from 'formik';
 import useAppDispatch from 'hooks/useAppDispatch';
-import React, {useState} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -29,14 +29,6 @@ const validationSchema = Yup.object().shape({
 const CreateChatBotModal: React.FC<CreateChatBotModalProps> = ({
   navigation,
 }) => {
-  const [botName, setBotName] = useState('');
-  const [instruction, setInstruction] = useState('');
-  const [description, setDescription] = useState('');
-
-  const onClose = () => {
-    navigation.goBack();
-  };
-
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
@@ -50,7 +42,11 @@ const CreateChatBotModal: React.FC<CreateChatBotModalProps> = ({
   });
 
   const handleSubmit = () => {
-    if (!botName || !instruction || !description) {
+    if (
+      !formik.values.botname ||
+      !formik.values.instruction ||
+      !formik.values.description
+    ) {
       Toast.show({
         type: 'error',
         text1: 'Please fill all required fields',
@@ -60,9 +56,9 @@ const CreateChatBotModal: React.FC<CreateChatBotModalProps> = ({
 
     const createChatbotPayload = {
       data: {
-        assistantName: botName,
-        instructions: instruction,
-        description: description,
+        assistantName: formik.values.botname,
+        instructions: formik.values.instruction,
+        description: formik.values.description,
       },
 
       action: {

@@ -7,6 +7,7 @@ const ScreenName = {
   ChangePasswordScreen: 'ChangePasswordScreen',
   ChatbotListScreen: 'ChatbotListScreen',
   ChatbotDetailScreen: 'ChatbotDetailScreen',
+  ChatbotThreadChatScreen: 'ChatbotThreadChatScreen',
   KnowlegdeListScreen: 'KnowlegdeListScreen',
   ProfileScreen: 'ProfileScreen',
   KnowledgeDetailScreen: 'KnowledgeDetailScreen',

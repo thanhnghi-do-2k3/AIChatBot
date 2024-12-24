@@ -76,7 +76,7 @@ const chatbotSlice = createSlice({
     },
     getThreadMessageSuccess: (state, action) => {
       state.loading = false;
-      state.curThreadMessage = action.payload.data;
+      state.curThreadMessage = action.payload;
     },
     getThreadMessageFailure: (state, action) => {
       state.loading = false;
