@@ -1,3 +1,5 @@
+import PromptListScreen from "screens/PromptScreen";
+
 const ScreenName = {
   Home: 'Home',
   Login: 'Login',
@@ -12,6 +14,7 @@ const ScreenName = {
   ChatHisToryScreen: 'ChatHisToryScreen',
   ChatScreen: 'ChatScreen',
   EmailScreen: 'EmailScreen',
+  PromptListScreen: 'PromptListScreen',
 
   // Tab
   CreateBotTab: 'CreateBotTab',
@@ -24,6 +27,7 @@ const ScreenName = {
   KnowledgeNavigator: 'KnowledgeNavigator',
   ChatNavigator: 'ChatNavigator',
   EmailNavigator: 'EmailNavigator',
+  PromptNavigator: 'PromptNavigator',
 };
 
 export default ScreenName;

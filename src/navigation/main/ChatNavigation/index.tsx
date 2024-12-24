@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const ChatNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName={ScreenName.ChatScreen}
+      initialRouteName={ScreenName.ChatHisToryScreen}
       screenOptions={{headerShown: false}}>
       <Stack.Screen
         name={ScreenName.ChatHisToryScreen}

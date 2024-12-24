@@ -15,36 +15,25 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/store';
 import Colors from 'theme/Colors';
-
-const ChatScreenWithAI: React.FC = () => {
+import Modal from 'react-native-modal';
+import PromptLibraryModal from './components/PromptModal';
+interface Props {}
+const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
   const dispatch = useDispatch();
   const aiChatState = useSelector((state: RootState) => state.chatReducer);
-
+  const conversationId = route.params;
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
-
-  // useEffect(() => {
-  //   dispatch(
-  //     aiChatActions.getOldChatHistoryRequest(
-  //       '54ee2bbf-a37b-4b70-9b5b-85e5cb8aac46',
-  //     ),
-  //   );
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   if (aiChatState.history && aiChatState.history.length > 0) {
-  //     const historyMessages = aiChatState.history.map((message, index) => ({
-  //       id: index.toString(),
-  //       sender: message.sender,
-  //       content: message.content,
-  //       time: new Date(Number(message.time) * 1000).toLocaleTimeString([], {
-  //         hour: '2-digit',
-  //         minute: '2-digit',
-  //       }),
-  //     }));
-  //     setMessages(historyMessages);
-  //   }
-  // }, [aiChatState.history]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [promptContent, setPromptContent] = useState('');
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+  useEffect(() => {
+    if (conversationId)
+      dispatch(aiChatActions.getOldChatHistoryRequest(conversationId));
+    else dispatch(aiChatActions.resetState());
+  }, []);
 
   useEffect(() => {
     if (aiChatState.message) {
@@ -91,6 +80,37 @@ const ChatScreenWithAI: React.FC = () => {
         }),
       );
     }
+  };
+
+  const handleSendPrompt = (content:string) => {
+    console.log('ón click send prompt');
+    const userMessage: Message = {
+      id: (messages.length + 1).toString(),
+      sender: 'User',
+      content: promptContent,
+      time: new Date().toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    };
+    setMessages(prevMessages => [...prevMessages, userMessage]);
+    setInputMessage('');
+
+    dispatch(
+      aiChatActions.sendMessageRequest({
+        data: {
+          content: content,
+          metadata: {
+            conversation: {id: aiChatState.conversationId || ''},
+          },
+          assistant: {
+            id: 'gpt-4o-mini',
+            model: 'dify',
+            name: 'GPT-4o mini',
+          },
+        },
+      }),
+    );
   };
 
   const handleChoosePhoto = () => {
@@ -190,7 +210,7 @@ const ChatScreenWithAI: React.FC = () => {
       keyboardVerticalOffset={100}
       enabled>
       <FlatList
-        data={messages}
+        data={aiChatState.history}
         keyExtractor={item => item.id}
         renderItem={renderItem}
         contentContainerStyle={{
@@ -218,6 +238,7 @@ const ChatScreenWithAI: React.FC = () => {
         <TouchableOpacity onPress={handleChoosePhoto} style={{marginRight: 10}}>
           <Icon name="image" size={24} color={Colors.primary} />
         </TouchableOpacity>
+
         <TextInput
           style={{
             flex: 1,
@@ -237,7 +258,19 @@ const ChatScreenWithAI: React.FC = () => {
         <TouchableOpacity onPress={handleSend}>
           <Icon name="paper-plane" size={24} color={Colors.primary} />
         </TouchableOpacity>
+        <TouchableOpacity onPress={toggleModal} style={{marginLeft: 10}}>
+          <Icon name="list" size={24} color={Colors.primary} />
+        </TouchableOpacity>
       </View>
+
+      <PromptLibraryModal
+        visible={isModalVisible}
+        onClose={() => {
+          setIsModalVisible(false);
+        }}
+        onSubmitForm={setPromptContent}
+        onSendChat={handleSendPrompt}
+      />
     </KeyboardAvoidingView>
   );
 };

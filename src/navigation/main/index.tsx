@@ -9,6 +9,7 @@ import ChatbotNavigation from './ChatbotNavigation';
 import ChatNavigation from './ChatNavigation';
 import EmailNavigation from './EmailNavigation';
 import KnowledgeNavigation from './KnowledgeNavigation';
+import PromptNavigation from './PromptNavigation';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -52,6 +53,11 @@ const MainNavigation: React.FC = () => {
       <BottomTab.Screen
         name={ScreenName.EmailNavigator}
         component={EmailNavigation}
+      />
+
+      <BottomTab.Screen
+        name={ScreenName.PromptNavigator}
+        component={PromptNavigation}
       />
       <BottomTab.Screen
         name={ScreenName.ProfileScreen}

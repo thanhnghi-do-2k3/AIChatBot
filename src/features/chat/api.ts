@@ -16,13 +16,15 @@ const aiChatService = {
     }
   },
 
-  getOldChatHistory: async (conversationId: string) => {
+  getOldChatHistory: async (conversationId: any) => {
     try {
-      const endpoint = `${APIEndpoint.GetConversations}/${conversationId}/messages`;
+      const endpoint = `${APIEndpoint.GetConversations}/${conversationId.id}/messages`;
+      console.log('Get old chat history endpoint:', endpoint);
       const response = await httpRequestServices.get(endpoint, {
-        assistantId: 'gpt-4o-mini',
         assistantModel: 'dify',
+        assistantId: 'gpt-4o-mini',
       });
+      console.log(response);
       return response;
     } catch (error) {
       throw error;

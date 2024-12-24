@@ -10,6 +10,7 @@ export const APIEndpoint = {
   GetConversations: '/ai-chat/conversations',
   EmailSuggestions: '/ai-email/reply-ideas',
   EmailResponse: '/ai-email',
+  PromptList: '/prompts',
 };
 
 export const KB_APIEndpoint = {
