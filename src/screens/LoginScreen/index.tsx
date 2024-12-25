@@ -30,6 +30,7 @@ const LoginScreen = ({navigation}: any) => {
     initialValues: {email: '', password: ''},
     validationSchema: validationSchema,
     onSubmit: async values => {
+      console.log('on submit');
       const LoginPayload: LoginPayload = {
         data: {
           email: values.email,
@@ -177,7 +178,7 @@ const LoginScreen = ({navigation}: any) => {
             }}
           />
 
-          <GradientBorderView
+          {/* <GradientBorderView
             gradientProps={{
               colors: isLoginPressed
                 ? ['transparent']
@@ -190,17 +191,18 @@ const LoginScreen = ({navigation}: any) => {
               borderWidth: 1,
               overflow: 'hidden',
             }}>
-            <TouchableHighlight
+            <TouchableOpacity
               style={{
                 width: '100%',
                 height: '100%',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              underlayColor="#F0F8FF"
               onPressIn={() => setIsLoginPressed(true)}
               onPressOut={() => setIsLoginPressed(false)}
-              onPress={formik.submitForm}>
+              onPress={() => {
+                formik.submitForm();
+              }}>
               <Text
                 className="text-blue text-lg font-semibold"
                 style={{
@@ -208,8 +210,14 @@ const LoginScreen = ({navigation}: any) => {
                 }}>
                 Login
               </Text>
-            </TouchableHighlight>
-          </GradientBorderView>
+            </TouchableOpacity>
+          </GradientBorderView> */}
+
+          <TouchableOpacity
+            onPress={formik.submitForm}
+            className="border-b border-blue-700">
+            <Text className="text-blue-700 text-lg font-semibold">Google</Text>
+          </TouchableOpacity>
         </View>
 
         <View className="flex-col items-center gap-8 mt-28">

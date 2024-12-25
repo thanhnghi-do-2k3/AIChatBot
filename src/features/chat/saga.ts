@@ -27,12 +27,13 @@ function* handleSendMessageSaga(action: PayloadAction<AiChatPayload>): any {
   }
 }
 
-function* handleGetOldChatHistorySaga(action: PayloadAction<string>) {
+function* handleGetOldChatHistorySaga(action: PayloadAction<any>) {
   try {
     const response: AiChatHistoryResponse = yield call(
       aiChatService.getOldChatHistory,
       action.payload,
     );
+    console.log('Saga received response:', response);
     yield put(aiChatActions.getOldChatHistorySuccess(response));
   } catch (error: any) {
     yield put(aiChatActions.getOldChatHistoryFailure(error.message));

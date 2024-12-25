@@ -5,6 +5,7 @@ import conversationReducer from 'features/conversation/reducer';
 import otherReducer from 'features/other/reducer';
 import kbReducer from 'features/KB/reducer';
 import emailReducer from 'features/email/reducer';
+import promptReducer from 'features/prompt/reducer';
 import {combineReducers} from 'redux';
 
 export const rootReducer = combineReducers({
@@ -16,4 +17,5 @@ export const rootReducer = combineReducers({
   chatbotReducer,
   kbReducer,
   emailReducer,
+  promptReducer,
 });

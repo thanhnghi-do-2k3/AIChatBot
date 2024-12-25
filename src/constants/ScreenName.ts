@@ -14,6 +14,7 @@ const ScreenName = {
   ChatHisToryScreen: 'ChatHisToryScreen',
   ChatScreen: 'ChatScreen',
   EmailScreen: 'EmailScreen',
+  PromptListScreen: 'PromptListScreen',
   SubcriptionScreen: 'SubcriptionScreen',
 
   // Tab
@@ -28,6 +29,7 @@ const ScreenName = {
   ChatNavigator: 'ChatNavigator',
   EmailNavigator: 'EmailNavigator',
   ProfileNavigator: 'ProfileNavigator',
+  PromptNavigator: 'PromptNavigator',
 };
 
 export default ScreenName;

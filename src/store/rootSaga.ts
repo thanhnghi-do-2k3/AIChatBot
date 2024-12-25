@@ -4,6 +4,7 @@ import chatbotSaga from 'features/chatbot/saga';
 import conversationSaga from 'features/conversation/saga';
 import kbSaga from 'features/KB/saga';
 import emailSaga from 'features/email/saga';
+import promptSaga from 'features/prompt/saga';
 import {all, fork} from 'redux-saga/effects';
 
 function* rootSaga() {
@@ -14,6 +15,7 @@ function* rootSaga() {
     fork(chatbotSaga),
     fork(kbSaga),
     fork(emailSaga),
+    fork(promptSaga),
   ]);
 }
 

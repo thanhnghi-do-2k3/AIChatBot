@@ -8,7 +8,6 @@ import ChatbotNavigation from './ChatbotNavigation';
 import ChatNavigation from './ChatNavigation';
 import EmailNavigation from './EmailNavigation';
 import KnowledgeNavigation from './KnowledgeNavigation';
-import ProfileNavigation from './ProfileNavigation';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -66,6 +65,7 @@ const MainNavigation: React.FC = () => {
         name={ScreenName.EmailNavigator}
         component={EmailNavigation}
       />
+
       <BottomTab.Screen
         name={ScreenName.ProfileNavigator}
         component={ProfileNavigation}

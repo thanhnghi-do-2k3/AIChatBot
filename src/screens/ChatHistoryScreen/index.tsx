@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -12,32 +12,41 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/store';
 import {conversationActions} from 'features/conversation/reducer';
-
+import {useFocusEffect} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import ScreenName from 'constant/ScreenName';
-
+import useAppDispatch from 'hooks/useAppDispatch';
+import useAppSelector from 'hooks/useAppSelector';
 const ChatHistoryScreen: React.FC = ({navigation}: any) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const navigateToChatDetail = () => {
-    navigation.navigate(ScreenName.MainNavigator, {
-      screen: ScreenName.ChatScreen,
-    });
+  const navigateToChatDetail = (id: string) => {
+    navigation.navigate(ScreenName.ChatScreen, {id});
   };
 
-  const {conversations, loading, error} = useSelector(
+  const {conversations, loading, error} = useAppSelector(
     (state: RootState) => state.conversationReducer,
   );
 
   useEffect(() => {
     dispatch(conversationActions.fetchConversationsRequest());
-  }, [dispatch]);
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(conversationActions.fetchConversationsRequest());
+    }, []),
+  );
+
+  // useFocusEffect(() => {
+  //   dispatch(conversationActions.fetchConversationsRequest());
+  // });
 
   const renderChatItem = ({item}: {item: any}) => (
     <TouchableOpacity
       className="flex-row items-center bg-white rounded-2xl mb-4 p-4 shadow-lg hover:shadow-2xl transition duration-300"
       onPress={() => {
-        navigateToChatDetail();
+        navigateToChatDetail(item.id);
       }}>
       <View className="w-16 h-16 rounded-full bg-primary justify-center items-center shadow-md">
         <Image
@@ -67,29 +76,6 @@ const ChatHistoryScreen: React.FC = ({navigation}: any) => {
 
   return (
     <View className="flex-1 bg-gray-50">
-      {/* Header */}
-      <LinearGradient
-        colors={['#020024', '#264fd3', '#00d4ff']}
-        locations={[0.05, 0.69, 1]}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        className="py-6 px-6 rounded-b-3xl shadow-xl flex-row justify-between items-center">
-        <Text className="text-2xl font-bold text-white text-shadow-lg">
-          Chatting Room
-        </Text>
-        <View className="flex-row space-x-5">
-          <TouchableOpacity>
-            <Icon name="search" size={28} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Icon name="notifications" size={28} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Icon name="settings" size={28} color="white" />
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
-
       {loading ? (
         <ActivityIndicator
           size="large"
@@ -110,7 +96,11 @@ const ChatHistoryScreen: React.FC = ({navigation}: any) => {
       )}
 
       {/* Nút Tạo Cuộc Trò Chuyện */}
-      <TouchableOpacity className="absolute bottom-8 right-8 w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-xl">
+      <TouchableOpacity
+        className="absolute bottom-8 right-8 w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-xl"
+        onPress={() => {
+          navigation.navigate(ScreenName.ChatScreen);
+        }}>
         <Icon name="chatbubble" size={28} color="white" />
       </TouchableOpacity>
     </View>

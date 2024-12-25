@@ -36,7 +36,7 @@ type AiChatResponse = {
 };
 
 type AiChatHistoryResponse = {
-  history: HistoryItem[];
+  items: HistoryItem[];
   limit: number;
   cursor?: string;
 };
