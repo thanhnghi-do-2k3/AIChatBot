@@ -62,7 +62,7 @@ const TabBar = ({state, navigation}: any) => {
             color={isFocused ? Colors.primary : Colors.black}
           />
         );
-      case ScreenName.ProfileScreen:
+      case ScreenName.ProfileNavigator:
         return (
           <Icon
             name="user-circle"
@@ -81,7 +81,7 @@ const TabBar = ({state, navigation}: any) => {
         return 'Chatbots';
       case ScreenName.KnowledgeNavigator:
         return 'Knowledge';
-      case ScreenName.ProfileScreen:
+      case ScreenName.ProfileNavigator:
         return 'Profile';
       case ScreenName.EmailNavigator:
         return 'Email';

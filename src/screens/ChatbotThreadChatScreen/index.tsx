@@ -196,7 +196,6 @@ const ChatbotThreadChatScreen: React.FC<Props> = ({
       <KeyboardAvoidingView
         style={{flex: 1, backgroundColor: '#fff'}}
         behavior="padding"
-        keyboardVerticalOffset={100}
         enabled>
         <FlatList
           inverted
@@ -207,7 +206,10 @@ const ChatbotThreadChatScreen: React.FC<Props> = ({
           // style={{marginBottom: 80}}
           contentContainerStyle={{
             // padding: 10,
-            paddingTop: 20,
+            // flex: 1,
+            paddingTop: 10,
+            marginTop: 80,
+            // paddingBottom: 80,
           }}
         />
         <View

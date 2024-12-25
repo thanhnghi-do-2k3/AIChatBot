@@ -11,6 +11,7 @@ function* authSaga() {
     takeLatest(authActions.registerRequest.type, handleUserRegistrationSaga),
     takeLatest(authActions.loginRequest.type, handleUserLoginSaga),
     takeEvery(authActions.logoutRequest.type, handleUserLogoutSaga),
+    takeEvery(authActions.getCurrentUser.type, handleGetCurrentUserSaga),
   ]);
 }
 
@@ -53,6 +54,8 @@ function* handleUserLoginSaga(action: PayloadAction<LoginPayload>): any {
     reduxStorage.setItem('accessToken_KB', response_kb?.token?.accessToken);
     reduxStorage.setItem('refreshToken_KB', response_kb?.token?.refreshToken);
 
+    yield put(authActions.getCurrentUser({}));
+
     yield put(authActions.loginSuccess(response));
     payload.action?.onSuccess?.(response);
   } catch (error) {
@@ -78,6 +81,22 @@ function* handleUserLogoutSaga(action: PayloadAction<PayloadActions>): any {
     payload.action?.onFailure?.(error);
   } finally {
     GlobalLoadingController.hide();
+  }
+}
+
+function* handleGetCurrentUserSaga(action: PayloadAction<any>): any {
+  const payload = action.payload;
+  try {
+    payload.action?.onBegin?.();
+    const response = yield call(authService.getCurrentUser);
+
+    console.log('response', response);
+
+    yield put(authActions.getCurrentUserSuccess(response));
+    payload.action?.onSuccess?.(response);
+  } catch (error) {
+    yield put(authActions.getCurrentUserFailure(error));
+    payload.action?.onFailure?.(error);
   }
 }
 export default authSaga;

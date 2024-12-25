@@ -17,7 +17,7 @@ TextInput.defaultProps = TextInput.defaultProps || {};
 TextInput.defaultProps.allowFontScaling = false;
 
 // Set global font family
-const globalStyle = {fontFamily: 'Roboto-Regular'};
+const globalStyle = {fontFamily: 'SFProRegular'};
 
 const applyGlobalFont = defaultStyle => ({
   ...defaultStyle,

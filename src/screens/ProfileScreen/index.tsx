@@ -1,8 +1,11 @@
+import {useFocusEffect} from '@react-navigation/native';
 import {GlobalModalController} from 'components/GlobalModal';
 import LayoutProfileItem from 'components/LayoutProfileItem';
 import ScreenName from 'constant/ScreenName';
 import {authActions} from 'features/auth/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
+import useCurrentUser from 'hooks/useCurrentUser';
+import LottieView from 'lottie-react-native';
 import {AppNavigationRef} from 'navigation/index';
 import React from 'react';
 import {
@@ -14,6 +17,7 @@ import {
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Lottie from 'theme/Lottie';
 import {deviceWidth} from 'util/dimension';
 
 interface Props {
@@ -22,6 +26,15 @@ interface Props {
 
 const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
   const dispatch = useAppDispatch();
+  const {currentUser, usage, fetchUsageData} = useCurrentUser();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUsageData();
+    }, []),
+  );
+
+  console.log(currentUser);
 
   const handleLogout = () => {
     dispatch(
@@ -60,20 +73,68 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
           <View style={{alignItems: 'center'}}>
             <View style={{gap: 8}}>
               <Text style={styles.text_title}>User name</Text>
-              <Text style={styles.text_id}>@{'99999'}</Text>
+              <Text style={styles.text_id}>{currentUser.username}</Text>
             </View>
           </View>
 
           <View style={{gap: 16, width: '100%'}}>
+            <Text style={styles.text_account}>Subcription</Text>
+            <LayoutProfileItem title="Current Plan" detail={usage.name} />
+
+            {usage.name === 'basic' && (
+              <>
+                <Text
+                  style={[
+                    styles.text_account,
+                    {
+                      fontSize: 20,
+                      fontWeight: '700',
+                      textAlign: 'center',
+                      marginTop: 16,
+                    },
+                  ]}>
+                  Please subcribe to grant more token and access more powerful
+                  bot{' '}
+                </Text>
+
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(ScreenName.SubcriptionScreen);
+                  }}>
+                  <LottieView
+                    source={Lottie.paidAnimation}
+                    autoPlay
+                    loop
+                    style={{width: 100, height: 100, alignSelf: 'center'}}
+                  />
+                </TouchableOpacity>
+              </>
+            )}
+
+            <Text style={styles.text_account}>Usage</Text>
+
+            <LayoutProfileItem title="Daily Token" detail={usage.dailyTokens} />
+            <LayoutProfileItem
+              title="Monthly Token"
+              detail={usage.monthlyTokens || '0'}
+            />
+            <LayoutProfileItem
+              title="Annually Token"
+              detail={usage.annuallyTokens || '0'}
+            />
+
             <Text style={styles.text_account}>Account</Text>
 
-            <LayoutProfileItem title="User ID" detail={`@${'99999'}`} />
+            <LayoutProfileItem
+              title="User ID"
+              detail={`${(currentUser.id as string).slice(0, 15)}...`}
+            />
 
             <LayoutProfileItem title="Birth Date" detail={'N/A'} />
             <LayoutProfileItem title="Gender" detail={'N/A'} />
             <LayoutProfileItem title="Country" detail={'N/A'} />
             <LayoutProfileItem title="Phone Number" detail={'N/A'} />
-            <LayoutProfileItem title="Email" detail={'N/A'} />
+            <LayoutProfileItem title="Email" detail={currentUser.email} />
             <View
               style={{
                 flexDirection: 'column',

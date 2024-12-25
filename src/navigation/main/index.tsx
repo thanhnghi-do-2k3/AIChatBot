@@ -3,12 +3,12 @@ import AppHeader from 'components/AppHeader';
 import TabBar from 'components/TabBar';
 import ScreenName from 'constant/ScreenName';
 import React from 'react';
-import ProfileScreen from 'screens/ProfileScreen';
 import Image from 'theme/Image';
 import ChatbotNavigation from './ChatbotNavigation';
 import ChatNavigation from './ChatNavigation';
 import EmailNavigation from './EmailNavigation';
 import KnowledgeNavigation from './KnowledgeNavigation';
+import ProfileNavigation from './ProfileNavigation';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -67,8 +67,8 @@ const MainNavigation: React.FC = () => {
         component={EmailNavigation}
       />
       <BottomTab.Screen
-        name={ScreenName.ProfileScreen}
-        component={ProfileScreen}
+        name={ScreenName.ProfileNavigator}
+        component={ProfileNavigation}
       />
     </BottomTab.Navigator>
   );

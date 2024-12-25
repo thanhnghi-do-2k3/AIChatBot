@@ -6,7 +6,7 @@ import {authActions} from 'features/auth/reducer';
 import {AppNavigationRef} from 'navigation/index';
 import {dispatchReduxStore, reduxStorage} from 'store/store';
 
-const prod = false;
+export const prod = true;
 
 const BASE_URL = 'https://api.dev.jarvis.cx/api/';
 const BASE_URL_PROD = 'https://api.jarvis.cx/api/';

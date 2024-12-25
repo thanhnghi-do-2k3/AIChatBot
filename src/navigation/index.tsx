@@ -1,8 +1,10 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import ScreenName from 'constant/ScreenName';
+import {authActions} from 'features/auth/reducer';
+import useAppDispatch from 'hooks/useAppDispatch';
 import useAppSelector from 'hooks/useAppSelector';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import AuthNavigator from './auth';
 import MainNavigation from './main';
 
@@ -12,6 +14,13 @@ export const AppNavigationRef = React.createRef() as any;
 const ApplicationNavigator = () => {
   const routeNameRef = useRef() as any;
   const isLogged = useAppSelector(state => state.authReducer.isLogged);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isLogged) {
+      dispatch(authActions.getCurrentUser({}));
+    }
+  }, []);
 
   return (
     <NavigationContainer

@@ -14,6 +14,7 @@ const ScreenName = {
   ChatHisToryScreen: 'ChatHisToryScreen',
   ChatScreen: 'ChatScreen',
   EmailScreen: 'EmailScreen',
+  SubcriptionScreen: 'SubcriptionScreen',
 
   // Tab
   CreateBotTab: 'CreateBotTab',
@@ -26,6 +27,7 @@ const ScreenName = {
   KnowledgeNavigator: 'KnowledgeNavigator',
   ChatNavigator: 'ChatNavigator',
   EmailNavigator: 'EmailNavigator',
+  ProfileNavigator: 'ProfileNavigator',
 };
 
 export default ScreenName;

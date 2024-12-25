@@ -46,6 +46,24 @@ const authService = {
       throw error;
     }
   },
+
+  getUsage: async () => {
+    try {
+      const response = await httpRequestServices.get(APIEndpoint.Usage);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getCurrentUser: async () => {
+    try {
+      const response = await httpRequestServices.get(APIEndpoint.CurrentUser);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default authService;
