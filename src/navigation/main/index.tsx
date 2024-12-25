@@ -8,6 +8,7 @@ import ChatbotNavigation from './ChatbotNavigation';
 import ChatNavigation from './ChatNavigation';
 import EmailNavigation from './EmailNavigation';
 import KnowledgeNavigation from './KnowledgeNavigation';
+import ProfileNavigation from './ProfileNavigation';
 
 const BottomTab = createBottomTabNavigator();
 

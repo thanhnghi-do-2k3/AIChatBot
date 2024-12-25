@@ -1,3 +1,4 @@
+import AppHeader from 'components/AppHeader';
 import {aiChatActions} from 'features/chat/reducer';
 import React, {useEffect, useState} from 'react';
 import {
@@ -15,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/store';
 import Colors from 'theme/Colors';
-import Modal from 'react-native-modal';
+import {isIOS} from 'util/device';
 import PromptLibraryModal from './components/PromptModal';
 interface Props {}
 const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
@@ -209,6 +210,11 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
       behavior="padding"
       keyboardVerticalOffset={100}
       enabled>
+      <AppHeader
+        headerTitle="Chat with AI"
+        onPressLeftHeader={() => navigation.goBack()}
+      />
+
       <FlatList
         data={aiChatState.history}
         keyExtractor={item => item.id}
@@ -227,6 +233,7 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
           flexDirection: 'row',
           alignItems: 'center',
           padding: 10,
+          paddingBottom: isIOS() ? 32 : 0,
           backgroundColor: '#FFF',
           shadowColor: '#000',
           shadowOffset: {width: 0, height: 2},
