@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 1, height: 2},
     shadowOpacity: 1,
     shadowRadius: 4,
-    elevation: 2,
+    elevation: 5,
     borderTopRightRadius: 32,
     borderTopLeftRadius: 32,
     // position: 'absolute',

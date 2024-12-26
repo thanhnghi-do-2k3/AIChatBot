@@ -3,9 +3,14 @@ import {chatbotActions} from 'features/chatbot/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import useAppSelector from 'hooks/useAppSelector';
 import React, {useEffect, useState} from 'react';
-import {KeyboardAvoidingView, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  RefreshControl,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Input} from 'react-native-elements';
-import Animated from 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Colors from 'theme/Colors';
@@ -28,7 +33,7 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
     [listChatbot, botName],
   );
 
-  useEffect(() => {
+  function fetchChatbotData() {
     const payload = {
       data: {},
       action: {
@@ -43,6 +48,10 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
     };
 
     dispatch(chatbotActions.getChatbot(payload));
+  }
+
+  useEffect(() => {
+    fetchChatbotData();
   }, []);
 
   return (
@@ -100,7 +109,7 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
               }}
             />
           </View>
-          <Animated.FlatList
+          <FlatList
             style={{width: '100%', flex: 1, marginTop: 5}}
             contentContainerStyle={{
               paddingBottom: 20,
@@ -112,6 +121,9 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
             renderItem={({item, index}) => (
               <ChatBotListItem item={item} index={index} />
             )}
+            refreshControl={
+              <RefreshControl refreshing={false} onRefresh={fetchChatbotData} />
+            }
           />
 
           <TouchableOpacity

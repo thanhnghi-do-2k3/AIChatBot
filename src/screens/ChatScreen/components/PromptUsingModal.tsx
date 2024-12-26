@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   Text,
@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Modal from 'react-native-modal';
+// import Modal from 'react-native-modal';
+import Modal from 'components/Modal';
 
 interface PromptUsingModalProps {
   visible: boolean;
@@ -56,11 +57,7 @@ const PromptUsingModal: React.FC<PromptUsingModalProps> = ({
   };
 
   return (
-    <Modal
-      isVisible={visible}
-      onBackdropPress={onClose}
-      onBackButtonPress={onClose}
-      animationIn="slideInUp">
+    <Modal isVisible={visible} onBackdropPress={onClose}>
       <View className="bg-white rounded-lg p-5 w-11/12 self-center max-h-[500px]">
         <Text className="text-lg font-bold mb-4">Fill Parameters</Text>
 

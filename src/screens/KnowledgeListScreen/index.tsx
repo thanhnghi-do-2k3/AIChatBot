@@ -5,6 +5,7 @@ import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   KeyboardAvoidingView,
+  RefreshControl,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -26,6 +27,10 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
   const dispatch = useAppDispatch();
   const listChatbot = useAppSelector(state => state.kbReducer.listKb);
   useEffect(() => {
+    getKbData();
+  }, []);
+
+  function getKbData() {
     const payload = {
       data: {},
       action: {
@@ -40,7 +45,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
     };
 
     dispatch(kbActions.getKb(payload));
-  }, []);
+  }
 
   return (
     <>
@@ -96,6 +101,14 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
             renderItem={({item, index}) => (
               <KnowledgeListItem item={item} index={index} />
             )}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => {
+                  getKbData();
+                }}
+              />
+            }
           />
 
           <TouchableOpacity

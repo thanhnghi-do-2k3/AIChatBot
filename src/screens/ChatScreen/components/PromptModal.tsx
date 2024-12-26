@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import Modal from 'react-native-modal';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Modal from 'components/Modal';
+import {promptActions} from 'features/prompt/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import useAppSelector from 'hooks/useAppSelector';
-import {promptActions} from 'features/prompt/reducer';
+import React, {useEffect, useState} from 'react';
+import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
+// import Modal from 'react-native-modal';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import PromptUsingModal from './PromptUsingModal';
 interface PromptLibraryModalProps {
   visible: boolean;
@@ -79,11 +80,7 @@ const PromptLibraryModal: React.FC<PromptLibraryModalProps> = ({
   };
 
   return (
-    <Modal
-      isVisible={visible}
-      onBackdropPress={onClose}
-      onBackButtonPress={onClose}
-      animationIn="slideInUp">
+    <Modal isVisible={visible} onBackdropPress={onClose}>
       <View className="bg-white rounded-lg p-5 w-11/12 self-center max-h-[500px]">
         <Text className="text-lg font-bold mb-4">Prompt Library</Text>
 
@@ -148,24 +145,29 @@ const PromptLibraryModal: React.FC<PromptLibraryModalProps> = ({
           data={listPrompts}
           keyExtractor={item => item._id}
           renderItem={({item}) => (
-            <View className="flex-row justify-between py-3 border-b border-gray-200">
+            <View className="flex-row py-3 border-b border-gray-200">
               {/* Nội dung bên trái */}
               <TouchableOpacity
+                style={{
+                  flex: 1,
+                  // flexDirection: 'column',
+                }}
                 onPress={() => {
                   setContent(item.content);
                   setIsModalVisible(true);
                 }}>
-                <View className="flex-1">
+                <View>
                   <Text className="text-black font-bold text-base">
                     {item.title}
                   </Text>
-                  <Text className="text-gray-500 text-sm">
+                  <Text className="text-gray-500 text-sm" numberOfLines={3}>
                     {item.description}
                   </Text>
                 </View>
               </TouchableOpacity>
               {/* Nội dung bên phải */}
-              <View className="flex-row items-center space-x-3">
+              <View
+                style={{flex: 0.1, flexDirection: 'row', alignItems: 'center'}}>
                 <TouchableOpacity onPress={() => toggleFavorite(item.id)}>
                   <Icon
                     name={favoritePrompts.includes(item.id) ? 'star' : 'star'}

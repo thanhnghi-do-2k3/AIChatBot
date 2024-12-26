@@ -1,15 +1,15 @@
-import {useFocusEffect} from '@react-navigation/native';
 import ScreenName from 'constant/ScreenName';
 import dayjs from 'dayjs';
 import {conversationActions} from 'features/conversation/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import useAppSelector from 'hooks/useAppSelector';
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {
   ActivityIndicator,
   FlatList,
   Image,
   KeyboardAvoidingView,
+  RefreshControl,
   Text,
   TouchableOpacity,
   View,
@@ -23,6 +23,8 @@ const ChatHistoryScreen: React.FC = ({navigation}: any) => {
     navigation.navigate(ScreenName.ChatScreen, {id});
   };
 
+  const [localLoading, setLocalLoading] = React.useState(false);
+
   const {conversations, loading, error} = useAppSelector(
     (state: RootState) => state.conversationReducer,
   );
@@ -31,11 +33,11 @@ const ChatHistoryScreen: React.FC = ({navigation}: any) => {
     dispatch(conversationActions.fetchConversationsRequest());
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(conversationActions.fetchConversationsRequest());
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     dispatch(conversationActions.fetchConversationsRequest());
+  //   }, []),
+  // );
 
   // useFocusEffect(() => {
   //   dispatch(conversationActions.fetchConversationsRequest());
@@ -98,6 +100,14 @@ const ChatHistoryScreen: React.FC = ({navigation}: any) => {
           </Text>
         ) : (
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={() => {
+                  dispatch(conversationActions.fetchConversationsRequest());
+                }}
+              />
+            }
             data={conversations}
             keyExtractor={item => item.id}
             renderItem={renderChatItem}
@@ -107,6 +117,9 @@ const ChatHistoryScreen: React.FC = ({navigation}: any) => {
 
         {/* Nút Tạo Cuộc Trò Chuyện */}
         <TouchableOpacity
+          style={{
+            zIndex: 999,
+          }}
           className="absolute bottom-8 right-8 w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-xl"
           onPress={() => {
             navigation.navigate(ScreenName.ChatScreen);

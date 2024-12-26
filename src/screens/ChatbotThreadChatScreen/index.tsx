@@ -1,7 +1,7 @@
 import AppHeader from 'components/AppHeader';
 import ChatbotService from 'features/chatbot/api';
 import useAppSelector from 'hooks/useAppSelector';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -42,6 +42,7 @@ const ChatbotThreadChatScreen: React.FC<Props> = ({
 
   const [messages, setMessages] = useState<any[]>(() => threadMessages);
   const [inputMessage, setInputMessage] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
 
   // useEffect(() => {
   //   flatListRef.current?.scrollToEnd();
@@ -114,77 +115,82 @@ const ChatbotThreadChatScreen: React.FC<Props> = ({
     });
   };
 
-  const renderItem = ({item}: {item: any}) => (
-    <Animatable.View
-      animation="fadeInUp"
-      duration={500}
-      style={{
-        flexDirection: item.role === 'user' ? 'row-reverse' : 'row',
-        alignItems: 'flex-end',
-        marginVertical: 5,
-      }}>
-      <Image
-        source={{
-          uri:
-            item.role === 'user'
-              ? 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'
-              : 'https://www.shutterstock.com/shutterstock/photos/2464455965/display_1500/stock-vector-happy-robot-d-ai-character-chat-bot-mascot-isolated-on-white-background-gpt-chatbot-icon-2464455965.jpg',
-        }}
+  const renderItem = useCallback(
+    ({item}: {item: any}) => (
+      <Animatable.View
+        animation="fadeInUp"
+        duration={300}
         style={{
-          width: 40,
-          height: 40,
-          borderRadius: 20,
-          borderWidth: 2,
-          borderColor: Colors.primary,
-        }}
-      />
-      <View
-        style={{
-          backgroundColor: item.role === 'user' ? Colors.primary : '#F3F4F6',
-          paddingVertical: 10,
-          paddingHorizontal: 15,
-          borderRadius: 18,
-          marginHorizontal: 10,
-          maxWidth: '75%',
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 2},
-          shadowOpacity: 0.2,
-          shadowRadius: 3,
+          flexDirection: item.role === 'user' ? 'row-reverse' : 'row',
+          alignItems: 'flex-end',
+          marginVertical: 5,
         }}>
-        {item.isTyping ? (
-          <Animatable.Text
-            animation="pulse"
-            iterationCount="infinite"
-            style={{color: '#6B7280', fontSize: 14}}>
-            ...
-          </Animatable.Text>
-        ) : item.content ? (
+        <Image
+          source={{
+            uri:
+              item.role === 'user'
+                ? 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'
+                : 'https://www.shutterstock.com/shutterstock/photos/2464455965/display_1500/stock-vector-happy-robot-d-ai-character-chat-bot-mascot-isolated-on-white-background-gpt-chatbot-icon-2464455965.jpg',
+          }}
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            borderWidth: 2,
+            borderColor: Colors.primary,
+          }}
+        />
+        <View
+          style={{
+            backgroundColor: item.role === 'user' ? Colors.primary : '#F3F4F6',
+            paddingVertical: 10,
+            paddingHorizontal: 15,
+            borderRadius: 18,
+            marginHorizontal: 10,
+            maxWidth: '75%',
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 2},
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+          }}>
+          {item.isTyping ? (
+            <Animatable.Text
+              animation="pulse"
+              iterationCount="infinite"
+              style={{color: '#6B7280', fontSize: 14}}>
+              ...
+            </Animatable.Text>
+          ) : item.content ? (
+            <Text
+              style={{
+                color: item.role === 'user' ? 'white' : '#1F2937',
+                fontSize: 16,
+              }}>
+              {item.content}
+            </Text>
+          ) : null}
+          {item.image && (
+            <Image
+              source={{uri: item.image}}
+              style={{width: 200, height: 200, marginTop: 10, borderRadius: 10}}
+              resizeMode="cover"
+            />
+          )}
           <Text
             style={{
-              color: item.role === 'user' ? 'white' : '#1F2937',
-              fontSize: 16,
+              fontSize: 12,
+              color: '#9CA3AF',
+              marginTop: 5,
+              textAlign: item.role === 'user' ? 'right' : 'left',
             }}>
-            {item.content}
+            {item.createAt}
           </Text>
-        ) : null}
-        {item.image && (
-          <Image
-            source={{uri: item.image}}
-            style={{width: 200, height: 200, marginTop: 10, borderRadius: 10}}
-            resizeMode="cover"
-          />
-        )}
-        <Text
-          style={{
-            fontSize: 12,
-            color: '#9CA3AF',
-            marginTop: 5,
-            textAlign: item.role === 'user' ? 'right' : 'left',
-          }}>
-          {item.createAt}
-        </Text>
-      </View>
-    </Animatable.View>
+        </View>
+      </Animatable.View>
+    ),
+    [
+      // messages,
+    ],
   );
 
   return (
