@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Modal from 'react-native-modal';
+import Modal from 'components/Modal';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface CreateKnowledgeModalProps {
@@ -66,12 +66,7 @@ const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
     onClose();
   };
   return (
-    <Modal
-      isVisible={visible}
-      onBackdropPress={handleClose}
-      style={{margin: 0}}
-      backdropOpacity={0.5}
-      animationIn="fadeIn">
+    <Modal isVisible={visible} onBackdropPress={handleClose}>
       <View style={styles.modalContent}>
         <Text style={styles.title}>Add Knowledge</Text>
         {selectedOption !== 'url' ? (

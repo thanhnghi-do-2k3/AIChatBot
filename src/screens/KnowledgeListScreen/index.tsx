@@ -97,7 +97,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
             style={{width: '100%', flex: 1, marginTop: 5}}
             data={listChatbot}
             showsVerticalScrollIndicator={false}
-            keyExtractor={item => item.name}
+            keyExtractor={item => item.id}
             renderItem={({item, index}) => (
               <KnowledgeListItem item={item} index={index} />
             )}

@@ -5,7 +5,7 @@ import React, {useCallback} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
+import {kbActions} from 'features/KB/reducer';
 interface KnowledgeListItemProps {
   item: any;
   index: number;
@@ -15,6 +15,30 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const thisSwipeable = React.useRef(null);
+  const onDelete = () => {
+    const payload = {
+      data: {
+        id: item.id,
+      },
+      action: {
+        onSuccess: (data: any) => {
+          // @ts-ignore
+          thisSwipeable?.current?.close();
+          const payload = {
+            data: {},
+            action: {
+              onSuccess: (data: any) => {},
+              onFailure: (error: any) => {},
+            },
+          };
+
+          dispatch(kbActions.getKb(payload));
+        },
+        onFailure: (error: any) => {},
+      },
+    };
+    dispatch(kbActions.deleteKb(payload));
+  };
 
   const rightAction = useCallback((progress: any, dragX: any) => {
     return (
@@ -28,7 +52,7 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
           marginRight: 20,
         }}>
         <TouchableOpacity
-          // onPress={() => onDelete()}
+          onPress={() => onDelete()}
           style={{
             backgroundColor: 'red',
             padding: 10,

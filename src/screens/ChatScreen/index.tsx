@@ -18,6 +18,8 @@ import {RootState} from 'store/store';
 import Colors from 'theme/Colors';
 import {isIOS} from 'util/device';
 import PromptLibraryModal from './components/PromptModal';
+import LottieView from 'lottie-react-native';
+import Lottie from 'theme/Lottie';
 interface Props {}
 const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
   const dispatch = useDispatch();
@@ -27,6 +29,7 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [promptContent, setPromptContent] = useState('');
+  const isLoading = aiChatState.loading;
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
@@ -215,6 +218,19 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
         onPressLeftHeader={() => navigation.goBack()}
       />
 
+      {(aiChatState.history?.length ?? 0) === 0 && (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <LottieView
+            source={Lottie.hiAnimation}
+            autoPlay
+            loop
+            style={{width: 400, height: 300, alignSelf: 'center'}}
+          />
+          <Text style={{fontSize: 16, color: '#9CA3AF'}}>
+            Type something to start a conversation
+          </Text>
+        </View>
+      )}
       <FlatList
         data={aiChatState.history}
         keyExtractor={item => item.id}

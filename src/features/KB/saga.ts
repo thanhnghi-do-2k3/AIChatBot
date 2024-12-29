@@ -9,6 +9,7 @@ function* kbSaga() {
     takeLatest(kbActions.getKb.type, handleGetKbSaga),
     takeLatest(kbActions.getUnitsKb.type, handleGetUnitsKbSaga),
     takeLatest(kbActions.addUrlToKb.type, handleAddUrlToKbSaga),
+    takeLatest(kbActions.deleteKb.type, handleDeleteKbSaga),
   ]);
 }
 
@@ -39,6 +40,21 @@ function* handleGetKbSaga(
   } catch (error: any) {
     console.log('error', error);
     yield put(kbActions.getKbFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  }
+}
+
+function* handleDeleteKbSaga(
+  action: PayloadAction<DeleteKbPayload>,
+): Generator<any, void, any> {
+  console.log('handleDeleteKbSaga', action.payload);
+  try {
+    const response: any = yield call(kbService.deleteKb, action.payload.data);
+    yield put(kbActions.deleteKbSuccess(response));
+    action.payload.action?.onSuccess?.(response);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(kbActions.deleteKbFailure(error.message));
     action.payload.action?.onFailure?.(error);
   }
 }

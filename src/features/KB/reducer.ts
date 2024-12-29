@@ -37,6 +37,16 @@ const kbSlice = createSlice({
       state.loading = false;
     },
 
+    deleteKb: (state, action) => {
+      state.loading = true;
+    },
+    deleteKbSuccess: (state, action) => {
+      state.loading = false;
+    },
+    deleteKbFailure: (state, action) => {
+      state.loading = false;
+    },
+
     getUnitsKb: (state, action) => {
       state.loading = true;
     },

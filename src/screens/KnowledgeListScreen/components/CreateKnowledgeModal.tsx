@@ -3,7 +3,7 @@ import useAppDispatch from 'hooks/useAppDispatch';
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Button, Input} from 'react-native-elements';
-import Modal from 'react-native-modal';
+import Modal from 'components/Modal';
 import Toast from 'react-native-toast-message';
 
 interface CreateKnowledgeModalProps {
@@ -53,12 +53,7 @@ const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
   const [botName, setBotName] = useState('');
 
   return (
-    <Modal
-      hideModalContentWhileAnimating
-      isVisible={visible}
-      onBackdropPress={onClose}
-      onBackButtonPress={onClose}
-      animationIn="slideInUp">
+    <Modal isVisible={visible} onBackdropPress={onClose}>
       <View style={styles.modalContent}>
         <Text style={styles.title}>Create Knowledge</Text>
         <Input

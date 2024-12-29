@@ -55,6 +55,18 @@ const KbService = {
       throw error;
     }
   },
+
+  deleteKb: async (data: DeleteKbPayloadData) => {
+    try {
+      const endpoint = KB_APIEndpoint.GetKnowledgeBase + '/' + data.id;
+      const response = await kb_httpRequestServices.delete(endpoint);
+      console.log('Delete KB response from API:', response);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 };
 
 export default KbService;

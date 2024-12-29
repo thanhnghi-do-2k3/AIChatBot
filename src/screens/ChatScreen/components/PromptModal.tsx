@@ -7,6 +7,7 @@ import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
 // import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import PromptUsingModal from './PromptUsingModal';
+import CreatePromptModal from './CreatePromptModal';
 interface PromptLibraryModalProps {
   visible: boolean;
   onClose: () => void;
@@ -22,18 +23,24 @@ const PromptLibraryModal: React.FC<PromptLibraryModalProps> = ({
 }) => {
   const [searchText, setSearchText] = useState('');
   const [selectedTab, setSelectedTab] = useState('Public Prompts'); // Default to "Public Prompts"
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [favoritePrompts, setFavoritePrompts] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isCreatePromptModalVisible, setIsCreatePromptModalVisible] =
+    useState(false);
+
   const [content, setContent] = useState('');
   const dispatch = useAppDispatch();
   const listPrompts = useAppSelector(state => state.promptReducer.listPrompts);
 
-  useEffect(() => {
-    const isPublic = selectedTab === 'Public Prompts';
+  const handleSearch = () => {
+    const normalizedCategory = selectedCategory.toLowerCase();
+
     const payload = {
       data: {
-        isPublic: isPublic,
+        query: searchText,
+        isPublic: selectedTab === 'Public Prompts',
+        ...(selectedCategory && {category: normalizedCategory}),
       },
       action: {
         onSuccess: (data: any) => {},
@@ -41,48 +48,51 @@ const PromptLibraryModal: React.FC<PromptLibraryModalProps> = ({
       },
     };
     dispatch(promptActions.getPrompts(payload));
-  }, [selectedTab]);
-  const categories = ['All', 'Marketing', 'Business', 'SEO'];
-  const prompts = [
-    {
-      id: '1',
-      name: 'AI Poetry Generation',
-      description:
-        'This prompt generates a poem based on the user’s preferences.',
-      category: 'SEO',
-    },
-    {
-      id: '2',
-      name: 'English Vocabulary Learning',
-      description:
-        'Learn new vocabulary with definitions, examples, and quizzes.',
-      category: 'Marketing',
-    },
-    {
-      id: '3',
-      name: 'Grammar Corrector',
-      description:
-        'Improve grammar in your sentences with instant corrections.',
-      category: 'Business',
-    },
-  ];
+  };
 
-  const filteredPrompts = prompts.filter(
-    item =>
-      (selectedCategory === 'All' || item.category === selectedCategory) &&
-      item.name.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  useEffect(() => {
+    console.log('selectedCategory', selectedCategory);
+    const normalizedCategory = selectedCategory.toLowerCase();
+    const isPublic = selectedTab === 'Public Prompts';
+    const payload = {
+      data: {
+        isPublic: isPublic,
+        query: searchText,
+        ...(selectedCategory && {category: normalizedCategory}),
+      },
+      action: {
+        onSuccess: (data: any) => {},
+        onFailure: (error: any) => {},
+      },
+    };
+    dispatch(promptActions.getPrompts(payload));
+  }, [selectedTab, selectedCategory]);
+  const categories = ['Education', 'Business', 'SEO', 'Marketing'];
 
   const toggleFavorite = (id: string) => {
-    setFavoritePrompts(prev =>
-      prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id],
-    );
+    const payload = {
+      data: {
+        id: id,
+      },
+      action: {
+        onSuccess: (data: any) => {},
+        onFailure: (error: any) => {},
+      },
+    };
+    dispatch(promptActions.makeFavoritePrompt(payload));
   };
 
   return (
     <Modal isVisible={visible} onBackdropPress={onClose}>
       <View className="bg-white rounded-lg p-5 w-11/12 self-center max-h-[500px]">
-        <Text className="text-lg font-bold mb-4">Prompt Library</Text>
+        <View className="flex-row justify-between items-center mb-4">
+          <Text className="text-lg font-bold mb-4">Prompt Library</Text>
+          <TouchableOpacity
+            onPress={() => setIsCreatePromptModalVisible(true)}
+            className=" mb-4 p-2 bg-blue-500 rounded-lg">
+            <Icon name="plus" size={20} color="#fff" />
+          </TouchableOpacity>
+        </View>
 
         {/* Tabs My Prompts / Public Prompts */}
         <View className="flex-row justify-start mb-4 gap-2">
@@ -113,13 +123,22 @@ const PromptLibraryModal: React.FC<PromptLibraryModalProps> = ({
         </View>
 
         {/* Thanh tìm kiếm */}
-        <TextInput
-          className="border border-gray-300 rounded-lg p-3 mb-4 text-black"
-          placeholder="Search..."
-          placeholderTextColor="#BDBDBD"
-          value={searchText}
-          onChangeText={setSearchText}
-        />
+        <View className="flex-row justify-between mb-4 items-center">
+          <TextInput
+            className="border border-gray-300 rounded-lg p-3 mb-4 text-black flex-1 mr-2"
+            placeholder="Search..."
+            placeholderTextColor="#BDBDBD"
+            value={searchText}
+            onChangeText={text => {
+              setSearchText(text);
+            }}
+          />
+          <TouchableOpacity
+            onPress={handleSearch}
+            className="bg-gray-200 rounded-full p-3 mb-4">
+            <Icon name="search" size={20} color="#BDBDBD" />
+          </TouchableOpacity>
+        </View>
 
         {/* Tabs bộ lọc danh mục */}
         <View className="flex-row justify-around mb-4">
@@ -129,7 +148,13 @@ const PromptLibraryModal: React.FC<PromptLibraryModalProps> = ({
               className={`py-2 px-4 rounded-full ${
                 selectedCategory === category ? 'bg-blue-500' : 'bg-gray-200'
               }`}
-              onPress={() => setSelectedCategory(category)}>
+              onPress={() => {
+                if (selectedCategory === category) {
+                  setSelectedCategory('');
+                } else {
+                  setSelectedCategory(category);
+                }
+              }}>
               <Text
                 className={`${
                   selectedCategory === category ? 'text-white' : 'text-black'
@@ -168,13 +193,11 @@ const PromptLibraryModal: React.FC<PromptLibraryModalProps> = ({
               {/* Nội dung bên phải */}
               <View
                 style={{flex: 0.1, flexDirection: 'row', alignItems: 'center'}}>
-                <TouchableOpacity onPress={() => toggleFavorite(item.id)}>
+                <TouchableOpacity onPress={() => toggleFavorite(item._id)}>
                   <Icon
-                    name={favoritePrompts.includes(item.id) ? 'star' : 'star'}
+                    name={item.isFavorite ? 'star' : 'star'}
                     size={20}
-                    color={
-                      favoritePrompts.includes(item.id) ? '#FFD700' : '#BDBDBD'
-                    }
+                    color={item.isFavorite ? '#FFD700' : '#BDBDBD'}
                   />
                 </TouchableOpacity>
               </View>
@@ -193,11 +216,16 @@ const PromptLibraryModal: React.FC<PromptLibraryModalProps> = ({
         visible={isModalVisible}
         onClose={() => {
           setIsModalVisible(false);
-          onClose();
+          //onClose();
         }}
         content={content}
         onSubmitForm={onSubmitForm}
         onSendChat={onSendChat}
+      />
+
+      <CreatePromptModal
+        visible={isCreatePromptModalVisible}
+        onClose={() => setIsCreatePromptModalVisible(false)}
       />
     </Modal>
   );

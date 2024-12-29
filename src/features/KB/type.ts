@@ -16,6 +16,14 @@ type GetUnitsKbPayload = PayloadActions & {
   data: GetUnitsKbPayloadData;
 };
 
+type DeleteKbPayloadData = {
+  id: string;
+};
+
+type DeleteKbPayload = PayloadActions & {
+  data: DeleteKbPayloadData;
+};
+
 type AddUrlToKbPayloadData = {
   id: string;
   unitName: string;
