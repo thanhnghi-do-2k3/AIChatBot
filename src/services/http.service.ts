@@ -6,7 +6,7 @@ import {authActions} from 'features/auth/reducer';
 import {AppNavigationRef} from 'navigation/index';
 import {dispatchReduxStore, reduxStorage} from 'store/store';
 
-export const prod = false;
+export const prod = true;
 
 const BASE_URL = 'https://api.dev.jarvis.cx/api/';
 const BASE_URL_PROD = 'https://api.jarvis.cx/api/';
@@ -27,6 +27,7 @@ const kbApiClient = axios.create({
 
 const attachAuthorization = async (config: any) => {
   const accessToken = await reduxStorage.getItem('accessToken');
+  console.log('accessToken', accessToken);
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }

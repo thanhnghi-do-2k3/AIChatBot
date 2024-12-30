@@ -1,20 +1,22 @@
 import {promptActions} from 'features/prompt/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import Modal from 'components/Modal';
 import Toast from 'react-native-toast-message';
 
-interface CreatePromptModalProps {
+interface EditPromptModalProps {
   visible: boolean;
   onClose: () => void;
+  item?: any;
   handleSearch?: () => void;
 }
 
-const CreatePromptModal: React.FC<CreatePromptModalProps> = ({
+const EditPromptModal: React.FC<EditPromptModalProps> = ({
   visible,
   onClose,
+  item,
   handleSearch,
 }) => {
   const [title, setTitle] = useState('');
@@ -24,22 +26,32 @@ const CreatePromptModal: React.FC<CreatePromptModalProps> = ({
   const [language, setLanguage] = useState('');
 
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (item) {
+      setTitle(item.title);
+      setContent(item.content);
+      setDescription(item.description);
+      setCategory(item.category);
+      setLanguage(item.language);
+    }
+  }, [item]);
 
   const handleSubmit = () => {
-    const createPromptPayload = {
+    const editPromptPayload = {
       data: {
+        id: item?._id,
         title: title,
         content: content,
         description: description,
         category: category,
-        isPublic: false,
-        language: 'English',
+        isPublic: item?.isPublic,
+        language: language,
       },
       action: {
         onSuccess: () => {
           Toast.show({
             type: 'success',
-            text1: 'Prompt created successfully',
+            text1: 'Prompt edited successfully',
           });
           handleSearch?.();
           onClose();
@@ -47,13 +59,13 @@ const CreatePromptModal: React.FC<CreatePromptModalProps> = ({
         onFailure: (error: any) => {
           Toast.show({
             type: 'error',
-            text1: 'Failed to create prompt',
+            text1: 'Failed to edit prompt',
             text2: error?.data?.details?.[0]?.issue,
           });
         },
       },
     };
-    dispatch(promptActions.createPrompt(createPromptPayload));
+    dispatch(promptActions.updatePrompt(editPromptPayload));
   };
 
   return (
@@ -96,7 +108,7 @@ const CreatePromptModal: React.FC<CreatePromptModalProps> = ({
 
         <View style={styles.buttonContainer}>
           <Button title="Cancel" onPress={onClose} />
-          <Button title="Create" onPress={handleSubmit} />
+          <Button title="Submit" onPress={handleSubmit} />
         </View>
       </View>
     </Modal>
@@ -138,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreatePromptModal;
+export default EditPromptModal;

@@ -11,6 +11,8 @@ function* promptSaga() {
       handleMakeFavoritePromptSaga,
     ),
     takeLatest(promptActions.createPrompt.type, handleCreatePromptSaga),
+    takeLatest(promptActions.deletePrompt.type, handleDeletePromptSaga),
+    takeLatest(promptActions.updatePrompt.type, handleUpdatePromptSaga),
   ]);
 }
 
@@ -67,5 +69,43 @@ function* handleMakeFavoritePromptSaga(
     action.payload.action?.onFailure?.(error);
   }
 }
+
+function* handleDeletePromptSaga(
+  action: PayloadAction<DeletePromptPayload>,
+): Generator<any, void, any> {
+  console.log('handleDeletePromptSaga', action.payload);
+  try {
+    const response: any = yield call(
+      promptService.deletePrompt,
+      action.payload.data,
+    );
+    yield put(promptActions.deletePromptSuccess(response));
+    action.payload.action?.onSuccess?.(response);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(promptActions.deletePromptFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  }
+}
+
+function* handleUpdatePromptSaga(
+  action: PayloadAction<UpdatePromptPayload>,
+): Generator<any, void, any> {
+  console.log('handleUpdatePromptSaga', action.payload);
+  try {
+    const response: any = yield call(
+      promptService.updatePrompt,
+      action.payload.data,
+    );
+    yield put(promptActions.updatePromptSuccess(response));
+    action.payload.action?.onSuccess?.(response);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(promptActions.updatePromptFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  }
+}
+
+
 
 export default promptSaga;

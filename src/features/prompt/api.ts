@@ -1,5 +1,5 @@
 import {APIEndpoint} from 'constant/APIEndPoint';
-import { create } from 'react-test-renderer';
+import {create} from 'react-test-renderer';
 import {httpRequestServices} from 'services/http.service';
 
 const promptService = {
@@ -38,6 +38,30 @@ const promptService = {
       throw error;
     }
   },
+
+  deletePrompt: async (data: DeletePromptPayloadData) => {
+    try {
+      const endpoint = APIEndpoint.PromptList + '/' + data.id;
+      const response = await httpRequestServices.delete(endpoint);
+      console.log('Delete prompt response from API:', response);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  updatePrompt: async (data: UpdatePromptPayloadData) => {
+    try {
+      const endpoint = APIEndpoint.PromptList + '/' + data.id;
+      const response = await httpRequestServices.patch(endpoint, data);
+      console.log('Update prompt response from API:', response);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 };
 
 export default promptService;

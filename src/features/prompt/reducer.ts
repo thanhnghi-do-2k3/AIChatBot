@@ -55,6 +55,26 @@ const promptSlice = createSlice({
     makeFavoritePromptFailure: (state, action) => {
       state.loading = false;
     },
+
+    deletePrompt: (state, action) => {
+      state.loading = true;
+    },
+    deletePromptSuccess: (state, action) => {
+      state.loading = false;
+    },
+    deletePromptFailure: (state, action) => {
+      state.loading = false;
+    },
+
+    updatePrompt: (state, action) => {
+      state.loading = true;
+    },
+    updatePromptSuccess: (state, action) => {
+      state.loading = false;
+    },
+    updatePromptFailure: (state, action) => {
+      state.loading = false;
+    },
   },
 });
 
