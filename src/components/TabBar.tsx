@@ -156,13 +156,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderTopRightRadius: 32,
     borderTopLeftRadius: 32,
-    // position: 'absolute',
-    // bottom: 0,
-    // left: 0,
-    // right: 0,
-    // overflow: 'hidden',
-    // borderTopColor: Colors.orange,
-    // borderTopWidth: 1,
   },
   container: {
     borderTopRightRadius: 32,
@@ -171,7 +164,6 @@ const styles = StyleSheet.create({
     height: 64,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: Colors.white,
   },
   tabItem: {
     flex: 1,

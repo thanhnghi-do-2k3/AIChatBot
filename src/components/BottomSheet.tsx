@@ -9,7 +9,9 @@ interface GlobalModalProps {
   children: React.ReactNode;
   isVisible: boolean;
   onBackdropPress: () => void;
-  heightPercentage?: 50 | 60 | 70 | 80 | 90 | 100;
+  heightPercentage?: 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100;
+  entering?: typeof FadeInDown;
+  exiting?: typeof FadeOutDown;
 }
 
 const GLOBAL_MODAL_Z_INDEX = 9993;
@@ -20,6 +22,8 @@ const BottomSheet: React.FC<GlobalModalProps> = ({
   onBackdropPress,
   containerStyle,
   children,
+  entering = FadeInDown,
+  exiting = FadeOutDown,
 }) => {
   return (
     isVisible && (
@@ -48,8 +52,8 @@ const BottomSheet: React.FC<GlobalModalProps> = ({
               height: `${heightPercentage}%`,
             }}>
             <Animated.View
-              entering={FadeInDown.duration(500)}
-              exiting={FadeOutDown.duration(400)}
+              entering={entering.duration(500)}
+              exiting={exiting.duration(400)}
               style={[
                 {
                   backgroundColor: 'white',

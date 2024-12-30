@@ -31,6 +31,9 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
   ] = useState(false);
   const dispatch = useAppDispatch();
   const listChatbot = useAppSelector(state => state.chatbotReducer.listChatbot);
+  const isFetchingChatbot = useAppSelector(
+    state => state.chatbotReducer.isFetchingChatbot,
+  );
   const displayChatbot = React.useMemo(
     () =>
       listChatbot.filter(
@@ -135,7 +138,9 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
               />
             )}
             refreshControl={
-              <RefreshControl refreshing={false} onRefresh={fetchChatbotData} />
+              <RefreshControl
+                refreshing={isFetchingChatbot}
+                onRefresh={fetchChatbotData}></RefreshControl>
             }
           />
 

@@ -43,9 +43,6 @@ const LoginScreen = ({navigation}: any) => {
               text1: 'Login successfully',
               visibilityTime: 1000,
             });
-            // navigation.navigate(ScreenName.MainNavigator, {
-            //   screen: ScreenName.Home,
-            // });
             navigation.reset({
               index: 0,
               routes: [

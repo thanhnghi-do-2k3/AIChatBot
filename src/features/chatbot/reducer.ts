@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 interface InitialState {
   loading: boolean;
+  isFetchingChatbot: boolean;
   listChatbot: any[];
   curThreadChat: any[];
   curThreadMessage: any[];
@@ -9,6 +10,7 @@ interface InitialState {
 
 const initialState: InitialState = {
   loading: false,
+  isFetchingChatbot: false,
   listChatbot: [],
   curThreadChat: [],
   curThreadMessage: [],
@@ -29,14 +31,14 @@ const chatbotSlice = createSlice({
     },
 
     getChatbot: (state, action) => {
-      state.loading = true;
+      state.isFetchingChatbot = true;
     },
     getChatbotSuccess: (state, action) => {
-      state.loading = false;
+      state.isFetchingChatbot = false;
       state.listChatbot = action.payload.data;
     },
     getChatbotFailure: (state, action) => {
-      state.loading = false;
+      state.isFetchingChatbot = false;
     },
 
     deleteChatbot: (state, action) => {

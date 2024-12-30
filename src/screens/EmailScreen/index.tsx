@@ -127,6 +127,24 @@ const EmailScreen: React.FC<{navigation: any}> = ({navigation}) => {
       keyboardVerticalOffset={100}
       enabled>
       <ScrollView>
+        {/* <SelectDropdown
+          data={[
+            {label: 'All', value: 'all'},
+            {label: 'Published', value: 'published'},
+            {label: 'Unpublished', value: 'unpublished'},
+          ]}
+          onSelect={(value: string) => {
+            console.log(value);
+          }}
+          renderItem={(item, index) => {
+            return (
+              <View className="flex-row items-center gap-4">
+                <Text className="text-base font-medium">{item.label}</Text>
+              </View>
+            );
+          }}
+        /> */}
+
         <View className="flex-1 p-4">
           <Text className="text-2xl font-bold mb-4">
             AI-Powered Email Reply
