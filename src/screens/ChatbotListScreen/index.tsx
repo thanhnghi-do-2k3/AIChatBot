@@ -15,12 +15,20 @@ import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Colors from 'theme/Colors';
 import ChatBotListItem from './components/ChatBotListItem';
+import MessengerConfigurationModal from './components/MessengerConfigurationModal';
+import PublishBotChooseModal from './components/PublishBotChooseModal';
 import {styles} from './style';
 
 interface Props {}
 
 const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
   const [botName, setBotName] = useState<string>('');
+  const [isShowPublishBotModal, setIsShowPublishBotModal] = useState(false);
+  const [currentBot, setCurrentBot] = useState<any>();
+  const [
+    isShowMessengerConfigurationModal,
+    setIsShowMessengerConfigurationModal,
+  ] = useState(false);
   const dispatch = useAppDispatch();
   const listChatbot = useAppSelector(state => state.chatbotReducer.listChatbot);
   const displayChatbot = React.useMemo(
@@ -119,7 +127,12 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.chatbotName}
             renderItem={({item, index}) => (
-              <ChatBotListItem item={item} index={index} />
+              <ChatBotListItem
+                item={item}
+                index={index}
+                triggerPublishBot={setIsShowPublishBotModal}
+                setBot={setCurrentBot}
+              />
             )}
             refreshControl={
               <RefreshControl refreshing={false} onRefresh={fetchChatbotData} />
@@ -156,6 +169,28 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+      <PublishBotChooseModal
+        isVisible={isShowPublishBotModal}
+        onClose={() => {
+          setIsShowPublishBotModal(false);
+        }}
+        onMessenger={function (): void {
+          setIsShowMessengerConfigurationModal(true);
+        }}
+        onTelegram={function (): void {
+          throw new Error('Function not implemented.');
+        }}
+        onSlack={function (): void {
+          throw new Error('Function not implemented.');
+        }} // onPublish={() => {}}
+      />
+      <MessengerConfigurationModal
+        chatbot={currentBot}
+        isOpen={isShowMessengerConfigurationModal}
+        onClose={() => {
+          setIsShowMessengerConfigurationModal(false);
+        }}
+      />
     </>
   );
 };
