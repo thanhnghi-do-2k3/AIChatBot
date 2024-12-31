@@ -4,7 +4,7 @@ import ScreenName from 'constant/ScreenName';
 import dayjs from 'dayjs';
 import {chatbotActions} from 'features/chatbot/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
-import React, {useCallback} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Toast from 'react-native-toast-message';
@@ -13,9 +13,16 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 interface ChatBotListItemProps {
   item: any;
   index: number;
+  triggerPublishBot: (toggle: boolean) => void;
+  setBot: (bot: any) => void;
 }
 
-const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
+const ChatBotListItem: React.FC<ChatBotListItemProps> = ({
+  item,
+  index,
+  triggerPublishBot,
+  setBot,
+}) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const thisSwipeable = React.useRef(null);
@@ -134,7 +141,8 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
   const onSwipeableOpen = (direction: any) => {
     console.log('onSwipeableOpen', direction);
     if (direction === 'right') {
-      console.log('right');
+      triggerPublishBot(true);
+      setBot(item);
       // @ts-ignore
       thisSwipeable?.current?.close();
     }
@@ -146,6 +154,8 @@ const ChatBotListItem: React.FC<ChatBotListItemProps> = ({item, index}) => {
       renderRightActions={rightAction}
       renderLeftActions={leftAction}
       friction={2}
+      rightThreshold={40}
+      leftThreshold={10}
       onSwipeableOpen={onSwipeableOpen}
       containerStyle={[
         {
@@ -271,4 +281,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatBotListItem;
+export default memo(ChatBotListItem);
