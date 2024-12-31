@@ -218,7 +218,7 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
         onPressLeftHeader={() => navigation.goBack()}
       />
 
-      {(aiChatState.history?.length ?? 0) === 0 && (
+      {(aiChatState.history?.length ?? 0) === 0 && !conversationId && (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <LottieView
             source={Lottie.hiAnimation}
