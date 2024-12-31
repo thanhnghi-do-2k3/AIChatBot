@@ -1,6 +1,5 @@
 import type {PayloadAction} from '@reduxjs/toolkit';
-import {GlobalLoadingController} from 'components/GlobalLoading';
-import {all, call, put, takeEvery, takeLatest} from 'redux-saga/effects';
+import {all, call, put, takeLatest} from 'redux-saga/effects';
 import aiChatService from './api';
 import {aiChatActions} from './reducer';
 
@@ -28,12 +27,13 @@ function* handleSendMessageSaga(action: PayloadAction<AiChatPayload>): any {
   }
 }
 
-function* handleGetOldChatHistorySaga(action: PayloadAction<string>) {
+function* handleGetOldChatHistorySaga(action: PayloadAction<any>) {
   try {
     const response: AiChatHistoryResponse = yield call(
       aiChatService.getOldChatHistory,
       action.payload,
     );
+    console.log('Saga received response:', response);
     yield put(aiChatActions.getOldChatHistorySuccess(response));
   } catch (error: any) {
     yield put(aiChatActions.getOldChatHistoryFailure(error.message));

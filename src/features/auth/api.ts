@@ -1,11 +1,14 @@
-import {apiServices} from 'api';
-import APIEndpoint from 'constant/APIEndPoint';
+import {APIEndpoint, KB_APIEndpoint} from 'constant/APIEndPoint';
+import {
+  httpRequestServices,
+  kb_httpRequestServices,
+} from 'services/http.service';
 
 const authService = {
   // Register a new user
   register: async (data: RegisterPayloadData) => {
     try {
-      const response = await apiServices.post(APIEndpoint.SignUp, data);
+      const response = await httpRequestServices.post(APIEndpoint.SignUp, data);
       return response;
     } catch (error) {
       throw error;
@@ -15,7 +18,19 @@ const authService = {
   // Login user
   login: async (data: LoginPayloadData) => {
     try {
-      const response = await apiServices.post(APIEndpoint.SignIn, data);
+      const response = await httpRequestServices.post(APIEndpoint.SignIn, data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  loginForKB: async (data: {token: string}) => {
+    try {
+      const response = await kb_httpRequestServices.post(
+        KB_APIEndpoint.SignIn,
+        data,
+      );
       return response;
     } catch (error) {
       throw error;
@@ -25,7 +40,25 @@ const authService = {
   // Logout user
   logout: async () => {
     try {
-      const response = await apiServices.get(APIEndpoint.SignOut);
+      const response = await httpRequestServices.get(APIEndpoint.SignOut);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getUsage: async () => {
+    try {
+      const response = await httpRequestServices.get(APIEndpoint.Usage);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getCurrentUser: async () => {
+    try {
+      const response = await httpRequestServices.get(APIEndpoint.CurrentUser);
       return response;
     } catch (error) {
       throw error;

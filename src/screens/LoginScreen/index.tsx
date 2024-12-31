@@ -1,15 +1,16 @@
-import {AuthHeader, ImageView} from 'components';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
 import ScreenName from 'constant/ScreenName';
 import {authActions} from 'features/auth/reducer';
 import {useFormik} from 'formik';
 import useAppDispatch from 'hooks/useAppDispatch';
+import LottieView from 'lottie-react-native';
 import React from 'react';
-import {Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {Input} from 'react-native-elements';
 import Toast from 'react-native-toast-message';
-import Image from 'theme/Image';
+import {GoogleSigninService} from 'services/google-signin.service';
+import Lottie from 'theme/Lottie';
 import * as Yup from 'yup';
-import {styles} from './style';
 
 const _buttonHeight = 50;
 
@@ -23,10 +24,13 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({navigation}: any) => {
+  const [isPasswordVisible, setPasswordVisible] = React.useState(false);
+  const [isLoginPressed, setIsLoginPressed] = React.useState(false);
   const formik = useFormik({
     initialValues: {email: '', password: ''},
     validationSchema: validationSchema,
     onSubmit: async values => {
+      console.log('on submit');
       const LoginPayload: LoginPayload = {
         data: {
           email: values.email,
@@ -37,9 +41,13 @@ const LoginScreen = ({navigation}: any) => {
             Toast.show({
               type: 'success',
               text1: 'Login successfully',
+              visibilityTime: 1000,
             });
-            navigation.navigate(ScreenName.MainNavigator, {
-              screen: ScreenName.Home,
+            navigation.reset({
+              index: 0,
+              routes: [
+                {name: ScreenName.MainNavigator, screen: ScreenName.Home},
+              ],
             });
           },
           onFailure: (error: any) => {
@@ -47,6 +55,7 @@ const LoginScreen = ({navigation}: any) => {
               type: 'error',
               text1: 'Login failed',
               text2: error?.data?.details?.[0].issue,
+              visibilityTime: 1000,
             });
           },
         },
@@ -59,62 +68,158 @@ const LoginScreen = ({navigation}: any) => {
 
   return (
     <NAvoidKeyboardScreen scrollEnabled={true}>
-      <AuthHeader title="Login" titleStyle={{color: 'black'}} />
-      <View className="flex-1 items-center p-4">
-        <ImageView
+      {/* <AuthHeader title="Login" titleStyle={{color: 'black'}} /> */}
+      <View
+        className="flex-1 items-center justify-between w-full"
+        style={{
+          paddingHorizontal: 20,
+          paddingVertical: 40,
+        }}>
+        {/* <ImageView
           className="w-48 h-48 mb-14 mt-14"
           src={Image.jarvisIcon}
           resizeMode="contain"
+        /> */}
+        <LottieView
+          source={Lottie.loggingAnimation}
+          autoPlay
+          loop
+          style={{width: 350, height: 240}}
         />
 
-        <TextInput
-          style={[
-            styles.input,
-            {
-              borderColor:
-                formik.touched.email && formik.errors.email ? 'red' : 'gray',
-              marginBottom:
-                formik.touched.email && formik.errors.email ? 0 : 16,
-            },
-          ]}
-          className={`w-full h-12 border rounded-lg px-2 text-lg h-[${_buttonHeight}px]`}
-          placeholder="Username"
-          value={formik.values.email}
-          onChangeText={formik.handleChange('email')}
-          onBlur={formik.handleBlur('email')}
-        />
+        {/* <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 30,
+            marginBottom: 32,
+            marginTop: 16,
+          }}>
+          LOGIN
+        </Text> */}
 
-        {formik.touched.email && formik.errors.email ? (
-          <Text style={styles.error}>{formik.errors.email}</Text>
-        ) : null}
+        <View
+          style={{
+            width: '100%',
+            paddingHorizontal: 20,
+            alignItems: 'center',
+          }}>
+          <Input
+            errorMessage={
+              formik.touched.email && formik.errors.email
+                ? formik.errors.email
+                : ''
+            }
+            label="Email"
+            labelStyle={{
+              color: '#BDBDBD',
+              fontSize: 16,
+              marginLeft: 5,
+              marginBottom: 5,
+            }}
+            placeholder="Enter your email"
+            placeholderTextColor={'#BDBDBD'}
+            value={formik.values.email}
+            onChangeText={formik.handleChange('email')}
+            onBlur={formik.handleBlur('email')}
+            leftIcon={{
+              type: 'font-awesome',
+              name: 'user',
+              color: '#BDBDBD',
+            }}
+            inputStyle={{
+              marginLeft: 10,
+            }}
+            inputContainerStyle={{
+              borderBottomWidth: 0,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              backgroundColor: '#F5F5F5',
+              borderRadius: 20,
+            }}
+          />
 
-        <TextInput
-          style={[
-            styles.input,
-            {
-              borderColor:
-                formik.touched.email && formik.errors.email ? 'red' : 'gray',
-              marginBottom:
-                formik.touched.email && formik.errors.email ? 0 : 16,
-            },
-          ]}
-          className={`w-full h-12 border border-gray-300 rounded-lg bg-gray-100 px-2 text-lg h-[${_buttonHeight}px]`}
-          placeholder="Password"
-          placeholderTextColor={'#BDBDBD'}
-          value={formik.values.password}
-          onChangeText={formik.handleChange('password')}
-          onBlur={formik.handleBlur('password')}
-        />
+          <Input
+            containerStyle={{marginTop: 20, marginBottom: 20}}
+            errorMessage={
+              formik.touched.password && formik.errors.password
+                ? formik.errors.password
+                : ''
+            }
+            label="Password"
+            labelStyle={{
+              color: '#BDBDBD',
+              fontSize: 16,
+              marginLeft: 5,
+              marginBottom: 5,
+            }}
+            placeholder="Enter your password"
+            placeholderTextColor={'#BDBDBD'}
+            value={formik.values.password}
+            onChangeText={formik.handleChange('password')}
+            onBlur={formik.handleBlur('password')}
+            secureTextEntry={!isPasswordVisible}
+            leftIcon={{
+              type: 'font-awesome',
+              name: 'lock',
+              color: '#BDBDBD',
+            }}
+            rightIcon={{
+              type: 'font-awesome',
+              name: isPasswordVisible ? 'eye-slash' : 'eye',
+              color: '#BDBDBD',
+              onPress: () => setPasswordVisible(!isPasswordVisible),
+            }}
+            inputStyle={{
+              marginLeft: 10,
+            }}
+            inputContainerStyle={{
+              borderBottomWidth: 0,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              backgroundColor: '#F5F5F5',
+              borderRadius: 20,
+            }}
+          />
 
-        {formik.touched.password && formik.errors.password ? (
-          <Text style={styles.error}>{formik.errors.password}</Text>
-        ) : null}
-
-        <TouchableOpacity
-          className={`mt-6 w-full h-12 bg-primary rounded-full justify-center items-center h-[${_buttonHeight}px]`}
-          onPress={formik.submitForm}>
-          <Text className="text-white text-lg font-semibold">Login</Text>
-        </TouchableOpacity>
+          <View
+            // gradientProps={{
+            //   colors: isLoginPressed
+            //     ? ['transparent']
+            //     : ['#4c669f', '#3b5998', '#192f6a'],
+            // }}
+            style={{
+              width: '50%',
+              height: _buttonHeight,
+              borderRadius: 999,
+              borderWidth: 1,
+              overflow: 'hidden',
+            }}>
+            <TouchableOpacity
+              style={{
+                width: '100%',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onPress={() => {
+                formik.submitForm();
+              }}>
+              <Text
+                className="text-blue text-lg font-semibold"
+                style={{
+                  color: '#4c669f',
+                }}>
+                Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/* 
+          <TouchableOpacity
+            onPress={formik.submitForm}
+            className="border-b border-blue-700">
+            <Text className="text-blue-700 text-lg font-semibold">Google</Text>
+          </TouchableOpacity> */}
+        </View>
 
         <View className="flex-col items-center gap-8 mt-28">
           <View className="flex-row">
@@ -123,7 +228,8 @@ const LoginScreen = ({navigation}: any) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate(ScreenName.LoginWithGoogle);
+                // navigation.navigate(ScreenName.LoginWithGoogle);
+                GoogleSigninService.signIn();
               }}
               className="border-b border-blue-700">
               <Text className="text-blue-700 text-lg font-semibold">

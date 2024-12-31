@@ -1,8 +1,5 @@
-import Reactotron from 'reactotron-react-native';
-import {networking} from 'reactotron-react-native';
+import Reactotron, {networking, openInEditor} from 'reactotron-react-native';
 import {reactotronRedux} from 'reactotron-redux';
-import {trackGlobalErrors} from 'reactotron-react-native';
-import {openInEditor} from 'reactotron-react-native';
 import sagaPlugin from 'reactotron-redux-saga';
 
 const reactotron = Reactotron.configure()
@@ -17,6 +14,6 @@ const reactotron = Reactotron.configure()
   .use(openInEditor())
   .connect();
 
-console.tron = Reactotron;
+console.tron = reactotron;
 
 export default reactotron;
