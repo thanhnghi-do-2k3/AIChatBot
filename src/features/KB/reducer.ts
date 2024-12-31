@@ -2,12 +2,14 @@ import {createSlice} from '@reduxjs/toolkit';
 
 interface InitialState {
   loading: boolean;
+  isFetching: boolean;
   listKb: any[];
   currentKbUnits: any[];
 }
 
 const initialState: InitialState = {
   loading: false,
+  isFetching: false,
   listKb: [],
   currentKbUnits: [],
 };
@@ -27,14 +29,14 @@ const kbSlice = createSlice({
     },
 
     getKb: (state, action) => {
-      state.loading = true;
+      state.isFetching = true;
     },
     getKbSuccess: (state, action) => {
-      state.loading = false;
+      state.isFetching = false;
       state.listKb = action.payload.data;
     },
     getKbFailure: (state, action) => {
-      state.loading = false;
+      state.isFetching = false;
     },
 
     deleteKb: (state, action) => {

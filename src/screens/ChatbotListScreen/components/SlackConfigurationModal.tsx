@@ -5,7 +5,6 @@ import React, {useCallback} from 'react';
 import {
   ActivityIndicator,
   Clipboard,
-  InteractionManager,
   KeyboardAvoidingView,
   ScrollView,
   Text,
@@ -18,116 +17,109 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {isIOS} from 'util/device';
 import * as Yup from 'yup';
 
-interface MessengerConfigurationModalProps {
+interface SlackConfigurationModalProps {
   isOpen: boolean;
   onClose: () => void;
   chatbot: any;
 }
 
 const schema = Yup.object().shape({
-  messengerBotToken: Yup.string().required('Messenger Bot Token is required'),
-  messengerBotPageId: Yup.string()
-    .required('Messenger Bot Page ID is required')
-    .min(10, 'Messenger Bot Page ID must be at least 10 characters')
-    .max(20, 'Messenger Bot Page ID must be at most 20 characters'),
-  messengerBotAppSecret: Yup.string()
-    .required('Messenger Bot App Secret is required')
-    .min(20, 'Messenger Bot App Secret must be at least 20 characters')
-    .max(40, 'Messenger Bot App Secret must be at most 40 characters'),
+  token: Yup.string().required('Token is required'),
+  clientId: Yup.string().required('Client ID is required'),
+  clientSecret: Yup.string().required('Client Secret is required'),
+  signingSecret: Yup.string().required('Signing Secret is required'),
 });
 
-const MessengerConfigurationModal: React.FC<
-  MessengerConfigurationModalProps
-> = ({isOpen, onClose, chatbot}) => {
+const SlackConfigurationModal: React.FC<SlackConfigurationModalProps> = ({
+  isOpen,
+  onClose,
+  chatbot,
+}) => {
   const formik = useFormik({
     initialValues: {
-      messengerBotToken: '',
-      messengerBotPageId: '',
-      messengerBotAppSecret: '',
+      token: '',
+      clientId: '',
+      clientSecret: '',
+      signingSecret: '',
     },
     validationSchema: schema,
     onSubmit: async values => {
       if (!isVerify) {
-        await verifyConfigure();
-        return;
+        verifyConfigure();
+      } else {
+        publishBot();
       }
-      await pulbishChatbot();
     },
   });
 
   const [loading, setLoading] = React.useState(false);
   const [isVerify, setIsVerify] = React.useState(false);
 
-  const verifyConfigure = async () => {
-    setLoading(true);
-    ChatbotIntegrationService.messengerIntegateVerification({
-      botToken: formik.values.messengerBotToken,
-      pageId: formik.values.messengerBotPageId,
-      appSecret: formik.values.messengerBotAppSecret,
-    })
-      .then(() => {
-        Toast.show({
-          type: 'success',
-          text1: 'Messenger Configuration is valid',
-          position: 'top',
-        });
-        InteractionManager.runAfterInteractions(() => {
-          setIsVerify(true);
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        Toast.show({
-          type: 'error',
-          text1: 'Messenger Configuration is invalid',
-          text2: err?.data?.issue || 'Please check your configuration',
-          position: 'top',
-        });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const pulbishChatbot = async () => {
-    setLoading(true);
-    ChatbotIntegrationService.messengerPublishBot(
-      {
-        botToken: formik.values.messengerBotToken,
-        pageId: formik.values.messengerBotPageId,
-        appSecret: formik.values.messengerBotAppSecret,
-      },
-      chatbot.id,
-    )
-      .then(() => {
-        Toast.show({
-          type: 'success',
-          text1: 'Messenger Bot is published',
-          position: 'top',
-        });
-        InteractionManager.runAfterInteractions(() => {
-          onCancel();
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        Toast.show({
-          type: 'error',
-          text1: 'Messenger Bot publish failed',
-          text2: err?.data?.issue || 'Please check your configuration',
-          position: 'top',
-        });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
   const onCancel = useCallback(() => {
     onClose();
     formik.resetForm();
-    setIsVerify(false);
   }, []);
+
+  const verifyConfigure = async () => {
+    setLoading(true);
+    ChatbotIntegrationService.slackIntegateVerification({
+      token: formik.values.token,
+      clientId: formik.values.clientId,
+      clientSecret: formik.values.clientSecret,
+      signingSecret: formik.values.signingSecret,
+    })
+      .then((res: any) => {
+        setIsVerify(true);
+        setLoading(false);
+        Toast.show({
+          type: 'success',
+          text1: 'Verify success',
+        });
+      })
+      .catch((error: any) => {
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Verify failed',
+          text2: error?.data?.issue || 'Please check your configuration',
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const publishBot = async () => {
+    setLoading(true);
+    ChatbotIntegrationService.slackPublishBot(
+      {
+        token: formik.values.token,
+        clientId: formik.values.clientId,
+        clientSecret: formik.values.clientSecret,
+        signingSecret: formik.values.signingSecret,
+      },
+      chatbot.id,
+    )
+      .then((res: any) => {
+        setIsVerify(false);
+        setLoading(false);
+        Toast.show({
+          type: 'success',
+          text1: 'Publish success',
+        });
+      })
+      .catch((error: any) => {
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Publish failed',
+          text2: error?.data?.issue || 'Please check your configuration',
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <BottomSheet
@@ -154,7 +146,7 @@ const MessengerConfigurationModal: React.FC<
               fontWeight: 'bold',
               marginBottom: 10,
             }}>
-            CallbackURL
+            OAuth2 Redirect URLs
           </Text>
           <View
             className="flex-row align-center justify-between"
@@ -172,14 +164,14 @@ const MessengerConfigurationModal: React.FC<
                 fontStyle: 'italic',
                 // marginBottom: 20,
               }}>
-              {`https://knowledge-api.jarvis.cx/kb-core/v1/hook/messenger/${
+              {`https://knowledge-api.jarvis.cx/kb-core/v1/bot-integration/slack/auth/${
                 chatbot?.id || ''
               }`}
             </Text>
             <TouchableOpacity
               onPress={() => {
                 Clipboard.setString(
-                  `https://knowledge-api.jarvis.cx/kb-core/v1/hook/messenger/${
+                  `https://knowledge-api.jarvis.cx/kb-core/v1/bot-integration/slack/auth/${
                     chatbot?.id || ''
                   }`,
                 );
@@ -214,7 +206,7 @@ const MessengerConfigurationModal: React.FC<
               marginBottom: 10,
               // marginTop: 10,
             }}>
-            Verify Token
+            Event Request URL
           </Text>
           <View
             style={{
@@ -242,12 +234,86 @@ const MessengerConfigurationModal: React.FC<
                   fontStyle: 'italic',
                   marginBottom: 20,
                 }}>
-                knowledge
+                {`https://knowledge-api.jarvis.cx/kb-core/v1/hook/slack/${
+                  chatbot?.id || ''
+                }`}
               </Text>
             </View>
             <TouchableOpacity
               onPress={() => {
-                Clipboard.setString(`knowledge`);
+                Clipboard.setString(
+                  `https://knowledge-api.jarvis.cx/kb-core/v1/hook/slack/${
+                    chatbot?.id || ''
+                  }`,
+                );
+                Toast.show({
+                  type: 'success',
+                  text1: 'Copied',
+                  position: 'top',
+                });
+              }}
+              style={{
+                flex: 0.07,
+                width: 20,
+                height: 40,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderColor: '#ae9645',
+                borderWidth: 1,
+                borderRadius: 5,
+                padding: 5,
+              }}>
+              <Icon name="copy" size={20} color="#264FD3" />
+            </TouchableOpacity>
+          </View>
+
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              marginBottom: 10,
+              // marginTop: 10,
+            }}>
+            Slash Request URL
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              alignItems: 'center',
+              backgroundColor: '#f5f5f5',
+              padding: 10,
+              borderRadius: 20,
+              marginBottom: 20,
+            }}>
+            <View
+              style={{
+                // backgroundColor: 'red',s
+                // alignContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                flexDirection: 'row',
+              }}>
+              <Text
+                style={{
+                  // backgroundColor: 'red',
+                  // height: '100%',
+                  fontSize: 14,
+                  fontStyle: 'italic',
+                  marginBottom: 20,
+                }}>
+                {`https://knowledge-api.jarvis.cx/kb-core/v1/hook/slack/slash/${
+                  chatbot?.id || ''
+                }`}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                Clipboard.setString(
+                  `https://knowledge-api.jarvis.cx/kb-core/v1/hook/slack/slash/${
+                    chatbot?.id || ''
+                  }`,
+                );
                 Toast.show({
                   type: 'success',
                   text1: 'Copied',
@@ -275,23 +341,19 @@ const MessengerConfigurationModal: React.FC<
               fontWeight: 'bold',
               marginBottom: 5,
             }}>
-            Messenger Bot Token
+            Token
           </Text>
           <Input
-            errorMessage={
-              formik.touched.messengerBotToken
-                ? formik.errors.messengerBotToken
-                : ''
-            }
+            errorMessage={formik.touched.token ? formik.errors.token : ''}
             containerStyle={{
               width: '100%',
               padding: 0,
               margin: 0,
               marginTop: 10,
             }}
-            onBlur={formik.handleBlur('messengerBotToken')}
-            value={formik.values.messengerBotToken}
-            onChangeText={formik.handleChange('messengerBotToken')}
+            onBlur={formik.handleBlur('token')}
+            value={formik.values.token}
+            onChangeText={formik.handleChange('token')}
             inputContainerStyle={{
               width: '100%',
               borderWidth: 1,
@@ -310,23 +372,19 @@ const MessengerConfigurationModal: React.FC<
               marginBottom: 5,
               marginTop: 20,
             }}>
-            Messenger Bot Page ID
+            Client ID
           </Text>
           <Input
-            errorMessage={
-              formik.touched.messengerBotPageId
-                ? formik.errors.messengerBotPageId
-                : ''
-            }
+            errorMessage={formik.touched.clientId ? formik.errors.clientId : ''}
             containerStyle={{
               width: '100%',
               padding: 0,
               margin: 0,
               marginTop: 10,
             }}
-            onBlur={formik.handleBlur('messengerBotPageId')}
-            value={formik.values.messengerBotPageId}
-            onChangeText={formik.handleChange('messengerBotPageId')}
+            onBlur={formik.handleBlur('clientId')}
+            value={formik.values.clientId}
+            onChangeText={formik.handleChange('clientId')}
             inputContainerStyle={{
               width: '100%',
               borderWidth: 1,
@@ -345,13 +403,11 @@ const MessengerConfigurationModal: React.FC<
               marginBottom: 5,
               marginTop: 20,
             }}>
-            Messenger Bot App Secret
+            Client Secret
           </Text>
           <Input
             errorMessage={
-              formik.touched.messengerBotAppSecret
-                ? formik.errors.messengerBotAppSecret
-                : ''
+              formik.touched.clientSecret ? formik.errors.clientSecret : ''
             }
             containerStyle={{
               width: '100%',
@@ -359,9 +415,42 @@ const MessengerConfigurationModal: React.FC<
               margin: 0,
               marginTop: 10,
             }}
-            onBlur={formik.handleBlur('messengerBotAppSecret')}
-            value={formik.values.messengerBotAppSecret}
-            onChangeText={formik.handleChange('messengerBotAppSecret')}
+            onBlur={formik.handleBlur('clientSecret')}
+            value={formik.values.clientSecret}
+            onChangeText={formik.handleChange('clientSecret')}
+            inputContainerStyle={{
+              width: '100%',
+              borderWidth: 1,
+              borderColor: '#c3c3c3',
+              paddingHorizontal: 20,
+              // margin: 0,
+              backgroundColor: '#fff',
+              borderRadius: 0,
+            }}
+          />
+
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              marginBottom: 5,
+              marginTop: 20,
+            }}>
+            Signing Secret
+          </Text>
+          <Input
+            errorMessage={
+              formik.touched.signingSecret ? formik.errors.signingSecret : ''
+            }
+            containerStyle={{
+              width: '100%',
+              padding: 0,
+              margin: 0,
+              marginTop: 10,
+            }}
+            onBlur={formik.handleBlur('signingSecret')}
+            value={formik.values.signingSecret}
+            onChangeText={formik.handleChange('signingSecret')}
             inputContainerStyle={{
               width: '100%',
               borderWidth: 1,
@@ -400,4 +489,4 @@ const MessengerConfigurationModal: React.FC<
   );
 };
 
-export default MessengerConfigurationModal;
+export default SlackConfigurationModal;

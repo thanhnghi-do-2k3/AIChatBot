@@ -1,12 +1,9 @@
-import React from 'react';
-import {View} from 'react-native';
 import AuthHeader from 'components/AuthHeader';
-import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
-import {Text} from 'react-native';
-import ScreenName from 'constant/ScreenName';
 import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
+import ScreenName from 'constant/ScreenName';
+import React, {useState} from 'react';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {styles} from './style';
-import {useState} from 'react';
 
 interface Props {
   // Define your component's props here

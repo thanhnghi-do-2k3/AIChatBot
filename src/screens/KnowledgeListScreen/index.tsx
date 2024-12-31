@@ -25,7 +25,8 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
   const [data, setData] = useState(mockdata);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const dispatch = useAppDispatch();
-  const listChatbot = useAppSelector(state => state.kbReducer.listKb);
+  const listKb = useAppSelector(state => state.kbReducer.listKb);
+  const isFetching = useAppSelector(state => state.kbReducer.isFetching);
   useEffect(() => {
     getKbData();
   }, []);
@@ -95,7 +96,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
           />
           <FlatList
             style={{width: '100%', flex: 1, marginTop: 5}}
-            data={listChatbot}
+            data={listKb}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.id}
             renderItem={({item, index}) => (
@@ -103,7 +104,7 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
             )}
             refreshControl={
               <RefreshControl
-                refreshing={false}
+                refreshing={isFetching}
                 onRefresh={() => {
                   getKbData();
                 }}

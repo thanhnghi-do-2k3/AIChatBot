@@ -1,4 +1,5 @@
 import type {PayloadAction} from '@reduxjs/toolkit';
+import {GlobalLoadingController} from 'components/GlobalLoading';
 import {all, call, put, takeLatest} from 'redux-saga/effects';
 import kbService from './api';
 import {kbActions} from './reducer';
@@ -17,6 +18,7 @@ function* handleCreateKbSaga(
   action: PayloadAction<CreateKbPayload>,
 ): Generator<any, void, any> {
   console.log('handleCreateKbSaga', action.payload);
+  GlobalLoadingController.show();
   try {
     const response: any = yield call(kbService.createKb, action.payload.data);
     yield put(kbActions.createKbSuccess(response));
@@ -25,6 +27,8 @@ function* handleCreateKbSaga(
     console.log('error', error);
     yield put(kbActions.createKbFailure(error.message));
     action.payload.action?.onFailure?.(error);
+  } finally {
+    GlobalLoadingController.hide();
   }
 }
 

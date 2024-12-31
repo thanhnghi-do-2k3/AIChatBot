@@ -1,9 +1,9 @@
+import Modal from 'components/Modal';
 import {kbActions} from 'features/KB/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Button, Input} from 'react-native-elements';
-import Modal from 'components/Modal';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Input} from 'react-native-elements';
 import Toast from 'react-native-toast-message';
 
 interface CreateKnowledgeModalProps {
@@ -34,6 +34,7 @@ const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
             text1: 'Create KB successfully',
           });
           dispatch(kbActions.getKb({}));
+          onReset();
           onClose();
         },
         onFailure: (error: any) => {
@@ -50,10 +51,21 @@ const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
     //onClose();
   };
 
+  const onReset = () => {
+    setBotName('');
+    setDescription('');
+  };
+
   const [botName, setBotName] = useState('');
 
   return (
-    <Modal isVisible={visible} onBackdropPress={onClose}>
+    <Modal
+      isVisible={visible}
+      onBackdropPress={onClose}
+      containerStyle={styles.modalContainer}
+      style={{
+        width: '96%',
+      }}>
       <View style={styles.modalContent}>
         <Text style={styles.title}>Create Knowledge</Text>
         <Input
@@ -103,8 +115,34 @@ const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
           }}
         />
         <View style={styles.buttonContainer}>
-          <Button title="Cancel" onPress={onClose} />
-          <Button title="Create" onPress={handleSubmit} />
+          <TouchableOpacity
+            onPress={onClose}
+            style={{
+              // height: 40,
+              backgroundColor: '#E0E0E0',
+              borderRadius: 999,
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '45%',
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+            }}>
+            <Text>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleSubmit}
+            style={{
+              // height: 40,
+              backgroundColor: '#264FD3',
+              borderRadius: 999,
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '45%',
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+            }}>
+            <Text style={{color: 'white'}}>Create</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>
@@ -113,10 +151,9 @@ const CreateKnowledgeModal: React.FC<CreateKnowledgeModalProps> = ({
 
 const styles = StyleSheet.create({
   modalContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: '100%',
   },
   modalContent: {
     alignSelf: 'center',
@@ -137,6 +174,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   buttonContainer: {
+    // width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

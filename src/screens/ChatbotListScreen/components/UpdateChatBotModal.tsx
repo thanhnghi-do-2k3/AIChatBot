@@ -7,14 +7,14 @@ import useAppDispatch from 'hooks/useAppDispatch';
 import React, {useEffect} from 'react';
 import {
   FlatList,
-  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {Input} from 'react-native-elements';
-import {ScrollView} from 'react-native-gesture-handler';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as Yup from 'yup';
@@ -178,23 +178,31 @@ const UpdateChatBotModal: React.FC<UpdateChatBotModalProps> = ({
     dispatch(chatbotActions.updateChatbot(updateChatbotPayload));
   };
 
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView style={styles.modalContainer}>
+    <View style={styles.modalContainer}>
       <AppHeader
         headerTitle="Update Chatbot"
         onPressLeftHeader={() => {
           navigation.goBack();
         }}
-        standalone
+        // standalone
         paddingTop={20}
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{width: '100%'}}
+        // style={{width: '100%'}}
         contentContainerStyle={{
+          paddingBottom: insets.bottom + 100,
+        }}
+        style={{
           alignSelf: 'center',
-          width: '95%',
-          paddingBottom: 80,
+          width: '100%',
+          borderTopRightRadius: 32,
+          borderTopLeftRadius: 32,
+          backgroundColor: 'white',
+
           // height: '130%',
         }}>
         <View
@@ -234,7 +242,7 @@ const UpdateChatBotModal: React.FC<UpdateChatBotModalProps> = ({
             }
             label="Chatbot Name"
             labelStyle={{
-              color: '#BDBDBD',
+              color: '#000',
               fontSize: 16,
               marginLeft: 5,
               marginBottom: 5,
@@ -267,7 +275,7 @@ const UpdateChatBotModal: React.FC<UpdateChatBotModalProps> = ({
             }
             label="Chatbot Instruction"
             labelStyle={{
-              color: '#BDBDBD',
+              color: '#000',
               fontSize: 16,
               marginLeft: 5,
               marginBottom: 5,
@@ -312,7 +320,7 @@ const UpdateChatBotModal: React.FC<UpdateChatBotModalProps> = ({
             }
             label="Chatbot Description"
             labelStyle={{
-              color: '#BDBDBD',
+              color: '#000',
               fontSize: 16,
               marginLeft: 5,
               marginBottom: 5,
@@ -539,7 +547,7 @@ const UpdateChatBotModal: React.FC<UpdateChatBotModalProps> = ({
           />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

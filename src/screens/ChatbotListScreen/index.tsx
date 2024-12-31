@@ -17,6 +17,8 @@ import Colors from 'theme/Colors';
 import ChatBotListItem from './components/ChatBotListItem';
 import MessengerConfigurationModal from './components/MessengerConfigurationModal';
 import PublishBotChooseModal from './components/PublishBotChooseModal';
+import SlackConfigurationModal from './components/SlackConfigurationModal';
+import TelegramConfigurationModal from './components/TelegramConfigurationModal';
 import {styles} from './style';
 
 interface Props {}
@@ -29,6 +31,12 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
     isShowMessengerConfigurationModal,
     setIsShowMessengerConfigurationModal,
   ] = useState(false);
+  const [
+    isShowTelegramConfigurationModal,
+    setIsShowTelegramConfigurationModal,
+  ] = useState(false);
+  const [isShowSlackConfigurationModal, setIsShowSlackConfigurationModal] =
+    useState(false);
   const dispatch = useAppDispatch();
   const listChatbot = useAppSelector(state => state.chatbotReducer.listChatbot);
   const isFetchingChatbot = useAppSelector(
@@ -183,17 +191,32 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
           setIsShowMessengerConfigurationModal(true);
         }}
         onTelegram={function (): void {
-          throw new Error('Function not implemented.');
+          setIsShowTelegramConfigurationModal(true);
         }}
         onSlack={function (): void {
-          throw new Error('Function not implemented.');
-        }} // onPublish={() => {}}
+          setIsShowSlackConfigurationModal(true);
+        }}
+        chatbot={currentBot}
       />
       <MessengerConfigurationModal
         chatbot={currentBot}
         isOpen={isShowMessengerConfigurationModal}
         onClose={() => {
           setIsShowMessengerConfigurationModal(false);
+        }}
+      />
+      <TelegramConfigurationModal
+        chatbot={currentBot}
+        isOpen={isShowTelegramConfigurationModal}
+        onClose={() => {
+          setIsShowTelegramConfigurationModal(false);
+        }}
+      />
+      <SlackConfigurationModal
+        chatbot={currentBot}
+        isOpen={isShowSlackConfigurationModal}
+        onClose={() => {
+          setIsShowSlackConfigurationModal(false);
         }}
       />
     </>

@@ -10,7 +10,6 @@ import GlobalModal from 'components/GlobalModal';
 import ApplicationNavigator from 'navigation/index';
 import React from 'react';
 import {LogBox} from 'react-native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {enableScreens} from 'react-native-screens';
 import Toast from 'react-native-toast-message';
@@ -26,20 +25,20 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <GestureHandlerRootView>
-          <PaperProvider>
-            <ApplicationNavigator />
-            <GlobalLoading />
-            <GlobalModal />
-            <GlobalConfirmModal />
-            <Toast
-              topOffset={60}
-              autoHide
-              bottomOffset={60}
-              visibilityTime={1000}
-            />
-          </PaperProvider>
-        </GestureHandlerRootView>
+        {/* <GestureHandlerRootView> */}
+        <PaperProvider>
+          <ApplicationNavigator />
+        </PaperProvider>
+        <GlobalLoading />
+        <GlobalModal />
+        <GlobalConfirmModal />
+        <Toast
+          topOffset={60}
+          autoHide
+          bottomOffset={60}
+          visibilityTime={1000}
+        />
+        {/* </GestureHandlerRootView> */}
       </PersistGate>
     </Provider>
   );

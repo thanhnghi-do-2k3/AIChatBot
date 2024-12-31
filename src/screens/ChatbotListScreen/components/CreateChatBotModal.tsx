@@ -4,7 +4,6 @@ import {useFormik} from 'formik';
 import useAppDispatch from 'hooks/useAppDispatch';
 import React from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -84,7 +83,7 @@ const CreateChatBotModal: React.FC<CreateChatBotModalProps> = ({
   };
 
   return (
-    <SafeAreaView style={styles.modalContainer}>
+    <View style={styles.modalContainer}>
       <AppHeader
         headerTitle="Create Chatbot"
         onPressLeftHeader={() => {
@@ -95,8 +94,12 @@ const CreateChatBotModal: React.FC<CreateChatBotModalProps> = ({
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          width: '95%',
-          flex: 1,
+          borderTopRightRadius: 32,
+          borderTopLeftRadius: 32,
+          backgroundColor: 'white',
+          width: '100%',
+          // flex: 1,
+          paddingTop: 20,
         }}
         contentContainerStyle={{
           justifyContent: 'space-between',
@@ -139,7 +142,7 @@ const CreateChatBotModal: React.FC<CreateChatBotModalProps> = ({
             }
             label="Chatbot Name"
             labelStyle={{
-              color: '#BDBDBD',
+              color: '#000',
               fontSize: 16,
               marginLeft: 5,
               marginBottom: 5,
@@ -172,7 +175,7 @@ const CreateChatBotModal: React.FC<CreateChatBotModalProps> = ({
             }
             label="Chatbot Instruction"
             labelStyle={{
-              color: '#BDBDBD',
+              color: '#000',
               fontSize: 16,
               marginLeft: 5,
               marginBottom: 5,
@@ -217,7 +220,7 @@ const CreateChatBotModal: React.FC<CreateChatBotModalProps> = ({
             }
             label="Chatbot Description"
             labelStyle={{
-              color: '#BDBDBD',
+              color: '#000',
               fontSize: 16,
               marginLeft: 5,
               marginBottom: 5,
@@ -280,7 +283,7 @@ const CreateChatBotModal: React.FC<CreateChatBotModalProps> = ({
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

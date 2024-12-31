@@ -13,10 +13,10 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import Lottie from 'theme/Lottie';
 import {deviceWidth} from 'util/dimension';
 

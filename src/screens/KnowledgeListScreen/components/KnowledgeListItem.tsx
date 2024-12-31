@@ -1,11 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import ScreenName from 'constant/ScreenName';
+import dayjs from 'dayjs';
+import {kbActions} from 'features/KB/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import React, {useCallback} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {kbActions} from 'features/KB/reducer';
 interface KnowledgeListItemProps {
   item: any;
   index: number;
@@ -150,10 +151,11 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
             <View>
               <Text
                 style={{
-                  color: 'black',
+                  color: '#082745',
                   fontSize: 16,
-                  fontWeight: '600',
+                  fontWeight: '700',
                   marginLeft: 10,
+                  marginBottom: 5,
                 }}>
                 {item.knowledgeName}
               </Text>
@@ -161,7 +163,7 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
                 numberOfLines={2}
                 ellipsizeMode="tail"
                 style={{
-                  color: 'gray',
+                  color: '#2A4569',
                   fontSize: 14,
                   fontWeight: '600',
                   marginLeft: 10,
@@ -182,7 +184,7 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
                     marginLeft: 10,
                     marginTop: 5,
                   }}>
-                  {item.createdAt}
+                  {dayjs(item.createdAt).format('DD/MM/YYYY')}
                 </Text>
                 <Text
                   style={{
