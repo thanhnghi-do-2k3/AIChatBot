@@ -1,6 +1,10 @@
 import AppHeader from 'components/AppHeader';
 import {aiChatActions} from 'features/chat/reducer';
 import React, {useEffect, useState} from 'react';
+import useAppDispatch from 'hooks/useAppDispatch';
+import useAppSelector from 'hooks/useAppSelector';
+import {Picker} from '@react-native-picker/picker';
+
 import {
   FlatList,
   Image,
@@ -9,6 +13,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  StyleSheet,
+  ScrollView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -20,19 +26,53 @@ import {isIOS} from 'util/device';
 import PromptLibraryModal from './components/PromptModal';
 import LottieView from 'lottie-react-native';
 import Lottie from 'theme/Lottie';
+
 interface Props {}
+interface Prompt {
+  id: string;
+  title: string;
+  content: string;
+}
+interface Message {
+  id: string;
+  sender: 'User' | 'Assistant';
+  content?: string;
+  image?: string;
+  time: string;
+  isTyping?: boolean;
+}
+
 const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
   const dispatch = useDispatch();
+  const listPrompts = useAppSelector(state => state.promptReducer.listPrompts);
   const aiChatState = useSelector((state: RootState) => state.chatReducer);
+
   const conversationId = route.params;
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [promptContent, setPromptContent] = useState('');
+
+  const MODEL_OPTIONS = [
+    'claude-3-haiku-2024307',
+    'claude-3-sonnet-20240229',
+    'gemini-1.5-flash-latest',
+    'gemini-1.5-pro-latest',
+    'gpt-4o',
+    'gpt-4o-mini',
+  ];
+
+  const [selectedModel, setSelectedModel] = useState('gpt-4o-mini');
+
+  //handle when / in input
+  const [showPromptSuggestions, setShowPromptSuggestions] = useState(false);
+  const [filteredPrompts, setFilteredPrompts] = useState<Prompt[]>([]);
+
   const isLoading = aiChatState.loading;
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
+
   useEffect(() => {
     dispatch(aiChatActions.resetState());
     if (conversationId)
@@ -54,6 +94,7 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
     }
   }, [aiChatState.message]);
 
+  // Hàm gửi tin nhắn thường
   const handleSend = () => {
     if (inputMessage.trim()) {
       const userMessage: Message = {
@@ -86,12 +127,12 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
     }
   };
 
+  // Hàm gửi prompt có sẵn
   const handleSendPrompt = (content: string) => {
-    console.log('ón click send prompt');
     const userMessage: Message = {
       id: (messages.length + 1).toString(),
       sender: 'User',
-      content: promptContent,
+      content,
       time: new Date().toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit',
@@ -207,6 +248,33 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
     </Animatable.View>
   );
 
+  // Hàm handleChangeText để kiểm tra khi người dùng nhập "/"
+  const handleChangeText = (text: string) => {
+    setInputMessage(text);
+
+    // Nếu bắt đầu bằng "/", hiển thị danh sách gợi ý prompt
+    if (text.startsWith('/')) {
+      setShowPromptSuggestions(true);
+
+      // Lấy từ khoá tìm kiếm (sau dấu "/"), ví dụ "/ab" => "ab"
+      const searchKey = text.substring(1).toLowerCase();
+      // Lọc listPrompts theo title
+      const filtered = listPrompts.filter(prompt =>
+        prompt.title.toLowerCase().includes(searchKey),
+      );
+      setFilteredPrompts(filtered);
+    } else {
+      setShowPromptSuggestions(false);
+    }
+  };
+
+  // Khi user bấm chọn một prompt trong danh sách gợi ý
+  const handleSelectPrompt = (prompt: Prompt) => {
+    // Inject prompt.content vào ô chat
+    setInputMessage(prompt.content);
+    setShowPromptSuggestions(false);
+  };
+
   return (
     <KeyboardAvoidingView
       style={{flex: 1, backgroundColor: '#fff'}}
@@ -217,7 +285,18 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
         headerTitle="Chat with AI"
         onPressLeftHeader={() => navigation.goBack()}
       />
-
+      <View style={{marginHorizontal: 10, marginVertical: 5}}>
+          <Picker
+            selectedValue={selectedModel}
+            onValueChange={itemValue => {
+              setSelectedModel(itemValue);
+            }}
+            style={{borderWidth: 1, borderColor: '#ccc'}}>
+            {MODEL_OPTIONS.map(model => (
+              <Picker.Item key={model} label={model} value={model} />
+            ))}
+          </Picker>
+        </View>
       {(aiChatState.history?.length ?? 0) === 0 && !conversationId && (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <LottieView
@@ -231,6 +310,8 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
           </Text>
         </View>
       )}
+
+      {/* Danh sách lịch sử chat */}
       <FlatList
         data={aiChatState.history}
         keyExtractor={item => item.id}
@@ -240,47 +321,44 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
           paddingBottom: 80,
         }}
       />
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          flexDirection: 'row',
-          alignItems: 'center',
-          padding: 10,
-          paddingBottom: isIOS() ? 32 : 0,
-          backgroundColor: '#FFF',
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 2},
-          shadowOpacity: 0.2,
-          shadowRadius: 3,
-          borderTopWidth: 1,
-          borderTopColor: '#E5E7EB',
-        }}>
+
+      {/* Vùng gợi ý prompt khi gõ "/" */}
+      {showPromptSuggestions && filteredPrompts.length > 0 && (
+        <View style={styles.suggestionsContainer}>
+          {/* Dùng ScrollView để cuộn */}
+          <ScrollView style={{maxHeight: 200}}>
+            {filteredPrompts.map(prompt => (
+              <TouchableOpacity
+                key={prompt.id}
+                style={styles.suggestionItem}
+                onPress={() => handleSelectPrompt(prompt)}>
+                <Text style={styles.suggestionText}>{prompt.title}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      )}
+
+      {/* Thanh nhập tin nhắn */}
+      <View style={styles.bottomContainer}>
+      
         <TouchableOpacity onPress={handleChoosePhoto} style={{marginRight: 10}}>
           <Icon name="image" size={24} color={Colors.primary} />
         </TouchableOpacity>
 
         <TextInput
-          style={{
-            flex: 1,
-            backgroundColor: '#F3F4F6',
-            borderRadius: 20,
-            paddingVertical: 10,
-            paddingHorizontal: 15,
-            fontSize: 16,
-            marginHorizontal: 5,
-            color: '#1F2937',
-          }}
+          style={styles.textInput}
           placeholder="Type a message..."
           placeholderTextColor="#9CA3AF"
           value={inputMessage}
-          onChangeText={setInputMessage}
+          onChangeText={handleChangeText} // thay vì setInputMessage
+          multiline={true}
         />
+
         <TouchableOpacity onPress={handleSend}>
           <Icon name="paper-plane" size={24} color={Colors.primary} />
         </TouchableOpacity>
+
         <TouchableOpacity onPress={toggleModal} style={{marginLeft: 10}}>
           <Icon name="list" size={24} color={Colors.primary} />
         </TouchableOpacity>
@@ -299,3 +377,55 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
 };
 
 export default ChatScreenWithAI;
+
+const styles = StyleSheet.create({
+  bottomContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    paddingBottom: isIOS() ? 32 : 0,
+    backgroundColor: '#FFF',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    borderTopWidth: 1,
+    borderTopColor: '#E5E7EB',
+  },
+  textInput: {
+    flex: 1,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    marginHorizontal: 5,
+    color: '#1F2937',
+  },
+  // Container cho danh sách gợi ý prompt
+  suggestionsContainer: {
+    position: 'absolute',
+    // canh chỉnh để hiển thị ngay trên thanh input, tuỳ chỉnh theo UI
+    bottom: 60,
+    left: 10,
+    right: 10,
+    backgroundColor: '#FFF',
+    borderColor: '#E5E7EB',
+    borderWidth: 1,
+    borderRadius: 10,
+    maxHeight: 200,
+  },
+  suggestionItem: {
+    padding: 10,
+    borderBottomColor: '#E5E7EB',
+    borderBottomWidth: 1,
+  },
+  suggestionText: {
+    fontSize: 16,
+    color: '#1F2937',
+  },
+});
