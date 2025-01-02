@@ -17,6 +17,18 @@ const KbService = {
     }
   },
 
+  updateKb: async (data: CreateKbPayloadData, id: string) => {
+    try {
+      const endpoint = KB_APIEndpoint.GetKnowledgeBase + '/' + id;
+      const response = await kb_httpRequestServices.patch(endpoint, data);
+      console.log('Update KB response from API:', response);
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   getKb: async () => {
     try {
       const response = await kb_httpRequestServices.get(
@@ -66,7 +78,7 @@ const KbService = {
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
 
 export default KbService;

@@ -12,9 +12,11 @@ if (__DEV__) {
 // Disable font scaling globally
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
+Text.defaultProps.color = '#000';
 
 TextInput.defaultProps = TextInput.defaultProps || {};
 TextInput.defaultProps.allowFontScaling = false;
+TextInput.defaultProps.color = '#000';
 
 // Set global font family
 const globalStyle = {fontFamily: 'SFProRegular'};

@@ -69,6 +69,8 @@ const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
     dispatch(chatbotActions.getChatbot(payload));
   }
 
+  // throw new Error('Function not implemented.');
+
   useEffect(() => {
     fetchChatbotData();
   }, []);

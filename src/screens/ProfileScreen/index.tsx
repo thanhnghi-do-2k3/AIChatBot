@@ -37,6 +37,7 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
   console.log(currentUser);
 
   const handleLogout = () => {
+    console.log('?');
     dispatch(
       authActions.logoutRequest({
         action: {
@@ -52,6 +53,7 @@ const ProfileScreen: React.FC<Props> = ({navigation}: any) => {
             });
           },
           onFailure: (error: any) => {
+            console.log('error', error);
             GlobalModalController.show({
               header: 'Lỗi',
               message: 'Lỗi không xác định',

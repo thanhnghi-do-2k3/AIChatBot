@@ -33,7 +33,7 @@ function* handleCreateChatbotSaga(
     action.payload.action?.onSuccess?.(response);
   } catch (error: any) {
     console.log('error', error);
-    yield put(chatbotActions.createChatbotFailure(error.message));
+    yield put(chatbotActions.createChatbotFailure(error?.message ?? ''));
     action.payload.action?.onFailure?.(error);
   } finally {
     GlobalLoadingController.hide();
@@ -51,7 +51,7 @@ function* handleGetChatbotSaga(
     action.payload.action?.onSuccess?.(response.data || []);
   } catch (error: any) {
     console.log('error', error);
-    yield put(chatbotActions.getChatbotFailure(error.message));
+    yield put(chatbotActions.getChatbotFailure(error?.message ?? ''));
     action.payload.action?.onFailure?.(error);
   }
 }
@@ -70,7 +70,7 @@ function* handleDeleteChatbotSaga(
     action.payload.action?.onSuccess?.(response);
   } catch (error: any) {
     console.log('error', error);
-    yield put(chatbotActions.deleteChatbotFailure(error.message));
+    yield put(chatbotActions.deleteChatbotFailure(error?.message));
     action.payload.action?.onFailure?.(error);
   } finally {
     GlobalLoadingController.hide();
@@ -92,7 +92,7 @@ function* handleUpdateChatbotSaga(
     action.payload.action?.onSuccess?.(response);
   } catch (error: any) {
     console.log('error', error);
-    yield put(chatbotActions.updateChatbotFailure(error.message));
+    yield put(chatbotActions.updateChatbotFailure(error?.message));
     action.payload.action?.onFailure?.(error);
   } finally {
     GlobalLoadingController.hide();
@@ -112,7 +112,7 @@ function* handleGetThreadChatSaga(
     action.payload.action?.onSuccess?.(response);
   } catch (error: any) {
     console.log('error', error);
-    yield put(chatbotActions.getThreadChatFailure(error.message));
+    yield put(chatbotActions.getThreadChatFailure(error?.message));
     action.payload.action?.onFailure?.(error);
   }
 }
@@ -138,7 +138,7 @@ function* handleGetThreadMessageSaga(
     action.payload.action?.onSuccess?.(response);
   } catch (error: any) {
     console.log('error', error);
-    yield put(chatbotActions.getThreadMessageFailure(error.message));
+    yield put(chatbotActions.getThreadMessageFailure(error?.message));
     action.payload.action?.onFailure?.(error);
   }
 }
@@ -157,7 +157,7 @@ function* handleCreateNewThreadSaga(
     action.payload.action?.onSuccess?.(response);
   } catch (error: any) {
     console.log('error', error);
-    yield put(chatbotActions.createNewThreadFailure(error.message));
+    yield put(chatbotActions.createNewThreadFailure(error?.message));
     action.payload.action?.onFailure?.(error);
   } finally {
     GlobalLoadingController.hide();

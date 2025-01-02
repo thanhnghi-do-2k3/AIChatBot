@@ -25,7 +25,7 @@ function* handleCreateKbSaga(
     action.payload.action?.onSuccess?.(response);
   } catch (error: any) {
     console.log('error', error);
-    yield put(kbActions.createKbFailure(error.message));
+    yield put(kbActions.createKbFailure(error?.message));
     action.payload.action?.onFailure?.(error);
   } finally {
     GlobalLoadingController.hide();
@@ -43,7 +43,7 @@ function* handleGetKbSaga(
     action.payload.action?.onSuccess?.(response.data || []);
   } catch (error: any) {
     console.log('error', error);
-    yield put(kbActions.getKbFailure(error.message));
+    yield put(kbActions.getKbFailure(error?.message));
     action.payload.action?.onFailure?.(error);
   }
 }
@@ -58,7 +58,7 @@ function* handleDeleteKbSaga(
     action.payload.action?.onSuccess?.(response);
   } catch (error: any) {
     console.log('error', error);
-    yield put(kbActions.deleteKbFailure(error.message));
+    yield put(kbActions.deleteKbFailure(error?.message));
     action.payload.action?.onFailure?.(error);
   }
 }
@@ -73,7 +73,7 @@ function* handleGetUnitsKbSaga(
     action.payload.action?.onSuccess?.(response.data || []);
   } catch (error: any) {
     console.log('error', error);
-    yield put(kbActions.getUnitsKbFailure(error.message));
+    yield put(kbActions.getUnitsKbFailure(error?.message));
     action.payload.action?.onFailure?.(error);
   }
 }
@@ -88,7 +88,7 @@ function* handleAddUrlToKbSaga(
     action.payload.action?.onSuccess?.(response);
   } catch (error: any) {
     console.log('error', error);
-    yield put(kbActions.addUrlToKbFailure(error.message));
+    yield put(kbActions.addUrlToKbFailure(error?.message));
     action.payload.action?.onFailure?.(error);
   }
 }

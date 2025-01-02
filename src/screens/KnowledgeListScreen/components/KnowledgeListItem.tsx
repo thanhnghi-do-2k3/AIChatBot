@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import {GlobalConfirmModalController} from 'components/GlobalConfirmModal';
 import ScreenName from 'constant/ScreenName';
 import dayjs from 'dayjs';
 import {kbActions} from 'features/KB/reducer';
@@ -10,35 +11,46 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 interface KnowledgeListItemProps {
   item: any;
   index: number;
+  toggleModal: (kb: any) => void;
 }
 
-const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
+const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({
+  item,
+  index,
+  toggleModal,
+}) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const thisSwipeable = React.useRef(null);
   const onDelete = () => {
-    const payload = {
-      data: {
-        id: item.id,
-      },
-      action: {
-        onSuccess: (data: any) => {
-          // @ts-ignore
-          thisSwipeable?.current?.close();
-          const payload = {
-            data: {},
-            action: {
-              onSuccess: (data: any) => {},
-              onFailure: (error: any) => {},
-            },
-          };
+    // @ts-ignore
+    thisSwipeable?.current?.close();
+    GlobalConfirmModalController.show({
+      header: 'Delete knowledge',
+      message: 'Are you sure you want to delete this knowledge?',
+      onConfirm: () => {
+        const payload = {
+          data: {
+            id: item.id,
+          },
+          action: {
+            onSuccess: (data: any) => {
+              const payload = {
+                data: {},
+                action: {
+                  onSuccess: (data: any) => {},
+                  onFailure: (error: any) => {},
+                },
+              };
 
-          dispatch(kbActions.getKb(payload));
-        },
-        onFailure: (error: any) => {},
+              dispatch(kbActions.getKb(payload));
+            },
+            onFailure: (error: any) => {},
+          },
+        };
+        dispatch(kbActions.deleteKb(payload));
       },
-    };
-    dispatch(kbActions.deleteKb(payload));
+    });
   };
 
   const rightAction = useCallback((progress: any, dragX: any) => {
@@ -67,10 +79,7 @@ const KnowledgeListItem: React.FC<KnowledgeListItemProps> = ({item, index}) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            // @ts-ignore
-            navigation.navigate(ScreenName.UpdateBotTab, {
-              chatbot: item,
-            });
+            toggleModal(item);
             // @ts-ignore
             thisSwipeable?.current?.close();
           }}

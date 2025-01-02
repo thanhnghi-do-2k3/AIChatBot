@@ -142,7 +142,7 @@ const MessengerConfigurationModal: React.FC<
             flex: 1,
             paddingVertical: 10,
             paddingBottom: isIOS() ? 64 : 0,
-            // backgroundColor: 'red',
+            backgroundColor: 'red',
           }}
           contentContainerStyle={{
             paddingBottom: 20,

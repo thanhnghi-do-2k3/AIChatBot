@@ -15,14 +15,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from 'theme/Colors';
 import CreateKnowledgeModal from './components/CreateKnowledgeModal';
 import KnowledgeListItem from './components/KnowledgeListItem';
-import {mockdata} from './mockdata';
+import UpdateKnowledgeModal from './components/UpdateKnowledgeModa';
 import {styles} from './style';
 
 interface Props {}
 
 const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
   const [botName, setBotName] = useState('');
-  const [data, setData] = useState(mockdata);
+  // const [data, setData] = useState(mockdata);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const dispatch = useAppDispatch();
   const listKb = useAppSelector(state => state.kbReducer.listKb);
@@ -30,6 +30,14 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
   useEffect(() => {
     getKbData();
   }, []);
+
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [curKb, setCurKb] = useState();
+
+  const toggleUpdateModal = (kb: any) => {
+    setCurKb(kb);
+    setIsUpdateModalVisible(true);
+  };
 
   function getKbData() {
     const payload = {
@@ -100,7 +108,11 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.id}
             renderItem={({item, index}) => (
-              <KnowledgeListItem item={item} index={index} />
+              <KnowledgeListItem
+                item={item}
+                index={index}
+                toggleModal={toggleUpdateModal}
+              />
             )}
             refreshControl={
               <RefreshControl
@@ -150,6 +162,15 @@ const KnowledgeListScreen: React.FC<Props> = ({navigation}: any) => {
           setIsModalVisible(false);
         }}
         navigation={undefined}
+      />
+
+      <UpdateKnowledgeModal
+        visible={isUpdateModalVisible}
+        onClose={() => {
+          setIsUpdateModalVisible(false);
+        }}
+        kb={curKb}
+        // navigation={undefined}
       />
     </>
   );

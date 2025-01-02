@@ -25,6 +25,13 @@ const PublishBotChooseModal: React.FC<PublishBotChooseModalProps> = props => {
   const [slackConfiguration, setSlackConfiguration] = React.useState([]);
 
   useEffect(() => {
+    if (!props.chatbot) {
+      return;
+    }
+    getConfiguration();
+  }, [props.chatbot, props.isVisible]);
+
+  const getConfiguration = () => {
     ChatbotIntegrationService.getConfigurations(props.chatbot?.id ?? '')
       .then((res: any) => {
         if (res) {
@@ -48,7 +55,7 @@ const PublishBotChooseModal: React.FC<PublishBotChooseModalProps> = props => {
         });
         props.onClose();
       });
-  }, [props.chatbot]);
+  };
 
   const deleteConfiguration = (id: 'messenger' | 'slack' | 'telegram') => {
     GlobalLoadingController.show();
@@ -58,6 +65,7 @@ const PublishBotChooseModal: React.FC<PublishBotChooseModalProps> = props => {
           type: 'success',
           text1: 'Delete configuration successfully',
         });
+        getConfiguration();
       })
       .catch((error: any) => {
         console.log('error', error);
@@ -210,6 +218,17 @@ const PublishBotChooseModal: React.FC<PublishBotChooseModalProps> = props => {
               Configured
             </Text>
           )}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            paddingVertical: 15,
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+          onPress={props.onClose}>
+          <Text style={{fontSize: 16}}>Cancel</Text>
         </TouchableOpacity>
       </View>
     </Modal>
