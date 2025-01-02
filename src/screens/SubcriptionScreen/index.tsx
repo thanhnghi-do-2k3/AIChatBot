@@ -1,6 +1,14 @@
 import AppHeader from 'components/AppHeader';
+import {GlobalConfirmModalController} from 'components/GlobalConfirmModal';
 import React, {useEffect, useState} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {
+  InteractionManager,
+  Linking,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import WebView from 'react-native-webview';
 import {prod} from 'services/http.service';
 import {reduxStorage} from 'store/store';
@@ -42,6 +50,24 @@ const SubscriptionScreen = ({navigation}: any) => {
     };
 
     fetchTokens();
+
+    let interval: NodeJS.Timeout;
+
+    InteractionManager.runAfterInteractions(() => {
+      interval = setInterval(() => {
+        GlobalConfirmModalController.show({
+          header: 'Can not process ?',
+          message: 'Your subcription button can not process? ',
+          onConfirm: () => {
+            Linking.openURL('https://admin.jarvis.cx/pricing/overview');
+          },
+        });
+      }, 1000 * 60 * 2);
+    });
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   if (!token || !refreshToken) {

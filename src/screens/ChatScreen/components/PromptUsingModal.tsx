@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
-  ScrollView,
+  // ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 // import Modal from 'react-native-modal';
 import Modal from 'components/Modal';
+import {ScrollView} from 'react-native';
 
 interface PromptUsingModalProps {
   visible: boolean;
@@ -61,7 +62,12 @@ const PromptUsingModal: React.FC<PromptUsingModalProps> = ({
       <View className="bg-white rounded-lg p-5 w-11/12 self-center max-h-[500px]">
         <Text className="text-lg font-bold mb-4">Fill Parameters</Text>
 
-        <ScrollView>
+        <ScrollView
+          // style={{height: 500}}
+          // style={{height: 900}}
+          // contentContainerStyle={{}}>>
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag">
           <Text className="text-gray-700 mb-4">{content}</Text>
 
           {params.map(param => (

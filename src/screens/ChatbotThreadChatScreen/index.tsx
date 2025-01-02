@@ -1,11 +1,11 @@
 import AppHeader from 'components/AppHeader';
+import KeyboardAvoidingView from 'components/KeyboardAvoidingView';
 import ChatbotService from 'features/chatbot/api';
 import useAppSelector from 'hooks/useAppSelector';
 import React, {useCallback, useState} from 'react';
 import {
   FlatList,
   Image,
-  KeyboardAvoidingView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -199,14 +199,12 @@ const ChatbotThreadChatScreen: React.FC<Props> = ({
         headerTitle="Chatbot Thread"
         onPressLeftHeader={() => navigation.goBack()}
       />
-      <KeyboardAvoidingView
-        style={{flex: 1, backgroundColor: '#fff'}}
-        behavior="padding"
-        enabled>
+      <KeyboardAvoidingView>
         <FlatList
           inverted
           ref={flatListRef}
           data={messages}
+          style={{flex: 1}}
           keyExtractor={item => item.id}
           renderItem={renderItem}
           // style={{marginBottom: 80}}
@@ -214,17 +212,17 @@ const ChatbotThreadChatScreen: React.FC<Props> = ({
             // padding: 10,
             // flex: 1,
             paddingTop: 10,
-            marginTop: 80,
+            // marginTop: 80,
             // paddingBottom: 80,
           }}
         />
         <View
           style={{
-            position: 'absolute',
+            // position: 'absolute',
             paddingBottom: isIOS() ? 32 : 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
+            // bottom: 0,
+            // left: 0,
+            // right: 0,
             flexDirection: 'row',
             alignItems: 'center',
             padding: 10,

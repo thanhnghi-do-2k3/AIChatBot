@@ -4,7 +4,7 @@ import ImageView from 'components/ImageView';
 import Modal from 'components/Modal';
 import ChatbotIntegrationService from 'features/chatbotIntegration/api';
 import React, {useEffect} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Linking, Text, TouchableOpacity, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import Image from 'theme/Image';
 
@@ -227,8 +227,12 @@ const PublishBotChooseModal: React.FC<PublishBotChooseModalProps> = props => {
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}
-          onPress={props.onClose}>
-          <Text style={{fontSize: 16}}>Cancel</Text>
+          onPress={() => {
+            Linking.openURL(
+              'https://jarvis.cx/help/knowledge-base/publish-bot/',
+            );
+          }}>
+          <Text style={{fontSize: 16}}>Dont know how to publish?</Text>
         </TouchableOpacity>
       </View>
     </Modal>

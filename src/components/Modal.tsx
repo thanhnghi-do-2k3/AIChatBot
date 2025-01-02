@@ -1,5 +1,11 @@
-import React from 'react';
-import {Pressable, StyleSheet, type ViewStyle} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  type ViewStyle,
+} from 'react-native';
 import {Portal} from 'react-native-paper';
 import Animated, {BounceIn, BounceOut} from 'react-native-reanimated';
 
@@ -16,11 +22,18 @@ interface GlobalModalProps {
 const GLOBAL_MODAL_Z_INDEX = 9995;
 
 const Modal: React.FC<GlobalModalProps> = props => {
+  useEffect(() => {
+    if (props.isVisible) {
+      Keyboard.dismiss();
+    }
+  }, [props.isVisible]);
+
   return (
     props.isVisible && (
       <Portal>
         <Pressable
           onPress={props.onBackdropPress}
+          onStartShouldSetResponder={() => false}
           style={{
             ...StyleSheet.absoluteFillObject,
             flex: 1,
@@ -34,8 +47,11 @@ const Modal: React.FC<GlobalModalProps> = props => {
             bottom: 0,
             zIndex: GLOBAL_MODAL_Z_INDEX,
           }}>
-          <Pressable
-            onPress={() => {}}
+          <TouchableWithoutFeedback
+            // onStartShouldSetResponder={() => false}
+            onPress={() => {
+              Keyboard.dismiss();
+            }}
             style={[
               {
                 margin: 0,
@@ -69,7 +85,7 @@ const Modal: React.FC<GlobalModalProps> = props => {
               ]}>
               {props.children}
             </Animated.View>
-          </Pressable>
+          </TouchableWithoutFeedback>
         </Pressable>
       </Portal>
     )

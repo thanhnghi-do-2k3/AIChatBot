@@ -1,9 +1,9 @@
+import Modal from 'components/Modal';
 import {promptActions} from 'features/prompt/reducer';
 import useAppDispatch from 'hooks/useAppDispatch';
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Button, Input} from 'react-native-elements';
-import Modal from 'components/Modal';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Input} from 'react-native-elements';
 import Toast from 'react-native-toast-message';
 
 interface CreatePromptModalProps {
@@ -57,8 +57,18 @@ const CreatePromptModal: React.FC<CreatePromptModalProps> = ({
   };
 
   return (
-    <Modal isVisible={visible} onBackdropPress={onClose}>
-      <View className="py-16">
+    <Modal
+      isVisible={visible}
+      onBackdropPress={onClose}
+      containerStyle={{
+        width: '90%',
+      }}>
+      <View
+        className="py-8"
+        style={{
+          width: '100%',
+        }}>
+        {/* <View> */}
         <Text style={styles.title}>Create Prompt</Text>
         <Input
           placeholder="Prompt Title"
@@ -95,8 +105,43 @@ const CreatePromptModal: React.FC<CreatePromptModalProps> = ({
         />
 
         <View style={styles.buttonContainer}>
-          <Button title="Cancel" onPress={onClose} />
-          <Button title="Create" onPress={handleSubmit} />
+          <TouchableOpacity
+            onPress={onClose}
+            style={{
+              backgroundColor: '#F5F5F5',
+              padding: 10,
+              width: '45%',
+              paddingVertical: 12,
+              alignItems: 'center',
+              borderRadius: 20,
+            }}>
+            <Text
+              style={{
+                fontWeight: '600',
+                color: '#000',
+              }}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleSubmit}
+            style={{
+              backgroundColor: '#28C68B',
+              padding: 10,
+              paddingVertical: 12,
+              width: '45%',
+              alignItems: 'center',
+
+              borderRadius: 20,
+            }}>
+            <Text
+              style={{
+                fontWeight: '600',
+                color: '#fff',
+              }}>
+              Create
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>

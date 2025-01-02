@@ -7,22 +7,31 @@
 import GlobalConfirmModal from 'components/GlobalConfirmModal';
 import GlobalLoading from 'components/GlobalLoading';
 import GlobalModal from 'components/GlobalModal';
-import {CodePushConfig} from 'config/CodePush';
+import { CodePushConfig } from 'config/CodePush';
 import ApplicationNavigator from 'navigation/index';
-import React, {useEffect, useRef} from 'react';
-import {AppState, LogBox, type AppStateStatus} from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { AppState, LogBox, type AppStateStatus } from 'react-native';
 import CodePush from 'react-native-code-push';
 import ErrorBoundary from 'react-native-error-boundary';
 // import LottieSplashScreen from 'react-native-lottie-splash-screen';
-import {Provider as PaperProvider} from 'react-native-paper';
-import {enableScreens} from 'react-native-screens';
+import * as Sentry from '@sentry/react-native';
+import BootSplash from 'react-native-bootsplash';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { enableScreens } from 'react-native-screens';
 import Toast from 'react-native-toast-message';
-import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import ErrorScreen from 'screens/ErrorScreen';
-import {persistor, store} from 'store/store';
-import {isIOS} from 'util/device';
+import { persistor, store } from 'store/store';
+import { isIOS } from 'util/device';
 import './global.css';
+
+Sentry.init({
+  dsn: 'https://379b31c62710da4b03f57c44a70bc41c@o4508604663791616.ingest.de.sentry.io/4508604665757776',
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // enableSpotlight: __DEV__,
+});
 
 LogBox.ignoreAllLogs();
 enableScreens();
@@ -40,6 +49,8 @@ function App(): React.JSX.Element {
 
   useEffect(() => {
     // LottieSplashScreen.hide();
+
+    BootSplash.hide({fade: true});
 
     const appListenSub = AppState.addEventListener(
       'change',
@@ -125,4 +136,4 @@ function App(): React.JSX.Element {
   );
 }
 
-export default App;
+export default Sentry.wrap(CodePush(App));

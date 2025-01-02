@@ -23,6 +23,7 @@ interface Props {
   hideRightHeader?: boolean;
   standalone?: boolean;
   paddingTop?: number;
+  selectHeaderIcon?: boolean;
 }
 
 const AppHeader: React.FC<Props> = (props): React.ReactElement => {
@@ -36,6 +37,7 @@ const AppHeader: React.FC<Props> = (props): React.ReactElement => {
     headerRightHeaderIcon,
     hideRightHeader = true, // Set default value here
     standalone,
+    selectHeaderIcon = true,
   } = props;
 
   return (
@@ -102,7 +104,11 @@ const AppHeader: React.FC<Props> = (props): React.ReactElement => {
           <TouchableOpacity
             onPress={onPressRightHeader}
             style={styles.headerIconContainer}>
-            <Icon name="comment" type="font-awesome" color="#000" />
+            {!selectHeaderIcon ? (
+              <Icon name="ellipsis-v" type="font-awesome" color="#000" />
+            ) : (
+              <Icon name="comment" type="font-awesome" color="#000" />
+            )}
           </TouchableOpacity>
         )}
       </View>

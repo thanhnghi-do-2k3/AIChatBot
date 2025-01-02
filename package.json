@@ -19,7 +19,7 @@
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
     "@reduxjs/toolkit": "^2.3.0",
-
+    "@sentry/react-native": "^6.5.0",
     "appcenter": "^5.0.2",
     "appcenter-analytics": "^5.0.2",
     "appcenter-crashes": "^5.0.2",
@@ -32,11 +32,9 @@
     "react": "18.3.1",
     "react-native": "^0.76.2",
     "react-native-animatable": "^1.4.0",
-
+    "react-native-bootsplash": "^6.3.2",
     "react-native-code-push": "^9.0.1",
-
     "react-native-document-picker": "^9.3.1",
-
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-elements": "^3.4.3",
     "react-native-error-boundary": "^1.2.7",

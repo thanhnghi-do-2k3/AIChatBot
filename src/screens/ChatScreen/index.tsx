@@ -1,20 +1,21 @@
+import {Picker} from '@react-native-picker/picker';
 import AppHeader from 'components/AppHeader';
 import {aiChatActions} from 'features/chat/reducer';
-import React, {useEffect, useState} from 'react';
-import useAppDispatch from 'hooks/useAppDispatch';
 import useAppSelector from 'hooks/useAppSelector';
-import {Picker} from '@react-native-picker/picker';
+import React, {useEffect, useState} from 'react';
 
+import BottomSheet from 'components/BottomSheet';
+import KeyboardAvoidingView from 'components/KeyboardAvoidingView';
+import LottieView from 'lottie-react-native';
 import {
   FlatList,
   Image,
-  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  StyleSheet,
-  ScrollView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -22,10 +23,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/store';
 import Colors from 'theme/Colors';
+import Lottie from 'theme/Lottie';
 import {isIOS} from 'util/device';
 import PromptLibraryModal from './components/PromptModal';
-import LottieView from 'lottie-react-native';
-import Lottie from 'theme/Lottie';
 
 interface Props {}
 interface Prompt {
@@ -52,6 +52,7 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [promptContent, setPromptContent] = useState('');
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   const MODEL_OPTIONS = [
     'claude-3-haiku-2024307',
@@ -276,94 +277,87 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{flex: 1, backgroundColor: '#fff'}}
-      behavior="padding"
-      keyboardVerticalOffset={100}
-      enabled>
-      <AppHeader
-        headerTitle="Chat with AI"
-        onPressLeftHeader={() => navigation.goBack()}
-      />
-      <View style={{marginHorizontal: 10, marginVertical: 25, width: 200}}>
-        <Picker
-          selectedValue={selectedModel}
-          onValueChange={itemValue => {
-            setSelectedModel(itemValue);
-          }}
-          style={{
-            width: 200,
-          }}>
-          {MODEL_OPTIONS.map(model => (
-            <Picker.Item key={model} label={model} value={model} />
-          ))}
-        </Picker>
-      </View>
-      {(aiChatState.history?.length ?? 0) === 0 && !conversationId && (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <LottieView
-            source={Lottie.hiAnimation}
-            autoPlay
-            loop
-            style={{width: 400, height: 300, alignSelf: 'center'}}
-          />
-          <Text style={{fontSize: 16, color: '#9CA3AF'}}>
-            Type something to start a conversation
-          </Text>
-        </View>
-      )}
-
-      {/* Danh sách lịch sử chat */}
-      <FlatList
-        data={aiChatState.history}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={{
-          padding: 10,
-          paddingBottom: 80,
-        }}
-      />
-
-      {/* Vùng gợi ý prompt khi gõ "/" */}
-      {showPromptSuggestions && filteredPrompts.length > 0 && (
-        <View style={styles.suggestionsContainer}>
-          {/* Dùng ScrollView để cuộn */}
-          <ScrollView style={{maxHeight: 200}}>
-            {filteredPrompts.map(prompt => (
-              <TouchableOpacity
-                key={prompt.id}
-                style={styles.suggestionItem}
-                onPress={() => handleSelectPrompt(prompt)}>
-                <Text style={styles.suggestionText}>{prompt.title}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-      )}
-
-      {/* Thanh nhập tin nhắn */}
-      <View style={styles.bottomContainer}>
-        <TouchableOpacity onPress={handleChoosePhoto} style={{marginRight: 10}}>
-          <Icon name="image" size={24} color={Colors.primary} />
-        </TouchableOpacity>
-
-        <TextInput
-          style={styles.textInput}
-          placeholder="Type a message..."
-          placeholderTextColor="#9CA3AF"
-          value={inputMessage}
-          onChangeText={handleChangeText} // thay vì setInputMessage
-          multiline={true}
+    <>
+      <KeyboardAvoidingView>
+        <AppHeader
+          headerTitle="Chat with AI"
+          onPressLeftHeader={() => navigation.goBack()}
+          onPressRightHeader={() => setIsBottomSheetVisible(true)}
+          headerRightHeaderIcon={false}
+          selectHeaderIcon={false}
+          hideRightHeader={false}
         />
 
-        <TouchableOpacity onPress={handleSend}>
-          <Icon name="paper-plane" size={24} color={Colors.primary} />
-        </TouchableOpacity>
+        {(aiChatState.history?.length ?? 0) === 0 && !conversationId && (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <LottieView
+              source={Lottie.hiAnimation}
+              autoPlay
+              loop
+              style={{width: 400, height: 300, alignSelf: 'center'}}
+            />
+            <Text style={{fontSize: 16, color: '#9CA3AF'}}>
+              Type something to start a conversation
+            </Text>
+          </View>
+        )}
 
-        <TouchableOpacity onPress={toggleModal} style={{marginLeft: 10}}>
-          <Icon name="list" size={24} color={Colors.primary} />
-        </TouchableOpacity>
-      </View>
+        {/* Danh sách lịch sử chat */}
+        <FlatList
+          style={{flex: 1}}
+          data={aiChatState.history}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={{
+            padding: 10,
+            paddingBottom: 80,
+          }}
+        />
+
+        {/* Vùng gợi ý prompt khi gõ "/" */}
+        {showPromptSuggestions && filteredPrompts.length > 0 && (
+          <View style={styles.suggestionsContainer}>
+            {/* Dùng ScrollView để cuộn */}
+            <ScrollView style={{maxHeight: 200}}>
+              {filteredPrompts.map(prompt => (
+                <TouchableOpacity
+                  key={prompt.id}
+                  style={styles.suggestionItem}
+                  onPress={() => handleSelectPrompt(prompt)}>
+                  <Text style={styles.suggestionText}>{prompt.title}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
+        {/* Thanh nhập tin nhắn */}
+        <View style={styles.bottomContainer}>
+          <TouchableOpacity
+            onPress={handleChoosePhoto}
+            style={{marginRight: 10}}>
+            <Icon name="image" size={24} color={Colors.primary} />
+          </TouchableOpacity>
+
+          <TextInput
+            style={styles.textInput}
+            placeholder="Type a message..."
+            placeholderTextColor="#9CA3AF"
+            value={inputMessage}
+            onChangeText={handleChangeText} // thay vì setInputMessage
+            multiline={true}
+          />
+
+          <TouchableOpacity onPress={handleSend}>
+            <Icon name="paper-plane" size={24} color={Colors.primary} />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={toggleModal} style={{marginLeft: 10}}>
+            <Icon name="list" size={24} color={Colors.primary} />
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
 
       <PromptLibraryModal
         visible={isModalVisible}
@@ -373,7 +367,27 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
         onSubmitForm={setPromptContent}
         onSendChat={handleSendPrompt}
       />
-    </KeyboardAvoidingView>
+
+      <BottomSheet
+        heightPercentage={30}
+        isVisible={isBottomSheetVisible}
+        onBackdropPress={() => setIsBottomSheetVisible(false)}>
+        <View style={{marginHorizontal: 10, marginVertical: 25, width: 200}}>
+          <Picker
+            selectedValue={selectedModel}
+            onValueChange={itemValue => {
+              setSelectedModel(itemValue);
+            }}
+            style={{
+              width: 200,
+            }}>
+            {MODEL_OPTIONS.map(model => (
+              <Picker.Item key={model} label={model} value={model} />
+            ))}
+          </Picker>
+        </View>
+      </BottomSheet>
+    </>
   );
 };
 
@@ -381,10 +395,10 @@ export default ChatScreenWithAI;
 
 const styles = StyleSheet.create({
   bottomContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    // position: 'absolute',
+    // bottom: 0,
+    // left: 0,
+    // right: 0,
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
