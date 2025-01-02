@@ -67,6 +67,35 @@ const kbSlice = createSlice({
     addUrlToKbFailure: (state, action) => {
       state.loading = false;
     },
+
+    addLocalFileToKb: (state, action) => {
+      state.loading = true;
+    },
+
+    addLocalFileToKbSuccess: (state, action) => {
+      state.loading = false;
+    },
+    addLocalFileToKbFailure: (state, action) => {
+      state.loading = false;
+    },
+    addSlackToKb: (state, action) => {
+      state.loading = true;
+    },
+    addSlackToKbSuccess: (state, action) => {
+      state.loading = false;
+    },
+    addSlackToKbFailure: (state, action) => {
+      state.loading = false;
+    },
+    addConfluenceToKb: (state, action) => {
+      state.loading = true;
+    },
+    addConfluenceToKbSuccess: (state, action) => {
+      state.loading = false;
+    },
+    addConfluenceToKbFailure: (state, action) => {
+      state.loading = false;
+    },
   },
 });
 

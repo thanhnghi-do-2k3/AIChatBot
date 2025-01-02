@@ -6,14 +6,14 @@ import {authActions} from 'features/auth/reducer';
 import {AppNavigationRef} from 'navigation/index';
 import {dispatchReduxStore, reduxStorage} from 'store/store';
 
-export const prod = true;
+export const prod = false;
 
 const BASE_URL = 'https://api.dev.jarvis.cx/api/';
 const BASE_URL_PROD = 'https://api.jarvis.cx/api/';
 const KB_BASE_URL = 'https://knowledge-api.dev.jarvis.cx/kb-core/';
 const KB_BASE_URL_PROD = 'https://knowledge-api.jarvis.cx/kb-core/';
 const API_VERSION = 'v1';
-const TIMEOUT = 100000;
+const TIMEOUT = 1000000;
 
 const apiClient = axios.create({
   baseURL: (prod ? BASE_URL_PROD : BASE_URL) + API_VERSION,

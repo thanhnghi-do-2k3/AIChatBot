@@ -33,3 +33,35 @@ type AddUrlToKbPayloadData = {
 type AddUrlToKbPayload = PayloadActions & {
   data: AddUrlToKbPayloadData;
 };
+
+type addLocalFileToKbPayloadData = {
+  id: string;
+  file: any;
+};
+
+type addLocalFileToKbPayload = PayloadActions & {
+  data: addLocalFileToKbPayloadData;
+};
+
+type addSlackToKbPayloadData = {
+  id: string;
+  unitName: string;
+  slackWorkspace: string;
+  slackBotToken: string;
+};
+
+type addSlackToKbPayload = PayloadActions & {
+  data: addSlackToKbPayloadData;
+};
+
+type addConfluenceToKbPayloadData = {
+  id: string;
+  unitName: string;
+  wikiPageUrl: string;
+  confluenceUsername: string;
+  confluenceAccessToken: string;
+};
+
+type addConfluenceToKbPayload = PayloadActions & {
+  data: addConfluenceToKbPayloadData;
+};

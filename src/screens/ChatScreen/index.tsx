@@ -285,18 +285,20 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
         headerTitle="Chat with AI"
         onPressLeftHeader={() => navigation.goBack()}
       />
-      <View style={{marginHorizontal: 10, marginVertical: 5}}>
-          <Picker
-            selectedValue={selectedModel}
-            onValueChange={itemValue => {
-              setSelectedModel(itemValue);
-            }}
-            style={{borderWidth: 1, borderColor: '#ccc'}}>
-            {MODEL_OPTIONS.map(model => (
-              <Picker.Item key={model} label={model} value={model} />
-            ))}
-          </Picker>
-        </View>
+      <View style={{marginHorizontal: 10, marginVertical: 25, width: 200}}>
+        <Picker
+          selectedValue={selectedModel}
+          onValueChange={itemValue => {
+            setSelectedModel(itemValue);
+          }}
+          style={{
+            width: 200,
+          }}>
+          {MODEL_OPTIONS.map(model => (
+            <Picker.Item key={model} label={model} value={model} />
+          ))}
+        </Picker>
+      </View>
       {(aiChatState.history?.length ?? 0) === 0 && !conversationId && (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <LottieView
@@ -341,7 +343,6 @@ const ChatScreenWithAI: React.FC<Props> = ({navigation, route}: any) => {
 
       {/* Thanh nhập tin nhắn */}
       <View style={styles.bottomContainer}>
-      
         <TouchableOpacity onPress={handleChoosePhoto} style={{marginRight: 10}}>
           <Icon name="image" size={24} color={Colors.primary} />
         </TouchableOpacity>
