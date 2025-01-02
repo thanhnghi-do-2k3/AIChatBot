@@ -1,6 +1,7 @@
 import type {PayloadAction} from '@reduxjs/toolkit';
 import {GlobalLoadingController} from 'components/GlobalLoading';
-import {all, call, put, takeLatest} from 'redux-saga/effects';
+
+import {all, call, put, take, takeLatest} from 'redux-saga/effects';
 import kbService from './api';
 import {kbActions} from './reducer';
 
@@ -11,6 +12,9 @@ function* kbSaga() {
     takeLatest(kbActions.getUnitsKb.type, handleGetUnitsKbSaga),
     takeLatest(kbActions.addUrlToKb.type, handleAddUrlToKbSaga),
     takeLatest(kbActions.deleteKb.type, handleDeleteKbSaga),
+    takeLatest(kbActions.addLocalFileToKb.type, handleAddLocalFileToKbSaga),
+    takeLatest(kbActions.addSlackToKb.type, handleAddSlackToKbSaga),
+    takeLatest(kbActions.addConfluenceToKb.type, handleAddConfluenceToKbSaga),
   ]);
 }
 
@@ -89,6 +93,59 @@ function* handleAddUrlToKbSaga(
   } catch (error: any) {
     console.log('error', error);
     yield put(kbActions.addUrlToKbFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  }
+}
+
+function* handleAddLocalFileToKbSaga(
+  action: PayloadAction<addLocalFileToKbPayload>,
+): Generator<any, void, any> {
+  console.log('handleAddLocalFileToKbSaga', action.payload);
+  try {
+    const response: any = yield call(
+      kbService.addLocalFileToKb,
+      action.payload.data,
+    );
+    yield put(kbActions.addLocalFileToKbSuccess(response));
+    action.payload.action?.onSuccess?.(response);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(kbActions.addLocalFileToKbFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  }
+
+  
+}
+
+function* handleAddSlackToKbSaga(
+  action: PayloadAction<addSlackToKbPayload>,
+): Generator<any, void, any> {
+  console.log('handleAddSlackToKbSaga', action.payload);
+  try {
+    const response: any = yield call(kbService.addSlackToKb, action.payload.data);
+    yield put(kbActions.addSlackToKbSuccess(response));
+    action.payload.action?.onSuccess?.(response);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(kbActions.addSlackToKbFailure(error.message));
+    action.payload.action?.onFailure?.(error);
+  }
+}
+
+function* handleAddConfluenceToKbSaga(
+  action: PayloadAction<addConfluenceToKbPayload>,
+): Generator<any, void, any> {
+  console.log('handleAddConfluenceToKbSaga', action.payload);
+  try {
+    const response: any = yield call(
+      kbService.addConfluenceToKb,
+      action.payload.data,
+    );
+    yield put(kbActions.addConfluenceToKbSuccess(response));
+    action.payload.action?.onSuccess?.(response);
+  } catch (error: any) {
+    console.log('error', error);
+    yield put(kbActions.addConfluenceToKbFailure(error.message));
     action.payload.action?.onFailure?.(error);
   }
 }
