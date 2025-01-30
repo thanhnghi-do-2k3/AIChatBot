@@ -1,212 +1,224 @@
-import React, {useState} from 'react';
-import {FlatList, View, Animated, PanResponder} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Text} from 'react-native';
-import NAvoidKeyboardScreen from 'components/NAvoidKeyboardScreen';
-import {styles} from './style';
-import Header from 'components/Header';
+import ScreenName from 'constant/ScreenName';
+import {chatbotActions} from 'features/chatbot/reducer';
+import useAppDispatch from 'hooks/useAppDispatch';
+import useAppSelector from 'hooks/useAppSelector';
+import React, {useEffect, useState} from 'react';
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  RefreshControl,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Input} from 'react-native-elements';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Colors} from 'theme';
-import {mockdata} from './mockdata';
-import CreateChatBotModal from './components/CreateChatBotModal';
+import Colors from 'theme/Colors';
+import ChatBotListItem from './components/ChatBotListItem';
+import MessengerConfigurationModal from './components/MessengerConfigurationModal';
+import PublishBotChooseModal from './components/PublishBotChooseModal';
+import SlackConfigurationModal from './components/SlackConfigurationModal';
+import TelegramConfigurationModal from './components/TelegramConfigurationModal';
+import {styles} from './style';
 
 interface Props {}
 
 const ChatbotListScreen: React.FC<Props> = ({navigation}: any) => {
-  const [botName, setBotName] = useState('');
-  const [data, setData] = useState(mockdata);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [botName, setBotName] = useState<string>('');
+  const [isShowPublishBotModal, setIsShowPublishBotModal] = useState(false);
+  const [currentBot, setCurrentBot] = useState<any>();
+  const [
+    isShowMessengerConfigurationModal,
+    setIsShowMessengerConfigurationModal,
+  ] = useState(false);
+  const [
+    isShowTelegramConfigurationModal,
+    setIsShowTelegramConfigurationModal,
+  ] = useState(false);
+  const [isShowSlackConfigurationModal, setIsShowSlackConfigurationModal] =
+    useState(false);
+  const dispatch = useAppDispatch();
+  const listChatbot = useAppSelector(state => state.chatbotReducer.listChatbot);
+  const isFetchingChatbot = useAppSelector(
+    state => state.chatbotReducer.isFetchingChatbot,
+  );
+  const displayChatbot = React.useMemo(
+    () =>
+      listChatbot.filter(
+        item =>
+          item.assistantName.toLowerCase().indexOf(botName.toLowerCase()) !==
+          -1,
+      ),
+    [listChatbot, botName],
+  );
 
-  const handleDeleteItem = (id: string) => {
-    setData(prevData => prevData.filter(item => item.chatbotName !== id));
-  };
-
-  const [swiping, setSwiping] = useState(false);
-
-  const renderItem = ({item, index}) => {
-    const translateX = new Animated.Value(0);
-    const opacity = new Animated.Value(1);
-
-    // Create panResponder with animated translation
-    const panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (_, gestureState) => {
-        if (!swiping) 
-          setSwiping(true);
-        translateX.setValue(gestureState.dx);
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx > 200) {
-          Animated.parallel([
-            Animated.timing(translateX, {
-              toValue: 500,
-              duration: 300,
-              useNativeDriver: true,
-            }),
-            Animated.timing(opacity, {
-              toValue: 0,
-              duration: 300,
-              useNativeDriver: true,
-            }),
-          ]).start(() => {
-            handleDeleteItem(item.chatbotName)
-            setSwiping(false);
+  function fetchChatbotData() {
+    const payload = {
+      data: {},
+      action: {
+        onSuccess: (data: any) => {},
+        onFailure: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: 'Get chatbot failed',
           });
-        } else {
-          Animated.spring(translateX, {
-            toValue: 0,
-            useNativeDriver: true,
-          }).start(() => setSwiping(false));
-        }
+        },
       },
-    });
+    };
 
-    return (
-      <Animated.View
-        {...panResponder.panHandlers}
-        style={[
-          {
-            transform: [{translateX}],
-            opacity,
-          },
-          {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingVertical: 15,
-            paddingHorizontal: 20,
-            borderWidth: 1,
-            borderColor: '#E0E0E0',
-            borderRadius: 20,
-            marginVertical: 10,
-            width: '90%',
-            alignSelf: 'center',
-            backgroundColor: index % 2 === 0 ? '#F5F5F5' : '#fff',
-          },
-        ]}>
-        <TouchableOpacity
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
+    dispatch(chatbotActions.getChatbot(payload));
+  }
+
+  // throw new Error('Function not implemented.');
+
+  useEffect(() => {
+    fetchChatbotData();
+  }, []);
+
+  return (
+    <>
+      <KeyboardAvoidingView
+        style={{
+          flex: 1,
+          backgroundColor: '#fff',
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+          // paddingBottom: 80,
+        }}
+        behavior="padding"
+        keyboardVerticalOffset={100}
+        enabled>
+        <View style={styles.container}>
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'flex-start',
-              flex: 0.85,
+              justifyContent: 'center',
+              width: '100%',
+              // marginTop: 20,
             }}>
-            <Icon name="robot" size={30} color={item.BotColor} />
-            <View>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 16,
-                  fontWeight: '600',
-                  marginLeft: 10,
-                }}>
-                {item.chatbotName}
-              </Text>
-              <Text
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={{
-                  color: '#BDBDBD',
-                  fontSize: 14,
-                  fontWeight: '600',
-                  marginLeft: 10,
-                }}>
-                {item.Description}
-              </Text>
-              <Text
-                style={{
-                  color: '#BDBDBD',
-                  fontSize: 12,
-                  fontWeight: '600',
-                  marginLeft: 10,
-                  marginTop: 5,
-                }}>
-                {item.CreateDate}
-              </Text>
-            </View>
+            <Input
+              errorStyle={{
+                height: 0,
+                margin: 0,
+              }}
+              containerStyle={{
+                width: '100%',
+                padding: 0,
+                margin: 0,
+                marginTop: 10,
+              }}
+              placeholder="Search chatbot"
+              placeholderTextColor={'#BDBDBD'}
+              value={botName}
+              onChangeText={setBotName}
+              leftIcon={{
+                type: 'font-awesome',
+                name: 'search',
+                color: '#BDBDBD',
+              }}
+              inputStyle={{
+                marginLeft: 10,
+              }}
+              inputContainerStyle={{
+                borderWidth: 1,
+                borderColor: '#c3c3c3',
+                paddingHorizontal: 20,
+                // paddingVertical: 5,
+                backgroundColor: '#fff',
+                borderRadius: 999,
+              }}
+            />
           </View>
-          <TouchableOpacity>
-            <Icon name="chevron-right" size={20} color="black" />
-          </TouchableOpacity>
-        </TouchableOpacity>
-      </Animated.View>
-    );
-  };
-
-  return (
-    <>
-      <NAvoidKeyboardScreen>
-        <Header
-          title="Chatbots list"
-          titleStyle={{color: 'black'}}
-          allowGoBack={false}
-        />
-        <View style={styles.container}>
-          <Input
-            placeholder="Search chatbot"
-            placeholderTextColor={'#BDBDBD'}
-            value={botName}
-            onChangeText={setBotName}
-            leftIcon={{
-              type: 'font-awesome',
-              name: 'search',
-              color: '#BDBDBD',
+          <FlatList
+            style={{width: '100%', flex: 1, marginTop: 5}}
+            contentContainerStyle={{
+              paddingBottom: 20,
+              alignItems: 'center',
             }}
-            inputStyle={{
-              marginLeft: 10,
-            }}
-            inputContainerStyle={{
-              borderBottomWidth: 0,
-              paddingHorizontal: 20,
-              paddingVertical: 5,
-              backgroundColor: '#F5F5F5',
-              borderRadius: 20,
-            }}
+            data={displayChatbot}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item.chatbotName}
+            renderItem={({item, index}) => (
+              <ChatBotListItem
+                item={item}
+                index={index}
+                triggerPublishBot={setIsShowPublishBotModal}
+                setBot={setCurrentBot}
+              />
+            )}
+            refreshControl={
+              <RefreshControl
+                refreshing={isFetchingChatbot}
+                onRefresh={fetchChatbotData}></RefreshControl>
+            }
           />
+
           <TouchableOpacity
-            onPress={() => setIsModalVisible(true)}
+            onPress={() => {
+              navigation.navigate(ScreenName.CreateBotTab);
+            }}
             style={{
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: Colors.primary,
-              paddingVertical: 12,
-              paddingHorizontal: 20,
-              borderRadius: 20,
+              // paddingVertical: 12,
+              // paddingHorizontal: 20,
+              position: 'absolute',
+              bottom: 20,
+              right: 20,
+              height: 60,
+              width: 60,
+              borderRadius: 999,
             }}>
-            <Icon name="robot" size={30} color="#fff" />
-            <Text
+            {/* <Icon
+              name="plus"
+              size={20}
+              color="#000000aa"
               style={{
-                color: '#fff',
-                fontSize: 16,
-                fontWeight: '600',
-                marginLeft: 10,
-              }}>
-              Create Chat Bot
-          </Text>
+                marginRight: 5,
+              }}
+            /> */}
+            <Icon name="robot" size={20} color="#fff" />
           </TouchableOpacity>
-          <FlatList
-            scrollEnabled={!swiping}
-            style={{marginTop: 20, width: '100%', flex: 1}}
-            data={data}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={item => item.chatbotName}
-            renderItem={renderItem}
-          />
         </View>
-      </NAvoidKeyboardScreen>
-      <CreateChatBotModal
-        visible={isModalVisible}
+      </KeyboardAvoidingView>
+      <PublishBotChooseModal
+        isVisible={isShowPublishBotModal}
         onClose={() => {
-          setIsModalVisible(false);
+          setIsShowPublishBotModal(false);
+        }}
+        onMessenger={function (): void {
+          setIsShowMessengerConfigurationModal(true);
+        }}
+        onTelegram={function (): void {
+          setIsShowTelegramConfigurationModal(true);
+        }}
+        onSlack={function (): void {
+          setIsShowSlackConfigurationModal(true);
+        }}
+        chatbot={currentBot}
+      />
+      <MessengerConfigurationModal
+        chatbot={currentBot}
+        isOpen={isShowMessengerConfigurationModal}
+        onClose={() => {
+          setIsShowMessengerConfigurationModal(false);
+        }}
+      />
+      <TelegramConfigurationModal
+        chatbot={currentBot}
+        isOpen={isShowTelegramConfigurationModal}
+        onClose={() => {
+          setIsShowTelegramConfigurationModal(false);
+        }}
+      />
+      <SlackConfigurationModal
+        chatbot={currentBot}
+        isOpen={isShowSlackConfigurationModal}
+        onClose={() => {
+          setIsShowSlackConfigurationModal(false);
         }}
       />
     </>

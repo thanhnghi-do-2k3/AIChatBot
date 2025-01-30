@@ -1,7 +1,3 @@
-import ChangePasswordScreen from 'screens/ChangePasswodScreen';
-import ChatHisTory from 'screens/ChatHistoryScreen';
-import VerifyEmailScreen from 'screens/LoginWithGoogleScreen';
-
 const ScreenName = {
   Home: 'Home',
   Login: 'Login',
@@ -10,11 +6,20 @@ const ScreenName = {
   VerifyEmailScreen: 'VerifyEmailScreen',
   ChangePasswordScreen: 'ChangePasswordScreen',
   ChatbotListScreen: 'ChatbotListScreen',
+  ChatbotDetailScreen: 'ChatbotDetailScreen',
+  ChatbotThreadChatScreen: 'ChatbotThreadChatScreen',
   KnowlegdeListScreen: 'KnowlegdeListScreen',
   ProfileScreen: 'ProfileScreen',
   KnowledgeDetailScreen: 'KnowledgeDetailScreen',
   ChatHisToryScreen: 'ChatHisToryScreen',
   ChatScreen: 'ChatScreen',
+  EmailScreen: 'EmailScreen',
+  PromptListScreen: 'PromptListScreen',
+  SubcriptionScreen: 'SubcriptionScreen',
+
+  // Tab
+  CreateBotTab: 'CreateBotTab',
+  UpdateBotTab: 'UpdateBotTab',
 
   // Navigation
   AuthNavigator: 'AuthNavigator',
@@ -22,6 +27,9 @@ const ScreenName = {
   ChatbotNavigator: 'ChatbotNavigator',
   KnowledgeNavigator: 'KnowledgeNavigator',
   ChatNavigator: 'ChatNavigator',
+  EmailNavigator: 'EmailNavigator',
+  ProfileNavigator: 'ProfileNavigator',
+  PromptNavigator: 'PromptNavigator',
 };
 
 export default ScreenName;

@@ -1,7 +1,3 @@
-type initialState = {
-  loading: boolean;
-};
-
 type RegisterPayloadData = {
   email: string;
   password: string;

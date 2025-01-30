@@ -1,14 +1,6 @@
 import ScreenName from 'constant/ScreenName';
-import React, {useLayoutEffect, useMemo, useRef} from 'react';
-import {Animated} from 'react-native';
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Vibration,
-  View,
-  Text,
-} from 'react-native';
+import React, {useLayoutEffect, useRef} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 // @ts-ignore
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -62,7 +54,15 @@ const TabBar = ({state, navigation}: any) => {
         ) : (
           <Icon name="book" size={24} color={Colors.black} />
         );
-      case ScreenName.ProfileScreen:
+      case ScreenName.EmailNavigator:
+        return (
+          <Icon
+            name="envelope"
+            size={24}
+            color={isFocused ? Colors.primary : Colors.black}
+          />
+        );
+      case ScreenName.ProfileNavigator:
         return (
           <Icon
             name="user-circle"
@@ -81,8 +81,10 @@ const TabBar = ({state, navigation}: any) => {
         return 'Chatbots';
       case ScreenName.KnowledgeNavigator:
         return 'Knowledge';
-      case ScreenName.ProfileScreen:
+      case ScreenName.ProfileNavigator:
         return 'Profile';
+      case ScreenName.EmailNavigator:
+        return 'Email';
     }
   };
 
@@ -146,21 +148,22 @@ const TabBar = ({state, navigation}: any) => {
 
 const styles = StyleSheet.create({
   tabView: {
-    backgroundColor: Colors.white,
+    backgroundColor: 'white',
     shadowColor: Colors.black,
     shadowOffset: {width: 1, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
-    // borderTopColor: Colors.orange,
-    // borderTopWidth: 1,
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 5,
+    borderTopRightRadius: 32,
+    borderTopLeftRadius: 32,
   },
   container: {
+    borderTopRightRadius: 32,
+    borderTopLeftRadius: 32,
     flexDirection: 'row',
     height: 64,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.white,
   },
   tabItem: {
     flex: 1,

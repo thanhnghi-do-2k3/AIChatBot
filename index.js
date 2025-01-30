@@ -1,12 +1,33 @@
 /**
  * @format
  */
-import {AppRegistry} from 'react-native';
+import {AppRegistry, Text, TextInput} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 
 if (__DEV__) {
   require('./ReactotronConfig');
 }
+
+// Disable font scaling globally
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
+Text.defaultProps.color = '#000';
+
+TextInput.defaultProps = TextInput.defaultProps || {};
+TextInput.defaultProps.allowFontScaling = false;
+TextInput.defaultProps.color = '#000';
+
+// Set global font family
+const globalStyle = {fontFamily: 'SFProRegular'};
+
+const applyGlobalFont = defaultStyle => ({
+  ...defaultStyle,
+  ...globalStyle,
+});
+
+// Apply font styles globally
+Text.defaultProps.style = applyGlobalFont(Text.defaultProps.style);
+TextInput.defaultProps.style = applyGlobalFont(TextInput.defaultProps.style);
 
 AppRegistry.registerComponent(appName, () => App);
